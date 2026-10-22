@@ -243,7 +243,7 @@ For a downloaded file on macOS 15+: *System Settings → Privacy & Security → 
 
 Download the package for your distribution from the **[latest release](https://github.com/linckosz/moonlight-web/releases/latest)** and install it. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
 
-The `.deb` and `.rpm` also add the signed **APT** or **DNF** repository, so MoonlightWeb updates with the system and appears in GNOME Software, KDE Discover and App Center. Arch uses [`moonlightweb-bin`](https://aur.archlinux.org/packages/moonlightweb-bin) from the AUR.
+**Updates:** since 0.4.1 a fresh install adds no package repository. MoonlightWeb updates itself from GitHub through its update button, which asks for the host's password (a headless service updates without asking). An install that already has the project's **APT** or **DNF** repository keeps it. Arch uses [`moonlightweb-bin`](https://aur.archlinux.org/packages/moonlightweb-bin) from the AUR.
 
 | Distro family | Package | Command |
 |---|---|---|

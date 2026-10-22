@@ -157,9 +157,10 @@ fi
 
 # In-app updates without a password (SelfUpdater's "repo" path): a root helper
 # that upgrades the package from its signed repository, the polkit action that
-# lets the active session run it without one, and the repository's public key
-# for the postinst to configure that repository. Production only — the DEV
-# edition is not in the repository and never updates itself.
+# lets the active session run it without one, and the repository's public key.
+# Since 0.4.1 the postinst no longer configures that repository (see there), so
+# the three only serve an install that already has it. Production only — the
+# DEV edition is not in the repository and never updates itself.
 if [ "$EDITION" = prod ]; then
     install -m 0755 "$(dirname "$0")/moonlightweb-update" "$PKG$PREFIX/bin/moonlightweb-update"
     mkdir -p "$PKG/usr/share/polkit-1/actions" "$PKG$PREFIX/share/keys"
@@ -252,16 +253,20 @@ if [ -n "$MEDIA_RANGE" ]; then
     fi
 fi
 
-# The package's own signed repository, added when none is configured — the way
-# Chrome's package adds Google's. A .deb or .rpm installed by hand then gets its
-# updates the same way as one installed from the repository: through the
-# system's updater, and through the app itself without a password (the update
-# helper only upgrades from here). Written exactly as install.sh writes it, so
-# either one finds the other's files in place. The key comes from the package,
-# not the network. Empty in the DEV edition, which is not in the repository.
+# The package's own signed repository. Up to 0.4.0 it was added when none was
+# configured — the way Chrome's package adds Google's — so a .deb or .rpm
+# installed by hand got its updates through the system's updater and through
+# the app without a password. Its host is the project's old domain
+# (packages.moonlightweb.top), so since 0.4.1 a fresh install adds none and the
+# app updates itself from GitHub instead (SelfUpdater's pkexec or root path).
+# An install that already has the files keeps them, and prerm still removes
+# them with the package. Set REPO_URL again once the repository has a new home.
+# Written exactly as install.sh writes it, so either one finds the other's files
+# in place. The key comes from the package, not the network. REPO_KEYS is empty
+# in the DEV edition, which is not in the repository.
 REPO_KEYS=/opt/moonlightweb/share/keys
-REPO_URL=https://packages.moonlightweb.top
-if [ -n "$REPO_KEYS" ] && [ -d "$REPO_KEYS" ]; then
+REPO_URL=
+if [ -n "$REPO_KEYS" ] && [ -n "$REPO_URL" ] && [ -d "$REPO_KEYS" ]; then
     if command -v apt-get >/dev/null 2>&1 && [ -d /etc/apt/sources.list.d ]; then
         if [ ! -s /etc/apt/sources.list.d/moonlightweb.sources ]; then
             install -d -m 0755 /etc/apt/keyrings
