@@ -301,7 +301,8 @@ docker run --rm -v mw-data:/data -v "$PWD:/backup" debian:trixie-slim \
 | `MW_HTTP_PORT` | `80` | HTTP listener (HTTP-to-HTTPS redirect). |
 | `MW_UPNP` | `1` | `0` stops the app asking the router to map ports — set it on a bridge network, where the request cannot reach a router anyway. |
 | `TZ` | `Etc/UTC` | Timestamps in the logs and the admin UI. |
-| `MW_DOMAIN`, `MW_PDNS_TOKEN` | baked in | The rendezvous domain and the shared API key for the update relay and aggregate metrics. The official images carry the project's, exactly like the `.deb`; without them the container never contacts our infrastructure. |
+| `MW_DOMAIN` | baked in | The rendezvous domain. The official images carry the project's, exactly like the `.deb`. |
+| `MW_PDNS_TOKEN` | unset | The shared API key for an update relay and aggregate metrics. Since 0.4.1 no official image carries one, so a container reports nothing to our infrastructure; set it only for services you run yourself. |
 
 Everything else is configured from the admin page, or by editing
 `settings.json` in the volume and restarting — see

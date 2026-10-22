@@ -600,20 +600,22 @@ static QString findRunningInstance(quint16 persistedPort)
 // The agreement the operator must accept before the machine is opened to the
 // internet. Printed verbatim and sent verbatim as `consent_message`, so the
 // audit log records the exact words that were shown — same contract as the
-// wizard's checkbox text (frontend/js/ui/SetupView.js).
+// wizard's checkbox text (frontend/js/ui/SetupView.js), and the same words: the
+// wizard's English text, which frontend/test/InternetConsentText.test.js holds
+// this copy to.
 static const char* kCliInternetConsent =
-    "MoonlightWeb will make this machine reachable from outside your local "
-    "network. While the link is on, your router is asked (UPnP) to open a "
-    "streaming port during each session, and whoever connects reaches this "
-    "machine directly - each side of a peer-to-peer connection sees the "
-    "other's public IP address. A future update will add an outgoing "
-    "connection to the MoonlightWeb introduction server, which then sees this "
-    "machine's public IP address and when it is online. No public DNS record "
-    "is created, no certificate is issued for this machine, and ports 80/443 "
-    "are not opened. You can turn the link off at any time from the Admin "
-    "page. (An instance that already holds a moonlightweb.top sub-domain "
-    "keeps it, and its existing behaviour, until the announced shutdown of "
-    "the DNS service in February 2027.)";
+    "MoonlightWeb can allow streaming from outside your local network, in a "
+    "highly secure way. Streaming is direct, from this PC to the browser you "
+    "invited. While a session runs, your router is asked (UPnP) to open a "
+    "single port, closed again when the session ends. It carries nothing but "
+    "the encrypted stream, and every connection on it has to authenticate "
+    "first. A rendezvous server introduces the two sides, so nothing about "
+    "this PC is published. No public DNS record, no certificate for this "
+    "machine, and ports 80/443 stay closed. Your public IP address is listed "
+    "nowhere: only that server, the public STUN servers this PC asks, and "
+    "whoever holds the link you sent ever see it. To learn its own public "
+    "address, this PC asks public STUN servers (Google, Cloudflare, Nextcloud, "
+    "Metered) in turn. You can turn this off at any time from the Admin page.";
 
 // stdin is a terminal — i.e. there is a human who can answer a prompt.
 static bool stdinIsInteractive()

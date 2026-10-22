@@ -56,4 +56,11 @@ QString expectedInstaller(const QJsonObject& release, const QString& productName
 /// Empty when it is, the reason otherwise.
 QString matches(const Installer& expected, qint64 size, const QString& sha256Hex);
 
+/// Whether `url` is a release page or a release download of the repository
+/// that `releasesApi` names ("https://api.github.com/repos/<owner>/<repo>/
+/// releases/latest"): https://github.com/<owner>/<repo>/releases/..., and
+/// nothing else. UpdateChecker holds a relay's payload to it — a relay allowed
+/// any GitHub address could name an installer in somebody else's repository.
+bool isReleaseUrl(const QString& url, const QString& releasesApi);
+
 } // namespace UpdateApplyRules

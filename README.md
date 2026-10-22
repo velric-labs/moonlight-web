@@ -345,7 +345,7 @@ It controls: admin **PIN**, active **sessions**, HTTP/HTTPS **ports**, **transpo
 
 **Internet Access is opt‑in, off by default.** While it is on, the server:
 
-1. **Detects your public IP** over STUN (ours first, `stream.moonlightweb.top:3478`, then Google/Cloudflare) and reports CGNAT or double NAT. A LAN stream uses no STUN at all.
+1. **Detects your public IP** over STUN (public servers: Google, Cloudflare, Nextcloud, Metered; a self‑hosted operator's own server first when `MW_DOMAIN` names one) and reports CGNAT or double NAT. A LAN stream uses no STUN at all.
 2. **Opens ports on the router via UPnP**: one per stream slot, kept from one stream to the next (an invited player's closes when they leave), and up to four for the entry link's tunnel. The two peers see each other's public IP.
 
 Nothing is published: **no DNS record, no certificate, ports 80/443 stay closed**. Turning it off closes the entry link at once, and the next streams announce no public address; the router ports already opened stay mapped until MoonlightWeb quits.
@@ -427,15 +427,15 @@ Restart the server after a manual edit. Every key is described in the [settings 
 
 `native_host_enabled` (default `true`) shows this machine as a host. Set it to `false` to use MoonlightWeb only as a front end for Sunshine, Wolf or your own rig; the engine stays installed.
 
-#### Update check & version counts
+#### Update check
 
-Every few hours, official builds check for updates through `https://updates.{MW_DOMAIN}`, a mirror of the GitHub release that counts **version, OS and architecture** only.
+Every few hours, MoonlightWeb asks GitHub directly whether a newer release exists, and reports nothing to anyone. Since 0.4.1 no build uses the project's update relay, which used to count **version, OS and architecture**. `MW_NO_TELEMETRY=1` disables the check entirely.
 
-`"update_relay_enabled": false` asks GitHub directly and reports nothing. `MW_NO_TELEMETRY=1` disables the check entirely. Self‑compiled builds never use the relay.
+A relay is only used where an operator runs one and sets both `MW_DOMAIN` and `MW_PDNS_TOKEN`; `"update_relay_enabled": false` turns it off even then. Whatever the relay says, an update must come from this repository's own releases.
 
 #### Session counts
 
-At the start and end of a stream, official builds send its **shape** to `https://metrics.{MW_DOMAIN}`: resolution, frame rate, codec, HDR/4:4:4, bitrate band, backend, transport, LAN or Internet, device class, owner or guest, and duration.
+Since 0.4.1 no build sends session counts by default. Only where an operator runs the metrics service and sets `MW_DOMAIN` and `MW_PDNS_TOKEN` does the start and end of a stream send its **shape** to `https://metrics.{MW_DOMAIN}`: resolution, frame rate, codec, HDR/4:4:4, bitrate band, backend, transport, LAN or Internet, device class, owner or guest, and duration.
 
 Never sent: host name, account, pairing identity, **the application launched**, or any address (only a daily‑rotating hash is kept). Every value is a number or a fixed word.
 

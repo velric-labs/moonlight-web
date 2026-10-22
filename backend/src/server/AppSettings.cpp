@@ -19,6 +19,7 @@
 #include "common/Edition.h"
 #include "common/Logger.h"
 #include "common/PairingCrypto.h"
+#include "common/ProjectDomain.h"
 
 #include <QDateTime>
 #include <QDir>
@@ -812,14 +813,14 @@ QString AppSettings::stunServer() const
     const QString configured = obj.value("stun_server").toString();
     if (!configured.isEmpty()) return configured;
 
-    // The introduction server answers STUN on 3478 as well, so the browser is
-    // told about the same operator the consent text already names instead of
-    // Google. StunClient::defaultServers() keeps the public servers behind it
-    // for the backend's own detection; a browser gets one server and a direct
-    // connection it can fall back to.
-    QString domain = QString::fromUtf8(qgetenv("MW_DOMAIN"));
-    if (domain.isEmpty()) domain = QStringLiteral("moonlightweb.top");
-    return QStringLiteral("stun:stream.") + domain + QStringLiteral(":3478");
+    // An operator's own introduction server answers STUN on 3478 as well, so
+    // the browser is told about the operator the consent text already names.
+    // The project's old server under moonlightweb.top is no longer one of them
+    // (common/ProjectDomain.h): without an operator of their own, sessions use
+    // a public server. StunClient::defaultServers() keeps the public servers
+    // behind it for the backend's own detection; a browser gets one server and
+    // a direct connection it can fall back to.
+    return mw::projectdomain::defaultStunUrl();
 }
 
 void AppSettings::setStunServer(const QString& url)

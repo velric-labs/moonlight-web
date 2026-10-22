@@ -379,9 +379,9 @@ public:
     // records version/OS/arch in aggregate so migrations can be planned on real
     // numbers instead of download counts. Set it to false (or set MW_NO_TELEMETRY
     // in the environment) to check GitHub directly and report nothing; updates
-    // keep working either way. Self-built binaries never use the relay at all —
-    // it needs the MW_PDNS_TOKEN only official builds carry. Documented in the
-    // README (the JSON holds no comment keys).
+    // keep working either way. No build uses the relay by default any more: it
+    // needs an MW_PDNS_TOKEN, which official builds stopped carrying in v0.4.1.
+    // Documented in the README (the JSON holds no comment keys).
 
     bool updateRelayEnabled() const;
 
@@ -395,8 +395,9 @@ public:
     // HDR, a bitrate band, backend, transport, LAN-or-internet, device class,
     // duration — and never a host name, an account or an application. Set it to
     // false (or set MW_NO_TELEMETRY in the environment) to report nothing;
-    // streaming is identical either way, and self-built binaries never report
-    // at all. See backend/src/network/SessionMetrics.h and the README.
+    // streaming is identical either way. No build reports by default any more:
+    // it needs an MW_PDNS_TOKEN, which official builds stopped carrying in
+    // v0.4.1. See backend/src/network/SessionMetrics.h and the README.
 
     bool sessionMetricsEnabled() const;
 

@@ -16,6 +16,7 @@
  */
 
 #include "StunClient.h"
+#include "common/ProjectDomain.h"
 
 #include <QUdpSocket>
 #include <QUrl>
@@ -60,23 +61,23 @@ StunClient::StunClient(QObject* parent)
 
 QList<StunClient::StunServer> StunClient::defaultServers()
 {
-    // Ours first, and the public ones only behind it. A STUN binding hands the
-    // server the address it is asking about, so whoever answers learns this
-    // machine's public IP — which is exactly what the consent text names, and it
-    // names the introduction server's operator, not Google's. The rest stay as a
-    // fallback because a machine that cannot learn its own address cannot be
-    // reached at all, and that is a worse answer than a widely-used third party.
-    QString domain = QString::fromUtf8(qgetenv("MW_DOMAIN"));
-    if (domain.isEmpty()) domain = QStringLiteral("moonlightweb.top");
-
-    return {
-        {QStringLiteral("stream.") + domain, 3478},
-        {QStringLiteral("stun.l.google.com"), 19302},
-        {QStringLiteral("stun1.l.google.com"), 19302},
-        {QStringLiteral("stun.cloudflare.com"), 3478},
-        {QStringLiteral("stun.nextcloud.com"), 443},
-        {QStringLiteral("relay.metered.ca"), 80},
-    };
+    // An operator's own server first, and the public ones behind it. A STUN
+    // binding hands the server the address it is asking about, so whoever
+    // answers learns this machine's public IP — which is why the operator the
+    // consent text names is asked before anybody else. The project's own server
+    // under moonlightweb.top is no longer asked at all: control of that domain
+    // is no longer certain (common/ProjectDomain.h). The public servers stay
+    // because a machine that cannot learn its own address cannot be reached at
+    // all, and that is a worse answer than a widely-used third party.
+    QList<StunServer> servers;
+    const QString own = mw::projectdomain::operatorStunHost();
+    if (!own.isEmpty()) servers.append({own, 3478});
+    servers.append({QStringLiteral("stun.l.google.com"), 19302});
+    servers.append({QStringLiteral("stun1.l.google.com"), 19302});
+    servers.append({QStringLiteral("stun.cloudflare.com"), 3478});
+    servers.append({QStringLiteral("stun.nextcloud.com"), 443});
+    servers.append({QStringLiteral("relay.metered.ca"), 80});
+    return servers;
 }
 
 // ---------------------------------------------------------------------------

@@ -86,6 +86,31 @@ void run_app_settings_tests()
     CHECK_EQ(s.videoEnhancementAlgo(), QString("fsr1"));
     s.setStunServer("stun:example.org:3478");
     CHECK_EQ(s.stunServer(), QString("stun:example.org:3478"));
+
+    // The default when none is stored: an operator's own server when MW_DOMAIN
+    // names one, a public server otherwise — never the project's old domain,
+    // whose control is no longer certain (common/ProjectDomain.h).
+    {
+        AppSettings fresh;
+        fresh.m_FilePath = tmp.path() + "/stun-default.json";
+        const bool hadDomain = qEnvironmentVariableIsSet("MW_DOMAIN");
+        const QByteArray savedDomain = qgetenv("MW_DOMAIN");
+        qunsetenv("MW_DOMAIN");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        qputenv("MW_DOMAIN", "moonlightweb.top");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        qputenv("MW_DOMAIN", "dev.MoonlightWeb.top");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        qputenv("MW_DOMAIN", "example.org");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stream.example.org:3478"));
+        // A name that merely ends like the old domain is somebody else's.
+        qputenv("MW_DOMAIN", "notmoonlightweb.top");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stream.notmoonlightweb.top:3478"));
+        if (hadDomain)
+            qputenv("MW_DOMAIN", savedDomain);
+        else
+            qunsetenv("MW_DOMAIN");
+    }
     s.setTransportMode("webrtc-dc-udp");
     CHECK_EQ(s.transportMode(), QString("webrtc-dc-udp"));
 

@@ -68,24 +68,23 @@ RUN apt-get update \
 # `--version`, the update check and the User-Agent report.
 ARG MW_VERSION=""
 
-# The project's own service configuration, embedded at configure time exactly
-# as the .deb and the installers embed it (backend/CMakeLists.txt reads these
-# from the environment). Empty in a local build → the image never contacts our
-# infrastructure, which is the sane default for someone building their own.
+# The project's rendezvous domain, embedded at configure time exactly as the
+# .deb and the installers embed it (backend/CMakeLists.txt reads it from the
+# environment). The update-relay and metrics key is no longer embedded anywhere
+# (v0.4.1), so no image reports to our infrastructure.
 #
-# These are build-stage ARGs, and the runtime stage below starts from its own
+# This is a build-stage ARG, and the runtime stage below starts from its own
 # FROM: nothing here reaches the published image's layers or `docker history`.
-# The values do end up compiled into the binary, which is the same exposure the
-# distributed packages already have.
+# The value does end up compiled into the binary, which is the same exposure
+# the distributed packages already have.
 ARG MW_DOMAIN=""
-ARG MW_PDNS_TOKEN=""
 
 WORKDIR /src
 COPY backend backend
 COPY frontend frontend
 
-# The ARGs above are already in this shell's environment (Docker exports build
-# arguments to RUN), which is where CMake looks for them.
+# The ARG above is already in this shell's environment (Docker exports build
+# arguments to RUN), which is where CMake looks for it.
 RUN cmake -S backend -B /tmp/build -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DMW_VERSION="${MW_VERSION}" \

@@ -81,7 +81,7 @@ public:
     void setMediaEngine(IMediaEngine* engine) { m_Shim = engine; }
 
     /// Set the STUN server URL to use for ICE configuration.
-    /// Default: "stun:stream.{MW_DOMAIN}:3478" (AppSettings::stunServer).
+    /// Default: AppSettings::stunServer() — an operator's own server, else a public one.
     void setStunServer(const QString& url) { m_StunServerUrl = url; }
 
     /// WebRTC media UDP port for this stream slot. Each concurrent slot binds
@@ -183,12 +183,14 @@ private:
     /// If non-empty, wsUrl() returns this URL instead of constructing one.
     QString m_OverrideWsUrl;
 
-    /// STUN server URL for ICE configuration. Default: Google public STUN.
+    /// STUN server URL for ICE configuration.
     // Always overwritten by setStunServer() from Session before a stream
-    // starts; the literal is only what a construction that forgot would get,
-    // and it names our own server for the same reason every other default
-    // does. An instance under its own MW_DOMAIN is covered by the caller.
-    QString m_StunServerUrl = QStringLiteral("stun:stream.moonlightweb.top:3478");
+    // starts; the literal is only what a construction that forgot would get.
+    // It names a public server, as AppSettings::stunServer() does without an
+    // operator of its own: the project's old server is no longer asked
+    // (common/ProjectDomain.h). An instance under its own MW_DOMAIN is covered
+    // by the caller.
+    QString m_StunServerUrl = QStringLiteral("stun:stun.cloudflare.com:3478");
 
     /// Force ICE-TCP candidates (true = UDP + TCP, false = UDP only).
     bool m_ForceIceTcp = false;

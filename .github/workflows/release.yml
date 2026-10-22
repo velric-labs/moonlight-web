@@ -202,11 +202,11 @@ jobs:
 
       - name: Configure
         shell: pwsh
-        # Internet-Access config embedded at build time from repo secrets (no
-        # .env shipped). Empty when a secret is unset → LAN-only fallback.
+        # The rendezvous domain, embedded at build time from a repo secret (no
+        # .env shipped). The update-relay and metrics key (MW_PDNS_TOKEN) is no
+        # longer embedded: since v0.4.1 official builds ask GitHub directly.
         env:
           MW_DOMAIN: ${{ secrets.MW_DOMAIN }}
-          MW_PDNS_TOKEN: ${{ secrets.MW_PDNS_TOKEN }}
         run: |
           $args = @("-S","backend","-B","build","-G","Ninja","-DCMAKE_BUILD_TYPE=Release",
                     "-DMW_VERSION=${{ needs.setup.outputs.version }}",
@@ -543,11 +543,11 @@ jobs:
           extra: --base https://download.qt.io # official server (fallback mirrors serve incomplete XML)
 
       - name: Build
-        # Internet-Access config embedded at build time from repo secrets (no
-        # .env shipped). Empty when a secret is unset → LAN-only fallback.
+        # The rendezvous domain, embedded at build time from a repo secret (no
+        # .env shipped). The update-relay and metrics key (MW_PDNS_TOKEN) is no
+        # longer embedded: since v0.4.1 official builds ask GitHub directly.
         env:
           MW_DOMAIN: ${{ secrets.MW_DOMAIN }}
-          MW_PDNS_TOKEN: ${{ secrets.MW_PDNS_TOKEN }}
         run: |
           set -o pipefail
           cmake -S backend -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
@@ -751,11 +751,11 @@ jobs:
           extra: --base https://download.qt.io # official server (fallback mirrors serve incomplete XML)
 
       - name: Build
-        # Internet-Access config embedded at build time from repo secrets (no
-        # .env shipped). Empty when a secret is unset → LAN-only fallback.
+        # The rendezvous domain, embedded at build time from a repo secret (no
+        # .env shipped). The update-relay and metrics key (MW_PDNS_TOKEN) is no
+        # longer embedded: since v0.4.1 official builds ask GitHub directly.
         env:
           MW_DOMAIN: ${{ secrets.MW_DOMAIN }}
-          MW_PDNS_TOKEN: ${{ secrets.MW_PDNS_TOKEN }}
         run: |
           cmake -S backend -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
             -DMW_VERSION=${{ needs.setup.outputs.version }} \

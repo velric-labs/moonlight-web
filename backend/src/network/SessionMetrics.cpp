@@ -50,8 +50,9 @@ QString archToken()
 }
 
 // The census endpoint for this build, or empty to stay silent. Empty means the
-// machine has opted out, or the build has no MW_PDNS_TOKEN/MW_DOMAIN — the case
-// for anyone who compiled MoonlightWeb themselves.
+// machine has opted out, or there is no MW_PDNS_TOKEN/MW_DOMAIN — since v0.4.1
+// the case for every build, official ones included, unless its operator sets
+// both.
 //
 // Its own host rather than a path under updates.{domain}: the two answer
 // different questions, and this one must be switchable off — by us at the DNS

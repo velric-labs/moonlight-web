@@ -3,20 +3,22 @@
  * GPLv3 — see repository LICENSE.
  */
 /*
- * The Internet-access agreement is shown on four surfaces built from four
+ * The Internet-access agreement is shown on five surfaces built from five
  * different toolchains — an Inno Setup script, an Objective-C installer pane, a
- * POSIX shell one-liner and this catalogue — so it cannot live in one module the
- * way PrivacyNotice.js does for the statistics notice. It is copied by hand
- * instead, and it has already drifted: for months the wizard promised a DNS
- * record the installer no longer created, and the admin toggle described the
- * introduction server in the future tense after the line had shipped.
+ * POSIX shell one-liner, the server's own command line and this catalogue — so
+ * it cannot live in one module the way PrivacyNotice.js does for the statistics
+ * notice. It is copied by hand instead, and it has already drifted: for months
+ * the wizard promised a DNS record the installer no longer created, the admin
+ * toggle described the introduction server in the future tense after the line
+ * had shipped, and the command line went on saying so for longer still.
  *
  * What is recorded as consent is the text that was on screen, so a surface that
- * drifts records an agreement to something else. These tests pin the two
+ * drifts records an agreement to something else. These tests pin the three
  * relations that make the copies one text: the installer and the wizard say the
- * same words, and the wizard and the admin toggle — which open differently, one
+ * same words; the wizard and the admin toggle — which open differently, one
  * describing a capability and the other the act of enabling it — end on the same
- * sentences, the ones that name who learns what.
+ * sentences, the ones that name who learns what; and the command line records
+ * the wizard's English words.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -28,6 +30,7 @@ const REPO = join(HERE, '..', '..');
 const LANGS = ['en', 'fr', 'zh'];
 
 const ISS = readFileSync(join(REPO, 'backend', 'installer', 'moonlightweb.iss'), 'utf8');
+const MAIN = readFileSync(join(REPO, 'backend', 'src', 'main.cpp'), 'utf8');
 
 function locale(lang) {
     return JSON.parse(readFileSync(join(REPO, 'frontend', 'locales', `${lang}.json`), 'utf8'));
@@ -39,6 +42,15 @@ function customMessage(lang, key) {
     const line = ISS.split(/\r?\n/).find((l) => l.startsWith(`${lang}.${key}=`));
     if (!line) throw new Error(`missing CustomMessage ${lang}.${key}`);
     return line.slice(`${lang}.${key}=`.length);
+}
+
+// kCliInternetConsent, the agreement `--enable-internet` prints and records:
+// adjacent C string literals, joined the way the compiler joins them. The text
+// holds no escape sequence, so there is nothing to undo.
+function cliConsent() {
+    const m = MAIN.match(/kCliInternetConsent =([\s\S]*?");/);
+    if (!m) throw new Error('missing kCliInternetConsent in backend/src/main.cpp');
+    return [...m[1].matchAll(/"([^"]*)"/g)].map((s) => s[1]).join('');
 }
 
 // Longest suffix two strings have in common, trimmed to start on a word.
@@ -62,6 +74,13 @@ describe('Internet consent text', () => {
         expect(shared).toContain('STUN');
         expect(shared).toContain('80/443');
         expect(shared.length).toBeGreaterThan(120);
+    });
+
+    it('the command line records what the wizard says (en)', () => {
+        // `--enable-internet --yes` prints this and records it as the consent,
+        // and the Linux one-liner hands its Yes over to it. English only, like
+        // the rest of the command line.
+        expect(cliConsent()).toBe(locale('en').setup.internetBody);
     });
 
     it.each(LANGS)('no surface still promises a retired mechanism (%s)', (lang) => {

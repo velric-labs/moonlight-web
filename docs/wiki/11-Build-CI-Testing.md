@@ -29,7 +29,7 @@ Toolchain: CMake ≥ 3.21, Ninja, **Qt 6.11** (Core, Network, **WebSockets**), C
 `backend/CMakeLists.txt` also:
 
 - builds the native submodules statically via `add_subdirectory` (libdatachannel, miniupnpc, moonlight-common-c, qmdnsengine) — no manual per-dep step,
-- bakes `MW_VERSION` (overridden by the release tag in CI) and the **embedded env defaults** (`MW_DOMAIN`, `MW_PDNS_TOKEN` from CI secrets) as compile definitions,
+- bakes `MW_VERSION` (overridden by the release tag in CI) and the **embedded env default** `MW_DOMAIN` (from a CI secret) as compile definitions — `MW_PDNS_TOKEN` deliberately not, since 0.4.1,
 - can embed a fallback cert (`MW_CERT_PEM`/`MW_CERT_KEY` read from `.env` at build time),
 - installs the frontend next to the binary and generates the app icon resource (`app_icon.rc.in`).
 
