@@ -1,4 +1,4 @@
-# Watches the live entry page against the copy that was published.
+# Watches the live entry page against the files of the latest release tag.
 #
 # The bootstrap is the one piece of this project's code a browser ever loads
 # from a server. Everything else — the interface, the API, the video — comes
@@ -8,8 +8,8 @@
 # digests, and compared on a schedule by something that is not the server.
 #
 # This is that comparison. It fetches every bootstrap file from the rendezvous
-# host and from the reference copy on GitHub Pages and requires them to be
-# byte-identical.
+# host and requires it to be byte-identical to the same file at the latest v*
+# tag, read from this repository rather than from any web host.
 #
 # Be precise about what it buys, because it is easy to overstate:
 #
@@ -26,11 +26,17 @@
 # believed. What it always means is that the published record and the live site
 # disagree, and that is worth a human looking.
 #
-# Both sides follow TAGS, not main: Pages publishes on a release tag
-# (pages.yml), the production box is moved to that tag by deploy-prod.sh. So
-# the file list and the expected digests come from the latest release tag, and
-# a file that exists on main but is not yet released is, correctly, not
-# expected anywhere.
+# The live host follows TAGS, not main: deploy-prod.sh moves the production box
+# to a release tag. So the file list and the expected bytes come from the latest
+# v* tag, and a file that exists on main but is not yet released is, correctly,
+# not expected. The reference used to be the GitHub Pages copy at
+# app.moonlightweb.top, but that name sits under the same domain as the live
+# host, so whoever controls the domain could make the two agree. The repository
+# is the one copy outside it.
+#
+# Only v* tags count. A srv-* tag (a server-only correction between releases,
+# see pages.yml) that changes bootstrap/ makes this check fail until the next
+# v* tag carries the same files.
 name: bootstrap-watch
 
 on:
@@ -59,20 +65,19 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LIVE: https://stream.moonlightweb.top
-      REFERENCE: https://app.moonlightweb.top
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # the latest release tag is what the live page must match
 
-      - name: Compare the live entry page against the published copy
+      - name: Compare the live entry page against the latest release tag
         run: |
           set -uo pipefail
 
-          # The file list comes from the latest release tag rather than from
-          # either host: a host that decides what it is checked on is not being
-          # checked. CNAME is Pages plumbing and is not served by the other.
-          tag=$(git tag --list 'v*' 'srv-*' --sort=-creatordate | head -1)
+          # The file list and the expected bytes come from the latest v* tag
+          # rather than from any host: a host that decides what it is checked
+          # on is not being checked. CNAME is Pages plumbing, not served live.
+          tag=$(git tag --list 'v*' --sort=-creatordate | head -1)
           echo "release tag: $tag"
 
           # grep selects nothing when that tag carries no bootstrap/, exits 1,
@@ -85,7 +90,7 @@ jobs:
           files=$(git ls-tree -r --name-only "$tag" bootstrap \
                   | sed 's|^bootstrap/||' | grep -vx CNAME | sort) || true
           if [ -z "$files" ]; then
-            echo "::error::no bootstrap/ files at '${tag:-no release tag}' — the live entry page was NOT compared against anything. Both hosts follow release tags, so this clears once a tag carrying bootstrap/ is pushed."
+            echo "::error::no bootstrap/ files at '${tag:-no release tag}' — the live entry page was NOT compared against anything. The live host follows release tags, so this clears once a v* tag carrying bootstrap/ is pushed."
             exit 1
           fi
 
@@ -102,18 +107,21 @@ jobs:
             bad=0
             for f in $files; do
               live=$(fetch "$LIVE" "$f")
-              ref=$(fetch "$REFERENCE" "$f")
+              # The tagged bytes, straight from git: no host's answer decides
+              # the outcome. A failed read must not pass for an empty file.
+              ref=$(git show "$tag:bootstrap/$f" | sha256sum | cut -d' ' -f1) || ref=unreadable
               if [ "$live" = "$ref" ] && [ "$live" != unreachable ]; then
                 printf 'ok    %-20s %s\n' "$f" "${live:0:16}"
               else
-                printf 'DIFF  %-20s live=%s reference=%s\n' "$f" "${live:0:16}" "${ref:0:16}"
+                printf 'DIFF  %-20s live=%s %s=%s\n' "$f" "${live:0:16}" "$tag" "${ref:0:16}"
                 bad=1
               fi
             done
             # The root names the scripts were first published under are
             # permanent aliases of the v1 files on the live host (every
             # installed machine's application imports /tunnel.js by that
-            # name). Pages has no rewrite, so this is checked live-to-live.
+            # name). The tag has no copy under those names, so this is
+            # checked live-to-live.
             for f in boot.js tunnel.js pairing.js frame-guard.js; do
               alias=$(fetch "$LIVE" "$f")
               real=$(fetch "$LIVE" "v1/$f")
@@ -128,10 +136,10 @@ jobs:
           }
 
           # A deploy in flight is the ordinary explanation for a mismatch: the
-          # two hosts are updated by different pipelines, minutes apart. Give it
-          # time to settle before calling it anything else.
+          # box takes minutes to move to a new tag. Give it time to settle
+          # before calling it anything else.
           if compare; then
-            echo "the live entry page matches the published copy"
+            echo "the live entry page matches $tag"
             exit 0
           fi
 
@@ -143,32 +151,5 @@ jobs:
             exit 0
           fi
 
-          echo "::error::the live entry page does not match the published copy"
+          echo "::error::the live entry page does not match $tag"
           exit 1
-
-      # A file being identical to the reference is only reassuring if the
-      # reference is itself the released code. Pages deploys from the release
-      # tag, so a lasting difference here means Pages is stale — worth saying,
-      # not worth failing over, since the check above is the one that protects
-      # anybody.
-      - name: Check the reference copy is current
-        if: always()
-        run: |
-          set -uo pipefail
-          tag=$(git tag --list 'v*' 'srv-*' --sort=-creatordate | head -1)
-          files=$(git ls-tree -r --name-only "$tag" bootstrap \
-                  | sed 's|^bootstrap/||' | grep -vx CNAME | sort) || true
-
-          # An empty list is worse here than above: this loop would run zero
-          # times and the step would finish green, so a step that checked
-          # nothing would look like a step that found nothing wrong.
-          if [ -z "$files" ]; then
-            echo "::warning::no bootstrap/ files at '${tag:-no release tag}' — the reference copy was not checked either"
-            exit 0
-          fi
-
-          for f in $files; do
-            ref=$(curl -fsS --max-time 20 "$REFERENCE/$f" | sha256sum | cut -d' ' -f1)
-            tagged=$(git show "$tag:bootstrap/$f" | sha256sum | cut -d' ' -f1)
-            [ "$ref" = "$tagged" ] || echo "::warning::$f differs from $tag — Pages may not have deployed it yet"
-          done
