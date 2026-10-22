@@ -68,8 +68,8 @@ rpmsign --key-id="$KEY" \
 # ── DEP-11: the software-centre index ───────────────────────────────────────
 # Compiled from /usr/share/metainfo + the icon inside the package, so the
 # listing can never drift from what actually gets installed. --no-net keeps the
-# screenshot URLs as absolute links to moonlightweb.top instead of trying to
-# mirror the images into the repository.
+# screenshot URLs as absolute links instead of trying to mirror the images into
+# the repository.
 dpkg-deb -x "$POOL/$(basename "$DEB")" "$WORK/unpack"
 appstreamcli compose \
     --origin="$ORIGIN" \

@@ -569,7 +569,7 @@ rpm_depends=(
 common=(
     -s dir -n "$NAME" -v "$VERSION"
     --license GPL-3.0 --vendor MoonlightWeb
-    --url "https://moonlightweb.top/"
+    --url "https://github.com/linckosz/moonlight-web"
     --description "Stream your gaming PC to any device with a browser (self-contained, bundled Qt runtime)"
     --maintainer "MoonlightWeb"
     --after-install "$ROOT/postinst.sh"
