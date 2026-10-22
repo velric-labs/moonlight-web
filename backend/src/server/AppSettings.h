@@ -517,7 +517,9 @@ public:
     // STUN server URL for WebRTC ICE connectivity. Used by both the backend's
     // libdatachannel PeerConnection and forwarded to the browser for its
     // RTCPeerConnection. Default when the key is absent: "stun:stream.{MW_DOMAIN}:3478"
-    // — our own server, the one the Internet-access consent names.
+    // for an operator's own domain, else "stun:stun.cloudflare.com:3478". A stored
+    // URL under the project's old domain (moonlightweb.top) is ignored in favour of
+    // that default (common/ProjectDomain.h).
 
     QString stunServer() const;
     void setStunServer(const QString& url);

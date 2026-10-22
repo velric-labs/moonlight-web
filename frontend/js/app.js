@@ -123,7 +123,6 @@ import {
     markHandoffKeySpent,
 } from './util/homeScreenKeys.js';
 import { SecuringOverlay } from './ui/SecuringOverlay.js';
-import { ourStunHost } from './api/IceServers.js';
 import { probeUdp } from './api/UdpProbe.js';
 import { InstanceMenu } from './ui/InstanceMenu.js';
 import {
@@ -1004,9 +1003,7 @@ export const MoonlightApp = {
             const action = this._canReachAdmin()
                 ? `<a href="#" id="banner-enable-internet" class="consent-highlight">${label}</a>`
                 : label;
-            const sentence = escapeHtml(
-                t('hosts.internetDisabledHint', { domain: ourStunHost(), link: MARK }),
-            );
+            const sentence = escapeHtml(t('hosts.internetDisabledHint', { link: MARK }));
             return this._buildBanner(sentence.replace(MARK, action));
         }
 

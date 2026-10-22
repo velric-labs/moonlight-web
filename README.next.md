@@ -14,7 +14,7 @@ Install it on the gaming PC — it captures and encodes that machine **itself**,
 Nothing to install on the client either: just a URL, from your LAN or from anywhere.\
 Under **20 ms** glass‑to‑glass over Wi‑Fi on a LAN, ~**25 ms** over the Internet.
 
-**🌐 Website: [moonlightweb.top](https://moonlightweb.top/)** — screenshots, [install guides](https://moonlightweb.top/guides/windows.html) & [FAQ](https://moonlightweb.top/faq.html)\
+**📦 Download: [latest release on GitHub](https://github.com/linckosz/moonlight-web/releases/latest)** — the one place to get it, with the [install steps](#install) below\
 **💬 Community: [Discord](https://discord.gg/wfbesPx4UB)** — questions, help and new‑release announcements
 
 [![Discord](https://img.shields.io/badge/Discord-join%20the%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/wfbesPx4UB)
@@ -199,7 +199,7 @@ Each player row gives **a link and a 6‑digit PIN**. Send them separately: the 
 
 ## Install
 
-Grab the installer from the **[latest release](https://github.com/linckosz/moonlight-web/releases/latest)** or **[moonlightweb.top](https://moonlightweb.top/#download)**, which picks the right file. Guides with screenshots: [Windows](https://moonlightweb.top/guides/windows.html) · [macOS](https://moonlightweb.top/guides/macos.html) · [Linux](https://moonlightweb.top/guides/linux.html).
+Grab the installer from the **[latest release](https://github.com/linckosz/moonlight-web/releases/latest)** on GitHub, and only from there.
 
 > ✅ **Nothing else to install.** Install it **on the gaming PC** — that is the whole setup.
 
@@ -225,11 +225,18 @@ Sunshine is no longer installed (since September 2026); an existing Sunshine is 
 
 **`moonlightweb-<version>-macos-arm64.pkg`** — installs to `/Applications` with an optional **start at login**.
 
-The `.pkg` is not notarized, so a downloaded copy is blocked by Gatekeeper. Either command installs it without the prompt:
+The `.pkg` is not notarized, so a downloaded copy is blocked by Gatekeeper. Either way below installs it from GitHub without the prompt — with Homebrew:
 
 ```sh
 brew install --cask linckosz/tap/moonlightweb
-curl -fsSL https://moonlightweb.top/install.sh | bash
+```
+
+or from Terminal, the latest release:
+
+```sh
+v=$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/linckosz/moonlight-web/releases/latest | sed 's|.*/v||')
+curl -fLO "https://github.com/linckosz/moonlight-web/releases/download/v$v/moonlightweb-$v-macos-arm64.pkg"
+sudo installer -pkg "moonlightweb-$v-macos-arm64.pkg" -target /
 ```
 
 For a downloaded file on macOS 15+: *System Settings → Privacy & Security → **Open Anyway***, or `xattr -dr com.apple.quarantine ~/Downloads/moonlightweb-*.pkg`.
@@ -239,15 +246,9 @@ For a downloaded file on macOS 15+: *System Settings → Privacy & Security → 
 
 ### Linux (x64)
 
-**One command, updates included:**
+Download the package for your distribution from the **[latest release](https://github.com/linckosz/moonlight-web/releases/latest)** and install it. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
 
-```sh
-curl -fsSL https://moonlightweb.top/install.sh | bash
-```
-
-It adds the signed **APT** or **DNF** repository, so MoonlightWeb updates with the system and appears in GNOME Software, KDE Discover and App Center. Arch uses [`moonlightweb-bin`](https://aur.archlinux.org/packages/moonlightweb-bin) from the AUR. Manual setup: [Linux guide](https://moonlightweb.top/guides/linux.html#one-line-install).
-
-Or install a package directly. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
+The `.deb` and `.rpm` also add the signed **APT** or **DNF** repository, so MoonlightWeb updates with the system and appears in GNOME Software, KDE Discover and App Center. Arch uses [`moonlightweb-bin`](https://aur.archlinux.org/packages/moonlightweb-bin) from the AUR.
 
 | Distro family | Package | Command |
 |---|---|---|
@@ -357,9 +358,9 @@ Nothing is published: **no DNS record, no certificate, ports 80/443 stay closed*
 
 **Remote access.** Your PC keeps one outgoing connection to an introduction server and is reached at `https://stream.moonlightweb.top/「id」` (shown on the admin page and in the tray). Visitors still need the access PIN.
 
-The browser loads a few kilobytes of entry page, opens WebRTC straight to your machine, checks its identity key, then loads the interface and API over that connection. Video never touches the server. The entry page is [published byte for byte](https://app.moonlightweb.top) and [checked on a schedule](.github/workflows/bootstrap-watch.yml).
+The browser loads a few kilobytes of entry page, opens WebRTC straight to your machine, checks its identity key, then loads the interface and API over that connection. Video never touches the server. The entry page's source is [`bootstrap/`](bootstrap/) in this repository, and the live copy is [checked on a schedule](.github/workflows/bootstrap-watch.yml).
 
-**Installs from v0.2.4 or earlier** keep their `「id」.moonlightweb.top` sub‑domain and forwards **until February 2027**, as the admin page notes.
+**Installs from v0.2.4 or earlier** still forward router ports 80, 443 and 47999 for their `「id」.moonlightweb.top` sub‑domain, a name the project can no longer guarantee: **update them by hand**, and delete any old `「id」` bookmark. Since v0.3 the sub‑domain is ignored and no web port is opened.
 
 <div align="center">
 

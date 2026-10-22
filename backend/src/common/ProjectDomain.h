@@ -35,11 +35,40 @@
  */
 namespace mw::projectdomain {
 
-/// moonlightweb.top, or any name under it.
+/// moonlightweb.top, or any name under it — written with or without the
+/// trailing dot of a fully qualified name ("stream.moonlightweb.top.").
 inline bool isOld(const QString& domain)
 {
-    const QString d = domain.trimmed().toLower();
+    QString d = domain.trimmed().toLower();
+    while (d.endsWith(QLatin1Char('.')))
+        d.chop(1);
     return d == QLatin1String("moonlightweb.top") || d.endsWith(QLatin1String(".moonlightweb.top"));
+}
+
+/// The host a STUN or TURN URL names, in any form the settings may hold:
+/// "stun:host:3478", "turn:host:3478?transport=udp", "host:3478", "host" or
+/// "stun:[2001:db8::1]:3478".
+inline QString stunUrlHost(const QString& url)
+{
+    QString s = url.trimmed();
+    const int colon = s.indexOf(QLatin1Char(':'));
+    if (colon > 0) {
+        const QString scheme = s.left(colon).toLower();
+        if (scheme == QLatin1String("stun") || scheme == QLatin1String("stuns") ||
+            scheme == QLatin1String("turn") || scheme == QLatin1String("turns"))
+            s.remove(0, colon + 1);
+    }
+    while (s.startsWith(QLatin1Char('/')))
+        s.remove(0, 1);
+    const int query = s.indexOf(QLatin1Char('?'));
+    if (query >= 0) s.truncate(query);
+    if (s.startsWith(QLatin1Char('['))) {
+        const int close = s.indexOf(QLatin1Char(']'));
+        return close > 0 ? s.mid(1, close - 1) : s.mid(1);
+    }
+    const int port = s.lastIndexOf(QLatin1Char(':'));
+    if (port >= 0) s.truncate(port);
+    return s;
 }
 
 /// "stream.<MW_DOMAIN>" when MW_DOMAIN names an operator's own domain; empty

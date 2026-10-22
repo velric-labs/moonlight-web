@@ -811,7 +811,11 @@ QString AppSettings::stunServer() const
 {
     QJsonObject obj = readAll();
     const QString configured = obj.value("stun_server").toString();
-    if (!configured.isEmpty()) return configured;
+    // A server under the project's old domain is never used, not even one
+    // named here by hand: the default below takes its place.
+    if (!configured.isEmpty() &&
+        !mw::projectdomain::isOld(mw::projectdomain::stunUrlHost(configured)))
+        return configured;
 
     // An operator's own introduction server answers STUN on 3478 as well, so
     // the browser is told about the operator the consent text already names.
