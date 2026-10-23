@@ -117,6 +117,9 @@ InternetAccessManager::~InternetAccessManager()
 
 void InternetAccessManager::start()
 {
+    // Every caller is already gated on Internet Access, which is never on while
+    // it is switched off (Edition.h); this keeps it shut if one ever is not.
+    if (mw::edition::internetAccessOff()) return;
     if (m_Active) {
         qInfo() << "[InternetAccess] Already active";
         return;
@@ -552,10 +555,12 @@ bool InternetAccessManager::detectPublicIp()
 
         if (!host.isEmpty()) {
             // Prepend the configured STUN server as first priority — unless the
-            // default chain already leads with it, which it does whenever
-            // stun_server is unset and both fall back to our own server. Two
-            // entries for one host would cost a second timeout before the
-            // fallback when that host is the one that is down.
+            // default chain already holds it, which it does whenever stun_server
+            // is unset: both then fall back to the operator's own server, which
+            // the chain leads with, or to Cloudflare's, which it lists after
+            // Google's (common/ProjectDomain.h). Two entries for one host would
+            // cost a second timeout before the fallback when that host is the
+            // one that is down.
             bool already = false;
             for (const StunClient::StunServer& s : servers) {
                 if (s.host.compare(host, Qt::CaseInsensitive) == 0 && s.port == port) {

@@ -19,6 +19,7 @@
 #include "AddressRace.h"
 #include "common/Edition.h"
 #include "common/Logger.h"
+#include "network/UpdateApplyRules.h"
 
 #include <QFile>
 #include <QJsonArray>
@@ -38,7 +39,7 @@ namespace {
 
 // The public MoonlightWeb repository whose Releases carry the installers built
 // by .github/workflows/release.yml. Kept as a single source of truth here.
-const char* kReleasesApi = "https://api.github.com/repos/linckosz/moonlight-web/releases/latest";
+const char* kReleasesApi = "https://api.github.com/repos/velric-labs/moonlight-web/releases/latest";
 
 // arm64 vs x64 — CI names installers with these tokens. QSysInfo reports e.g.
 // "arm64" / "x86_64" for the running process.
@@ -63,30 +64,12 @@ QString platformToken()
 #endif
 }
 
-// Whether a URL out of a release payload points at GitHub's own hosts.
-//
-// This is what keeps the relay from being able to escalate. It answers with a
-// release payload, and SelfUpdater downloads and RUNS what download_url names —
-// so an unconstrained relay could hand every host an arbitrary installer (it
-// supplies the digest too, so digest verification would not catch it). Pinning
-// the host means the worst a compromised relay can do is lie about *which*
-// GitHub release exists, exactly like GitHub itself could.
-bool isGitHubUrl(const QString& url)
-{
-    if (url.isEmpty()) return false;
-    const QUrl u(url);
-    if (u.scheme() != QLatin1String("https")) return false;
-    const QString host = u.host().toLower();
-    return host == QLatin1String("github.com") || host.endsWith(QLatin1String(".github.com")) ||
-           host == QLatin1String("objects.githubusercontent.com") ||
-           host.endsWith(QLatin1String(".githubusercontent.com"));
-}
-
 // The relay endpoint for this build, or empty to check GitHub directly.
 //
-// Empty means: the user opted out (MW_NO_TELEMETRY), or the build has no
-// MW_PDNS_TOKEN/MW_DOMAIN — the case for anyone who compiled MoonlightWeb
-// themselves, who therefore never phones our infrastructure at all.
+// Empty means: the user opted out (MW_NO_TELEMETRY), or there is no
+// MW_PDNS_TOKEN/MW_DOMAIN — since v0.4.1 the case for every build, official
+// ones included, unless its operator sets both; such a build never phones our
+// infrastructure at all.
 QString buildRelayUrl(const QString& version)
 {
     if (!qEnvironmentVariableIsEmpty("MW_NO_TELEMETRY")) return {};
@@ -285,12 +268,22 @@ bool UpdateChecker::applyResult(const QJsonObject& release, bool viaRelay)
     // No matching asset for this platform → send the user to the release page.
     if (downloadUrl.isEmpty()) downloadUrl = releaseUrl;
 
+    // This is what keeps the relay from being able to escalate. It answers with
+    // a release payload, and SelfUpdater downloads and RUNS what download_url
+    // names — so an unconstrained relay could hand every host an arbitrary
+    // installer (it supplies the digest too, so digest verification would not
+    // catch it). Any GitHub address will not do either: that includes somebody
+    // else's repository. Pinned to this project's own releases, the worst a
+    // compromised relay can do is lie about *which* release exists, exactly
+    // like GitHub itself could.
+    //
     // Nothing is written to m_result before this check: a payload that would
-    // send the updater off GitHub is discarded whole, not partially applied.
-    if (viaRelay && !isGitHubUrl(downloadUrl)) {
-        Logger::warning(
-            QStringLiteral("[Update] relay pointed the download off GitHub (%1) — ignoring it")
-                .arg(downloadUrl));
+    // send the updater anywhere else is discarded whole, not partially applied.
+    if (viaRelay &&
+        !UpdateApplyRules::isReleaseUrl(downloadUrl, QString::fromLatin1(kReleasesApi))) {
+        Logger::warning(QStringLiteral("[Update] relay pointed the download outside this "
+                                       "project's releases (%1) — ignoring it")
+                            .arg(downloadUrl));
         return false;
     }
 

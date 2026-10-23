@@ -67,7 +67,7 @@ const pageId = (p) => p.src.replace(/\.html$/, '');
    The Discord button and the Buy Me a Coffee logo stay in assets/chrome.js:
    neither is a link a search engine needs. */
 const DISCORD_INVITE = 'https://discord.gg/wfbesPx4UB';
-const GITHUB = 'https://github.com/linckosz/moonlight-web';
+const GITHUB = 'https://github.com/velric-labs/moonlight-web';
 
 function navLinks(lang, t, current, sep) {
   const items = [

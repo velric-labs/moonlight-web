@@ -75,7 +75,7 @@
         {
           "@type": "Question",
           "name": "Is MoonlightWeb the same project as moonlight-web-stream?",
-          "acceptedAnswer": {"@type": "Answer", "text": "No. They are two separate open-source projects with close names. moonlight-web-stream (github.com/MrCreativ3001/moonlight-web-stream) is a web client for a Sunshine host. MoonlightWeb (moonlightweb.top, github.com/linckosz/moonlight-web) has its own capture and encode engine: installed on the gaming PC, it streams that PC by itself, with no Sunshine needed. It can also pair with Sunshine, Apollo, Wolf and MultiSeat hosts."}
+          "acceptedAnswer": {"@type": "Answer", "text": "No. They are two separate open-source projects with close names. moonlight-web-stream (github.com/MrCreativ3001/moonlight-web-stream) is a web client for a Sunshine host. MoonlightWeb (moonlightweb.top, github.com/velric-labs/moonlight-web) has its own capture and encode engine: installed on the gaming PC, it streams that PC by itself, with no Sunshine needed. It can also pair with Sunshine, Apollo, Wolf and MultiSeat hosts."}
         },
         {
           "@type": "Question",
@@ -135,7 +135,7 @@
         {
           "@type": "Question",
           "name": "Why does my system warn me about the installer?",
-          "acceptedAnswer": {"@type": "Answer", "text": "The installers are not signed with a paid certificate, and Windows SmartScreen and macOS Gatekeeper flag anything they do not recognise. The code is public, so you can read exactly what you are installing. On Windows: click More info, then Run anyway. On macOS the warning only applies to browser downloads, so `brew install --cask linckosz/tap/moonlightweb` or `curl -fsSL https://moonlightweb.top/install.sh | bash` avoids it entirely; otherwise allow the downloaded file in System Settings, Privacy & Security, Open Anyway."}
+          "acceptedAnswer": {"@type": "Answer", "text": "The installers are not signed with a paid certificate, and Windows SmartScreen and macOS Gatekeeper flag anything they do not recognise. The code is public, so you can read exactly what you are installing. On Windows: click More info, then Run anyway. On macOS the warning only applies to browser downloads, so `brew install --cask velric-labs/tap/moonlightweb` or `curl -fsSL https://moonlightweb.top/install.sh | bash` avoids it entirely; otherwise allow the downloaded file in System Settings, Privacy & Security, Open Anyway."}
         }
       ]
     }
@@ -146,14 +146,14 @@
 <body>
 
 <!-- Header written by scripts/website/build-site.mjs -->
-<header id="site-header"><div class="wrap"><a class="brand" href="/de/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/de/" data-nav="home">Start</a><a href="/de/guides/" data-nav="guides">Anleitungen</a><a href="/de/faq.html" data-nav="faq" aria-current="page">FAQ</a><a href="/de/contact.html" data-nav="contact">Kontakt</a><a href="/de/server-access/" data-nav="connect">Verbinden</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/faq.html">English</option><option value="fr" data-href="/fr/faq.html">Français</option><option value="de" data-href="/de/faq.html" selected>Deutsch</option><option value="zh" data-href="/zh/faq.html" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
+<header id="site-header"><div class="wrap"><a class="brand" href="/de/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/de/" data-nav="home">Start</a><a href="/de/guides/" data-nav="guides">Anleitungen</a><a href="/de/faq.html" data-nav="faq" aria-current="page">FAQ</a><a href="/de/contact.html" data-nav="contact">Kontakt</a><a href="/de/server-access/" data-nav="connect">Verbinden</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/faq.html">English</option><option value="fr" data-href="/fr/faq.html">Français</option><option value="de" data-href="/de/faq.html" selected>Deutsch</option><option value="zh" data-href="/zh/faq.html" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
 
 <main>
 <div class="wrap">
   <nav class="crumbs" aria-label="Breadcrumb" data-i18n-html="crumbs"><a href="/de/">Startseite</a> / FAQ</nav>
   <span class="kicker" data-i18n="kicker">FAQ</span>
   <h1 data-i18n="h1">Game-Streaming im Browser, erklärt</h1>
-  <p class="lead" data-i18n-html="lead">Alles, was Leute über <a href="/de/">MoonlightWeb</a> wissen wollen — Latenz, Codecs, Geräte, Spielen übers Internet, Sicherheit. <strong>Deine Antwort ist nicht dabei?</strong> Frag auf <a href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener">GitHub</a>.</p>
+  <p class="lead" data-i18n-html="lead">Alles, was Leute über <a href="/de/">MoonlightWeb</a> wissen wollen — Latenz, Codecs, Geräte, Spielen übers Internet, Sicherheit. <strong>Deine Antwort ist nicht dabei?</strong> Frag auf <a href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener">GitHub</a>.</p>
 
   <h2 data-i18n="h2.basics">Grundlagen</h2>
   <details open>
@@ -174,7 +174,7 @@
   </details>
   <details>
     <summary data-i18n="q17.s">Ist MoonlightWeb dasselbe Projekt wie moonlight-web-stream?</summary>
-    <div class="a" data-i18n-html="q17.a"><p>Nein. Es sind zwei getrennte Open-Source-Projekte mit ähnlichen Namen. <a href="https://github.com/MrCreativ3001/moonlight-web-stream" target="_blank" rel="noopener">moonlight-web-stream</a> ist ein Web-Client für einen Sunshine-Host. MoonlightWeb (diese Seite, <a href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener">linckosz/moonlight-web</a>) hat eine eigene Aufnahme- und Encoding-Engine: Auf dem Gaming-PC installiert, streamt es diesen PC selbst, ganz ohne Sunshine. Es kann sich außerdem <a href="/de/sunshine-web-client.html">mit Sunshine koppeln</a>, ebenso mit Apollo, Wolf und MultiSeat.</p></div>
+    <div class="a" data-i18n-html="q17.a"><p>Nein. Es sind zwei getrennte Open-Source-Projekte mit ähnlichen Namen. <a href="https://github.com/MrCreativ3001/moonlight-web-stream" target="_blank" rel="noopener">moonlight-web-stream</a> ist ein Web-Client für einen Sunshine-Host. MoonlightWeb (diese Seite, <a href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener">velric-labs/moonlight-web</a>) hat eine eigene Aufnahme- und Encoding-Engine: Auf dem Gaming-PC installiert, streamt es diesen PC selbst, ganz ohne Sunshine. Es kann sich außerdem <a href="/de/sunshine-web-client.html">mit Sunshine koppeln</a>, ebenso mit Apollo, Wolf und MultiSeat.</p></div>
   </details>
 
   <h2 data-i18n="h2.devices">Geräte</h2>
@@ -224,7 +224,7 @@
   </details>
   <details>
     <summary data-i18n="q15.s">Warum warnt mein System vor dem Installer?</summary>
-    <div class="a" data-i18n-html="q15.a"><p>Weil die Installer nicht mit einem kostenpflichtigen Zertifikat signiert sind — SmartScreen unter Windows und Gatekeeper unter macOS schlagen bei allem an, was sie nicht kennen, ob signiert oder nicht, ob sicher oder nicht. Der Code ist öffentlich, du kannst also genau nachlesen, was du installierst.</p><p>Unter <strong>Windows</strong>: Klick auf <em>Weitere Informationen</em> und dann auf <em>Trotzdem ausführen</em>.</p><p>Unter <strong>macOS</strong> umgehst du die Warnung ganz — sie betrifft nur Downloads über den Browser:</p><pre><code>brew install --cask linckosz/tap/moonlightweb</code></pre><pre><code>curl -fsSL https://moonlightweb.top/install.sh | bash</code></pre><p>Oder behalte die heruntergeladene Datei und erlaube sie unter <strong>Systemeinstellungen → Datenschutz &amp; Sicherheit → Dennoch öffnen</strong>. Details in der <a href="/de/guides/macos.html">macOS-Anleitung</a>.</p></div>
+    <div class="a" data-i18n-html="q15.a"><p>Weil die Installer nicht mit einem kostenpflichtigen Zertifikat signiert sind — SmartScreen unter Windows und Gatekeeper unter macOS schlagen bei allem an, was sie nicht kennen, ob signiert oder nicht, ob sicher oder nicht. Der Code ist öffentlich, du kannst also genau nachlesen, was du installierst.</p><p>Unter <strong>Windows</strong>: Klick auf <em>Weitere Informationen</em> und dann auf <em>Trotzdem ausführen</em>.</p><p>Unter <strong>macOS</strong> umgehst du die Warnung ganz — sie betrifft nur Downloads über den Browser:</p><pre><code>brew install --cask velric-labs/tap/moonlightweb</code></pre><pre><code>curl -fsSL https://moonlightweb.top/install.sh | bash</code></pre><p>Oder behalte die heruntergeladene Datei und erlaube sie unter <strong>Systemeinstellungen → Datenschutz &amp; Sicherheit → Dennoch öffnen</strong>. Details in der <a href="/de/guides/macos.html">macOS-Anleitung</a>.</p></div>
   </details>
   <details>
     <summary data-i18n="q16.s">Welche Daten sammelt MoonlightWeb?</summary>
@@ -241,7 +241,7 @@
 </main>
 
 <!-- Footer written by scripts/website/build-site.mjs -->
-<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/de/">Start</a> · <a href="/de/guides/">Anleitungen</a> · <a href="/de/faq.html">FAQ</a> · <a href="/de/contact.html">Kontakt</a> · <a href="/de/server-access/">Verbinden</a> · <a href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Kaffee</span></a></span><span class="foot-play">Spielen auf: <a href="/de/play/chromebook.html">Chromebook</a> · <a href="/de/play/iphone-ipad.html">iPhone und iPad</a> · <a href="/de/play/tv.html">TV</a> · <a href="/de/sunshine-web-client.html">Web-Client für Sunshine</a> · <a href="/de/browser-game-streaming.html">Warum ein Browser-Client</a></span></div></footer>
+<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/de/">Start</a> · <a href="/de/guides/">Anleitungen</a> · <a href="/de/faq.html">FAQ</a> · <a href="/de/contact.html">Kontakt</a> · <a href="/de/server-access/">Verbinden</a> · <a href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Kaffee</span></a></span><span class="foot-play">Spielen auf: <a href="/de/play/chromebook.html">Chromebook</a> · <a href="/de/play/iphone-ipad.html">iPhone und iPad</a> · <a href="/de/play/tv.html">TV</a> · <a href="/de/sunshine-web-client.html">Web-Client für Sunshine</a> · <a href="/de/browser-game-streaming.html">Warum ein Browser-Client</a></span></div></footer>
 
 <script src="/assets/chrome.js?v={{(fileStat `/assets/chrome.js`).ModTime.Unix}}"></script>
 </body>

@@ -3,10 +3,10 @@
 #
 #  @MW_VERSION@ / @MW_SHA256@ are substituted by the `homebrew` job in
 #  .github/workflows/release.yml, which then pushes the result to
-#  linckosz/homebrew-tap as Casks/moonlightweb.rb. Nothing here is used at
+#  velric-labs/homebrew-tap as Casks/moonlightweb.rb. Nothing here is used at
 #  build time; edit this file, not the copy in the tap.
 #
-#      brew install --cask linckosz/tap/moonlightweb
+#      brew install --cask velric-labs/tap/moonlightweb
 #
 #  Why the tap exists: the .pkg is not notarized (that needs a paid Apple
 #  Developer ID — there is no free tier and no OSS programme), so a
@@ -23,12 +23,12 @@ cask "moonlightweb" do
   version "@MW_VERSION@"
   sha256 "@MW_SHA256@"
 
-  # `verified:` is required whenever the download host differs from homepage.
-  url "https://github.com/linckosz/moonlight-web/releases/download/v#{version}/moonlightweb-#{version}-macos-arm64.pkg",
-      verified: "github.com/linckosz/moonlight-web/"
+  # `verified:` is only needed when the download host differs from the
+  # homepage's; both are github.com. Add it back if the homepage moves.
+  url "https://github.com/velric-labs/moonlight-web/releases/download/v#{version}/moonlightweb-#{version}-macos-arm64.pkg"
   name "MoonlightWeb"
   desc "Stream your gaming PC to any device with a browser"
-  homepage "https://moonlightweb.top/"
+  homepage "https://github.com/velric-labs/moonlight-web"
 
   livecheck do
     url :url

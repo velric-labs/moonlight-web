@@ -158,15 +158,17 @@ effective immediately.
 body — makes the client retry against `api.github.com` immediately, and the
 relay itself serves a stale cached release rather than an error whenever GitHub
 is down. Users can opt out (`update_relay_enabled: false` or `MW_NO_TELEMETRY`),
-and self-built binaries never use it: they carry no `MW_PDNS_TOKEN`.
+and since 0.4.1 no build uses it unless its operator sets `MW_PDNS_TOKEN`:
+official builds stopped carrying one.
 
 **The relay cannot ship you a binary.** The client only accepts a relayed
-payload whose `download_url` is on GitHub's own hosts, and falls back to
-`api.github.com` otherwise (`UpdateChecker::isGitHubUrl`). This matters because
-the self-updater *runs* what that URL names, and the payload also carries the
-digest it is verified against — so without the host pin, whoever controls this
-VM would control what every instance installs. With it, a compromised relay can
-at most lie about which GitHub release exists.
+payload whose `download_url` is one of the project repository's own release
+pages on `github.com`, and falls back to `api.github.com` otherwise
+(`UpdateApplyRules::isReleaseUrl`; up to 0.4.0 any GitHub host passed). This
+matters because the self-updater *runs* what that URL names, and the payload
+also carries the digest it is verified against — so without that pin, whoever
+controls this VM would control what every instance installs. With it, a
+compromised relay can at most lie about which release of the project exists.
 
 **Turning the census on** (the relay works without it, counting nothing):
 
@@ -263,16 +265,17 @@ matched against an allowlist or collapsed into a bucket before it goes anywhere
 strings into the dashboard nor invent a million distinct rows.
 
 **Who reports.** 0.3.0 reports only once its owner has said yes to the
-first-launch question. 0.3.1+ reports by default and says so in **Settings →
-Privacy**, where one switch stops both censuses on the spot.
+first-launch question. 0.3.1 to 0.4.0 report by default and say so in
+**Settings → Privacy**, where one switch stops both censuses on the spot. Since
+0.4.1 only an instance whose operator sets `MW_PDNS_TOKEN` reports.
 
 **It is never load-bearing.** The endpoint answers `204` whether or not it
 counts anything, a failed report is dropped without a retry, and no part of a
 stream depends on the answer. Users opt out with `session_metrics_enabled:
-false` or `MW_NO_TELEMETRY`; self-built binaries never reach it (no
-`MW_PDNS_TOKEN`). On this side, deleting the `metrics` A record switches the
-census off fleet-wide without touching the update path — which is exactly why it
-is its own host rather than another path on `updates.`.
+false` or `MW_NO_TELEMETRY`; since 0.4.1 no build reaches it unless its
+operator sets `MW_PDNS_TOKEN`. On this side, deleting the `metrics` A record
+switches the census off fleet-wide without touching the update path — which is
+exactly why it is its own host rather than another path on `updates.`.
 
 **Turning it on** — four steps, and the **order matters**: publish the name
 before Caddy is asked to certify it, or it will order a certificate for a name
@@ -403,7 +406,7 @@ IP=$(grep ^MW_PUBLIC_IP= ~/moonlight-web/deploy/powerdns/.env | cut -d= -f2 | tr
 echo "domain=[$D] ip=[$IP]"
 
 # 1. the dev clone, with a .env that pins compose to the DEV project
-git clone https://github.com/linckosz/moonlight-web ~/moonlight-web-dev
+git clone https://github.com/velric-labs/moonlight-web ~/moonlight-web-dev
 cd ~/moonlight-web-dev/deploy/powerdns
 printf 'COMPOSE_FILE=docker-compose.dev.yml\nCOMPOSE_PROJECT_NAME=mw-dev\nMW_DOMAIN=%s\nMW_RDV_OWNER_SECRET=%s\n' \
   "$D" "$(openssl rand -hex 32)" > .env

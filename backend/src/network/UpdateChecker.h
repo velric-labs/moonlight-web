@@ -40,17 +40,19 @@ class QNetworkAccessManager;
  *
  * Where the release comes from
  * ----------------------------
- * Official builds ask the project's own relay (https://updates.{MW_DOMAIN}),
- * which mirrors the very same GitHub release JSON from a shared cache and, in
- * doing so, records which version asked — the only source of data behind
- * "who is still running 0.2.x?" when planning a migration. See
- * deploy/powerdns/mw-proxy/update.go.
+ * Up to v0.4.0 official builds asked the project's own relay
+ * (https://updates.{MW_DOMAIN}), which mirrors the very same GitHub release
+ * JSON from a shared cache and, in doing so, records which version asked — the
+ * only source of data behind "who is still running 0.2.x?" when planning a
+ * migration. See deploy/powerdns/mw-proxy/update.go. Since v0.4.1 official
+ * builds carry no MW_PDNS_TOKEN, so only an instance whose operator sets one
+ * still asks a relay; every other build asks GitHub directly.
  *
  * The relay is never load-bearing: any failure falls straight back to
  * api.github.com, and it is skipped entirely when this machine has opted out
  * (settings key "update_relay_enabled", the switch on the Settings page, or
- * MW_NO_TELEMETRY) or when the build carries no MW_PDNS_TOKEN — i.e. self-built
- * binaries always go to GitHub. Checking for updates works identically in every
+ * MW_NO_TELEMETRY) or when no MW_PDNS_TOKEN is set — every build since v0.4.1,
+ * unless its operator sets one. Checking for updates works identically in every
  * one of those cases; only the counting stops. Nothing here identifies anyone,
  * so it is not gated on a consent — see AppSettings.h.
  */

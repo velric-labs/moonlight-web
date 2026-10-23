@@ -112,6 +112,9 @@ void registerSystemRoutes(HttpServer& server, AppSettings& appSettings, AuthMana
     server.router()->get("/api/internet/status", [&, rendezvousStatus](const HttpRequest& req) {
         QJsonObject obj = internetAccess.statusJson();
         obj[QStringLiteral("lan_only")] = mw::edition::lanOnly();
+        // What the admin page and the setup wizard read to show Internet Access
+        // as unavailable rather than offer a switch that can only fail.
+        obj[QStringLiteral("internet_access_off")] = mw::edition::internetAccessOff();
         const QJsonObject rdv = rendezvousStatus ? rendezvousStatus() : QJsonObject();
         if (rendezvousStatus) obj[QStringLiteral("rendezvous")] = rdv;
         // The admin UI runs on localhost and needs the full payload. Remote
@@ -165,8 +168,8 @@ void registerSystemRoutes(HttpServer& server, AppSettings& appSettings, AuthMana
                 respond(HttpResponse::error(403, "Only available from localhost"));
                 return;
             }
-            if (mw::edition::lanOnly()) {
-                respond(HttpResponse::error(409, mw::edition::lanOnlyRefusal()));
+            if (mw::edition::internetAccessOff()) {
+                respond(HttpResponse::error(409, mw::edition::internetAccessOffRefusal()));
                 return;
             }
             QPointer<RouterPortAllocator> ports = internetAccess.routerPorts();
@@ -219,10 +222,11 @@ void registerSystemRoutes(HttpServer& server, AppSettings& appSettings, AuthMana
         QJsonDocument doc = QJsonDocument::fromJson(req.body);
         QJsonObject body = doc.object();
 
-        // A LAN-only instance refuses before anything is written: no consent
-        // recorded, no switch thrown, nothing started. Turning it off still works.
-        if (mw::edition::lanOnly() && body.value("internet_access_enabled").toBool(false))
-            return HttpResponse::error(409, mw::edition::lanOnlyRefusal());
+        // While Internet Access is switched off this refuses before anything is
+        // written: no consent recorded, no switch thrown, nothing started.
+        // Turning it off still works.
+        if (mw::edition::internetAccessOff() && body.value("internet_access_enabled").toBool(false))
+            return HttpResponse::error(409, mw::edition::internetAccessOffRefusal());
 
         // unique_id is this instance's local identity and is immutable once
         // assigned. It is published nowhere — accepting it here only lets a
@@ -478,6 +482,8 @@ void registerSystemRoutes(HttpServer& server, AppSettings& appSettings, AuthMana
 
         QJsonObject inet;
         inet["enabled"] = appSettings.internetAccessEnabled();
+        // Switched off (Edition.h): the wizard skips its Internet page.
+        inet["off"] = mw::edition::internetAccessOff();
         inet["active"] = internetAccess.isActive();
         inet["domain"] = internetAccess.domain();
         inet["phase"] = internetAccess.statusJson().value("phase");
@@ -619,11 +625,11 @@ void registerSystemRoutes(HttpServer& server, AppSettings& appSettings, AuthMana
                 }
 
                 // 3) Internet Access — flip the flag and bring the tunnel up.
-                //    Refused on a LAN-only instance, with the reason for the wizard.
-                if (internetAuth && mw::edition::lanOnly()) {
+                //    Refused while it is switched off, with the reason for the wizard.
+                if (internetAuth && mw::edition::internetAccessOff()) {
                     Provisioning::setStepStatus("arecord", "failed");
                     result["internet_active"] = false;
-                    result["internet_error"] = mw::edition::lanOnlyRefusal();
+                    result["internet_error"] = mw::edition::internetAccessOffRefusal();
                 } else if (internetAuth) {
                     Provisioning::setStepStatus("arecord", "running");
                     // Legal traceability: the wizard sends the exact agreement text shown.
@@ -1046,7 +1052,8 @@ void registerSystemRoutes(HttpServer& server, AppSettings& appSettings, AuthMana
         // Localhost only: it reaches out to STUN servers and to this host's own
         // public address, and must not be triggerable by a remote session.
         if (!req.isLocal) return HttpResponse::error(403, "Only available from localhost");
-        if (mw::edition::lanOnly()) return HttpResponse::error(409, mw::edition::lanOnlyRefusal());
+        if (mw::edition::internetAccessOff())
+            return HttpResponse::error(409, mw::edition::internetAccessOffRefusal());
 
         internetAccess.forceRefresh();
         return HttpResponse::json(internetAccess.statusJson());

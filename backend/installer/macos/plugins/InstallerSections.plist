@@ -6,6 +6,13 @@
   extension), NOT by its InstallerSectionTitle. The sidebar label shown for it
   comes from InstallerSectionTitle in the bundle's Info.plist ("Internet").
   This file sits alongside the .bundle in the productbuild plugins directory.
+
+  MoonlightWebInstaller.bundle is left out of the order while Internet Access is
+  switched off (backend/src/common/Edition.h): its pane is the Internet-link
+  opt-in. Without it the postinstall takes its documented defaults, Internet
+  off and start at login on, exactly as an `installer` CLI run does; the app's
+  setup wizard still offers the login item. Put it back after PackageSelection
+  once a release has trusted servers to offer Internet Access again.
 -->
 <plist version="1.0">
 <dict>
@@ -16,7 +23,6 @@
         <string>License</string>
         <string>Target</string>
         <string>PackageSelection</string>
-        <string>MoonlightWebInstaller.bundle</string>
         <string>Install</string>
         <string>FinishUp</string>
     </array>

@@ -521,14 +521,18 @@ if(DEFINED ENV{MW_CERT_KEY} AND NOT "$ENV{MW_CERT_KEY}" STREQUAL "")
     message(STATUS "MW_CERT_KEY embedded at build time")
 endif()
 
-# Optional build-time embedding of the project's own service config
+# Optional build-time embedding of the project's rendezvous domain
 # (CI/production), so the distributed binary carries it without shipping a .env
-# file. MW_PDNS_TOKEN is no longer a DNS credential: it is the shared API key
-# for the update relay and the metrics endpoint, and its presence is how an
-# official build is told apart from one someone compiled themselves.
-# Values come from CI secrets (env vars at configure time); skipped when unset.
-# A runtime env var / local .env still wins — see applyEmbeddedEnvDefaults().
-foreach(_mw_var MW_DOMAIN MW_PDNS_TOKEN)
+# file. The value comes from a CI secret (env var at configure time); skipped
+# when unset. A runtime env var / local .env still wins — see
+# applyEmbeddedEnvDefaults().
+#
+# MW_PDNS_TOKEN is deliberately not embedded any more (v0.4.1). It was the
+# shared key for the update relay and the metrics endpoint on the project's old
+# server, whose control is no longer certain: without it every build checks
+# GitHub directly and reports no session counts. Set in the runtime
+# environment, it still turns both on, for whoever runs those services.
+foreach(_mw_var MW_DOMAIN)
     if(DEFINED ENV{${_mw_var}} AND NOT "$ENV{${_mw_var}}" STREQUAL "")
         target_compile_definitions(mw-server PRIVATE ${_mw_var}="$ENV{${_mw_var}}")
         message(STATUS "${_mw_var} embedded at build time")

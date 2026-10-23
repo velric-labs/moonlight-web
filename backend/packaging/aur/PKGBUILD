@@ -24,7 +24,7 @@ pkgver=@MW_VERSION@
 pkgrel=1
 pkgdesc="Stream your gaming PC to any device with a browser"
 arch=('x86_64')
-url="https://moonlightweb.top/"
+url="https://github.com/velric-labs/moonlight-web"
 license=('GPL-3.0-only')
 
 # Qt and OpenSSL are bundled inside /opt/moonlightweb (linuxdeploy rewrote the
@@ -50,7 +50,7 @@ install=moonlightweb-bin.install
 # broken plugin loading before.
 options=('!strip' '!debug')
 
-source=("moonlightweb-${pkgver}.deb::https://github.com/linckosz/moonlight-web/releases/download/v${pkgver}/moonlightweb-${pkgver}-linux-x64.deb")
+source=("moonlightweb-${pkgver}.deb::https://github.com/velric-labs/moonlight-web/releases/download/v${pkgver}/moonlightweb-${pkgver}-linux-x64.deb")
 sha256sums=('@MW_SHA256@')
 
 package() {

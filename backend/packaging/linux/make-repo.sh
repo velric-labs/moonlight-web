@@ -68,8 +68,8 @@ rpmsign --key-id="$KEY" \
 # ── DEP-11: the software-centre index ───────────────────────────────────────
 # Compiled from /usr/share/metainfo + the icon inside the package, so the
 # listing can never drift from what actually gets installed. --no-net keeps the
-# screenshot URLs as absolute links to moonlightweb.top instead of trying to
-# mirror the images into the repository.
+# screenshot URLs as absolute links instead of trying to mirror the images into
+# the repository.
 dpkg-deb -x "$POOL/$(basename "$DEB")" "$WORK/unpack"
 appstreamcli compose \
     --origin="$ORIGIN" \
@@ -209,7 +209,7 @@ sudo dnf install moonlightweb</code></pre>
 <h2>Everything else</h2>
 <p>Arch and derivatives: <code>moonlightweb-bin</code> on the AUR. Immutable
    distros (SteamOS, Bazzite): the AppImage from the
-   <a href="https://github.com/linckosz/moonlight-web/releases">releases page</a>.
+   <a href="https://github.com/velric-labs/moonlight-web/releases">releases page</a>.
    Or run <code>curl -fsSL https://moonlightweb.top/install.sh | bash</code>,
    which picks the right one for you.</p>
 EOF

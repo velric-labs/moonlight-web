@@ -69,7 +69,7 @@
   "softwareRequirements": "MoonlightWeb installed on the gaming PC (it captures and encodes that PC itself; no Sunshine needed); any modern browser as client (Chrome, Edge, Safari, Firefox)",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "license": "https://www.gnu.org/licenses/gpl-3.0.html",
-  "downloadUrl": "https://github.com/linckosz/moonlight-web/releases",
+  "downloadUrl": "https://github.com/velric-labs/moonlight-web/releases",
   "author": { "@type": "Person", "name": "Bruno Martin" },
   "featureList": [
     "Game streaming in the browser, no client install",
@@ -510,7 +510,7 @@
 <body>
 
 <!-- Header written by scripts/website/build-site.mjs -->
-<header id="site-header"><div class="wrap"><a class="brand" href="/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/" data-nav="home" aria-current="page">Home</a><a href="/guides/" data-nav="guides">Guides</a><a href="/faq.html" data-nav="faq">FAQ</a><a href="/contact.html" data-nav="contact">Contact</a><a href="/server-access/" data-nav="connect">Connect</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/" selected>English</option><option value="fr" data-href="/fr/">Français</option><option value="de" data-href="/de/">Deutsch</option><option value="zh" data-href="/zh/" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
+<header id="site-header"><div class="wrap"><a class="brand" href="/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/" data-nav="home" aria-current="page">Home</a><a href="/guides/" data-nav="guides">Guides</a><a href="/faq.html" data-nav="faq">FAQ</a><a href="/contact.html" data-nav="contact">Contact</a><a href="/server-access/" data-nav="connect">Connect</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/" selected>English</option><option value="fr" data-href="/fr/">Français</option><option value="de" data-href="/de/">Deutsch</option><option value="zh" data-href="/zh/" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
 
 <div id="scroll">
 <main>
@@ -762,7 +762,7 @@
       <p data-i18n="dl.p">One download, on the gaming PC only. Every other device just opens a browser.</p>
     </div>
     <div class="dl-main reveal">
-      <a class="btn btn-primary" id="dl-btn" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="main">⬇ Download MoonlightWeb</a>
+      <a class="btn btn-primary" id="dl-btn" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="main">⬇ Download MoonlightWeb</a>
       <span class="dl-meta" id="dl-meta">Latest release on GitHub</span>
       <!-- Linux only: which package the button resolved to, and where the others are. -->
       <span class="dl-meta" id="dl-hint" style="margin-top:-.55rem; min-height:0"></span>
@@ -773,8 +773,8 @@
         <h3>Windows</h3>
         <p data-i18n="dl.win">Guided installer — everything set up in the wizard, Internet access included.</p>
         <div class="fmt">
-          <a data-asset="win-x64" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="win-x64">x64 .exe</a>
-          <a data-asset="win-arm64" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="win-arm64">arm64 .exe</a>
+          <a data-asset="win-x64" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="win-x64">x64 .exe</a>
+          <a data-asset="win-arm64" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="win-arm64">arm64 .exe</a>
         </div>
         <p class="dl-guide"><a href="guides/windows.html" data-i18n="dl.windows.guide" data-umami-event="guide" data-umami-event-loc="dl-windows">Step-by-step install guide →</a></p>
       </div>
@@ -783,7 +783,7 @@
         <h3>macOS</h3>
         <p data-i18n="dl.mac">Apple Silicon installer with a guided setup wizard.</p>
         <div class="fmt">
-          <a data-asset="mac" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="mac">arm64 .pkg</a>
+          <a data-asset="mac" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="mac">arm64 .pkg</a>
         </div>
         <p class="dl-guide"><a href="guides/macos.html" data-i18n="dl.macos.guide" data-umami-event="guide" data-umami-event-loc="dl-macos">Step-by-step install guide →</a></p>
         <!-- Unnotarized .pkg: a browser download trips Gatekeeper, and both of
@@ -791,7 +791,7 @@
              first — it is the one that also brings `brew upgrade` along. -->
         <div class="cmds">
           <p class="cmd-lbl" data-i18n="dl.mac.brew">Homebrew</p>
-          <button class="cmd" type="button" data-copy="brew install --cask linckosz/tap/moonlightweb" data-umami-event="copy-command" data-umami-event-cmd="brew"><span>brew install --cask linckosz/tap/moonlightweb</span><svg class="ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><svg class="ico-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
+          <button class="cmd" type="button" data-copy="brew install --cask velric-labs/tap/moonlightweb" data-umami-event="copy-command" data-umami-event-cmd="brew"><span>brew install --cask velric-labs/tap/moonlightweb</span><svg class="ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><svg class="ico-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
           <p class="cmd-lbl" data-i18n="dl.mac.curl">Terminal</p>
           <button class="cmd" type="button" data-copy="curl -fsSL https://moonlightweb.top/install.sh | bash" data-umami-event="copy-command" data-umami-event-cmd="mac-curl"><span>curl -fsSL https://moonlightweb.top/install.sh | bash</span><svg class="ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><svg class="ico-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
         </div>
@@ -801,9 +801,9 @@
         <h3>Linux</h3>
         <p data-i18n="dl.linux">.deb for Debian &amp; Ubuntu, .rpm for Fedora &amp; openSUSE, the AUR for Arch, AppImage for SteamOS &amp; the rest.</p>
         <div class="fmt">
-          <a data-asset="linux-deb" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="linux-deb">.deb</a>
-          <a data-asset="linux-rpm" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="linux-rpm">.rpm</a>
-          <a data-asset="linux-appimage" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="linux-appimage">.AppImage</a>
+          <a data-asset="linux-deb" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="linux-deb">.deb</a>
+          <a data-asset="linux-rpm" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="linux-rpm">.rpm</a>
+          <a data-asset="linux-appimage" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-asset="linux-appimage">.AppImage</a>
         </div>
         <p class="dl-guide"><a href="guides/linux.html" data-i18n="dl.linux.guide" data-umami-event="guide" data-umami-event-loc="dl-linux">Step-by-step install guide →</a></p>
         <!-- A downloaded package never updates itself. The signed apt/dnf
@@ -818,7 +818,7 @@
           <p class="cmd-lbl" data-i18n="dl.linux.aur">Arch · Manjaro (AUR)</p>
           <button class="cmd" type="button" data-copy="paru -S moonlightweb-bin" data-umami-event="copy-command" data-umami-event-cmd="linux-aur"><span>paru -S moonlightweb-bin</span><svg class="ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><svg class="ico-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
           <p class="cmd-lbl" data-i18n="dl.linux.docker">Docker</p>
-          <button class="cmd" type="button" data-copy="docker pull ghcr.io/linckosz/moonlight-web" data-umami-event="copy-command" data-umami-event-cmd="linux-docker"><span>docker pull ghcr.io/linckosz/moonlight-web</span><svg class="ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><svg class="ico-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
+          <button class="cmd" type="button" data-copy="docker pull ghcr.io/velric-labs/moonlight-web" data-umami-event="copy-command" data-umami-event-cmd="linux-docker"><span>docker pull ghcr.io/velric-labs/moonlight-web</span><svg class="ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg><svg class="ico-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
           <!-- The repository has to be registered before `apt install moonlightweb`
                works, and that recipe is four lines — too much for a one-line .cmd
                button, so it stays in the guide. -->
@@ -828,7 +828,7 @@
     </div>
     <p class="muted reveal" style="text-align:center; font-size:.88rem; margin-top:1.6rem" data-i18n-html="dl.foot">
       Playing from a <a href="play/iphone-ipad.html">phone or tablet</a>, a <a href="play/chromebook.html">Chromebook</a> or a <a href="play/tv.html">TV</a>? Nothing to download — the client is your browser.
-      <a href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="all-releases">All releases →</a>
+      <a href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="all-releases">All releases →</a>
     </p>
   </div>
 </section>
@@ -842,7 +842,7 @@
       <p data-i18n="cta.p">GPL‑3.0, self‑hosted, no accounts, no subscriptions. Built by a long‑time contributor to the
         Moonlight ecosystem. An optional tip — the price of a coffee — helps keep the shared DNS domain online. ☕</p>
       <div class="cta">
-        <a class="btn btn-primary" href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" data-i18n="cta.btn1" data-umami-event="github" data-umami-event-loc="cta">⭐ Star on GitHub</a>
+        <a class="btn btn-primary" href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" data-i18n="cta.btn1" data-umami-event="github" data-umami-event-loc="cta">⭐ Star on GitHub</a>
         <a class="btn btn-yellow" href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="cta"><span data-bmc-full-logo></span><span class="sr-only" data-i18n="cta.btn2">Buy me a coffee</span></a>
       </div>
     </div>
@@ -851,7 +851,7 @@
 </main>
 
 <!-- Footer written by scripts/website/build-site.mjs -->
-<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/">Home</a> · <a href="/guides/">Guides</a> · <a href="/faq.html">FAQ</a> · <a href="/contact.html">Contact</a> · <a href="/server-access/">Connect</a> · <a href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Coffee</span></a></span><span class="foot-play">Play from: <a href="/play/chromebook.html">Chromebook</a> · <a href="/play/iphone-ipad.html">iPhone &amp; iPad</a> · <a href="/play/tv.html">TV</a> · <a href="/sunshine-web-client.html">Sunshine web client</a> · <a href="/browser-game-streaming.html">Why a browser client</a></span></div></footer>
+<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/">Home</a> · <a href="/guides/">Guides</a> · <a href="/faq.html">FAQ</a> · <a href="/contact.html">Contact</a> · <a href="/server-access/">Connect</a> · <a href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Coffee</span></a></span><span class="foot-play">Play from: <a href="/play/chromebook.html">Chromebook</a> · <a href="/play/iphone-ipad.html">iPhone &amp; iPad</a> · <a href="/play/tv.html">TV</a> · <a href="/sunshine-web-client.html">Sunshine web client</a> · <a href="/browser-game-streaming.html">Why a browser client</a></span></div></footer>
 </div><!-- /#scroll -->
 
 <div id="lb"><img alt=""></div>
@@ -884,7 +884,7 @@
   // Button + meta text follow the page language (<html lang>). Any failure
   // (offline, rate-limit, no release yet) keeps the /releases fallback links.
   (async () => {
-    const REPO = 'linckosz/moonlight-web';
+    const REPO = 'velric-labs/moonlight-web';
     const btn = document.getElementById('dl-btn'), meta = document.getElementById('dl-meta'),
           hint = document.getElementById('dl-hint');
     const ua = navigator.userAgent;

@@ -11,7 +11,7 @@
   "need.3": "N’importe quel appareil avec un navigateur moderne comme client : Chrome, Edge, Safari ou Firefox. Pas d’application, pas de téléchargement, pas de compte.",
   "steps.h": "Installation, étape par étape",
   "step1.h": "Téléchargez l’installateur",
-  "step1.p": "Récupérez l’installateur Windows depuis la <a href=\"https://github.com/linckosz/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">page des versions</a> — <code>x64 .exe</code> pour la plupart des PC, <code>arm64 .exe</code> pour les machines Windows-on-ARM.",
+  "step1.p": "Récupérez l’installateur Windows depuis la <a href=\"https://github.com/velric-labs/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">page des versions</a> — <code>x64 .exe</code> pour la plupart des PC, <code>arm64 .exe</code> pour les machines Windows-on-ARM.",
   "step2.h": "Lancez l’installateur guidé — sur le PC gamer",
   "step2.p1": "L’assistant vous guide de bout en bout : il installe en silence les pilotes de manette et de volant, demande si vous autorisez le lien Internet (sessions de streaming à distance, désactivé par défaut) et propose MoonlightWeb Virtual Display, un écran à lui que ce PC peut diffuser. Rien d’autre — aucun second serveur de streaming à configurer.",
   "step2.p2": "À la fin, une icône apparaît dans la barre des tâches — le serveur tourne. C’est toute l’installation.",

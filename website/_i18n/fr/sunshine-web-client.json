@@ -6,7 +6,7 @@
   "h1": "Un client web pour votre hôte Sunshine",
   "lead": "Vous streamez déjà avec Sunshine ? MoonlightWeb s’appaire avec lui comme le fait Moonlight — et vous permet d’y jouer dans un navigateur web, <strong>sur n’importe quel appareil, sans rien à installer côté client.</strong>",
   "how.h": "Comment cela fonctionne",
-  "how.p": "Le serveur MoonlightWeb tourne sur une machine de votre réseau : le PC gamer lui-même, un autre PC, ou un serveur Linux ou un NAS avec <a href=\"https://github.com/linckosz/moonlight-web/blob/main/docker/README.md\" target=\"_blank\" rel=\"noopener\">Docker</a>. Il embarque <code>moonlight-common-c</code>, la bibliothèque au cœur de Moonlight, dialogue avec votre hôte en protocole GameStream, et relaie vidéo, audio et entrées vers le navigateur via WebRTC.",
+  "how.p": "Le serveur MoonlightWeb tourne sur une machine de votre réseau : le PC gamer lui-même, un autre PC, ou un serveur Linux ou un NAS avec <a href=\"https://github.com/velric-labs/moonlight-web/blob/main/docker/README.md\" target=\"_blank\" rel=\"noopener\">Docker</a>. Il embarque <code>moonlight-common-c</code>, la bibliothèque au cœur de Moonlight, dialogue avec votre hôte en protocole GameStream, et relaie vidéo, audio et entrées vers le navigateur via WebRTC.",
   "hosts.h": "Les hôtes avec lesquels il s’appaire",
   "hosts.1": "<strong>Sunshine et Apollo</strong> — découverts sur votre réseau via mDNS, ou ajoutés par IP ; appairés une seule fois : MoonlightWeb affiche un PIN que vous saisissez dans la page web de l’hôte.",
   "hosts.2": "<strong>Wolf</strong> (Games on Whales) — appairé automatiquement : MoonlightWeb transmet le PIN à Wolf par son API.",

@@ -8,14 +8,13 @@
 # directory that already holds a .deb and a .rpm — a local make-packages.sh
 # build, or artifacts downloaded by hand. A directory needs no gh at all.
 #
-# What the user will eventually type is
-#
-#     curl -fsSL https://moonlightweb.top/install.sh | bash
-#
-# and on Linux that reaches for two things this repository only produces at
-# release time: the signed apt/dnf repository on packages.moonlightweb.top
-# (the `linux-repo` job is gated on refs/tags, and deploy-packages.sh ships
-# its output by hand) and, for the fallback, a published release. So there is
+# What a user types is the one-line installer piped into bash, and on Linux
+# that reaches for things this repository only produces at release time: a
+# published release and, when MW_PACKAGES names one, the signed apt/dnf
+# repository (the `linux-repo` job is gated on refs/tags). Since 0.4.1 the
+# official build registers no repository by default — its host was
+# packages.moonlightweb.top, the project's old domain — so the repository path
+# runs only with MW_PACKAGES, which is what this harness sets. So there is
 # nothing to install from until the moment it is too late to find out that the
 # installer is broken.
 #
@@ -52,7 +51,7 @@ set -euo pipefail
 
 RUN_ID=${1:-latest}
 IMAGE=${2:-debian:12}
-REPO_SLUG=${MW_REPO:-linckosz/moonlight-web}
+REPO_SLUG=${MW_REPO:-velric-labs/moonlight-web}
 
 ROOT=$(cd "$(dirname "$0")/../../.." && pwd)
 WORK=${MW_TRY_DIR:-${TMPDIR:-/tmp}/moonlightweb-try}

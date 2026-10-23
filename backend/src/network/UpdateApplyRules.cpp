@@ -21,6 +21,8 @@
 
 #include <QJsonArray>
 #include <QRegularExpression>
+#include <QStringList>
+#include <QUrl>
 
 namespace UpdateApplyRules {
 
@@ -98,6 +100,33 @@ QString matches(const Installer& expected, qint64 size, const QString& sha256Hex
         return QStringLiteral("the staged installer's sha256 (%1) is not %2's (%3)")
             .arg(sha256Hex.left(12), expected.name, expected.sha256.left(12));
     return {};
+}
+
+bool isReleaseUrl(const QString& url, const QString& releasesApi)
+{
+    // The repository the API URL names: /repos/<owner>/<repo>/releases/...
+    const QStringList api =
+        QUrl(releasesApi).path(QUrl::FullyDecoded).split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    if (api.size() < 4 || api.at(0) != QLatin1String("repos") ||
+        api.at(3) != QLatin1String("releases"))
+        return false;
+
+    const QUrl u(url, QUrl::StrictMode);
+    if (!u.isValid() || u.scheme() != QLatin1String("https") ||
+        u.host().compare(QLatin1String("github.com"), Qt::CaseInsensitive) != 0 ||
+        !u.userInfo().isEmpty() || u.port() != -1)
+        return false;
+
+    // /<owner>/<repo>/releases/<download|tag>/..., decoded first, and with no
+    // "." or ".." segment that GitHub would resolve into another repository.
+    const QStringList path = u.path(QUrl::FullyDecoded).split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    if (path.size() < 4) return false;
+    for (const QString& segment : path)
+        if (segment == QLatin1String(".") || segment == QLatin1String("..")) return false;
+    // GitHub matches owner and repository names case-insensitively.
+    return path.at(0).compare(api.at(1), Qt::CaseInsensitive) == 0 &&
+           path.at(1).compare(api.at(2), Qt::CaseInsensitive) == 0 &&
+           path.at(2) == QLatin1String("releases");
 }
 
 } // namespace UpdateApplyRules

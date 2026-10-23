@@ -66,4 +66,23 @@ describe('probeUdp', () => {
         vi.stubGlobal('RTCPeerConnection', undefined);
         await expect(probeUdp(1500)).resolves.toBe(null);
     });
+
+    it('asks no STUN server under moonlightweb.top, even from a page served there', async () => {
+        // The page an internet visitor reads came through the introduction server.
+        vi.stubGlobal('location', { hostname: 'stream.moonlightweb.top' });
+        let asked = [];
+        const Base = fakePc([srflx]);
+        vi.stubGlobal(
+            'RTCPeerConnection',
+            class extends Base {
+                constructor(config) {
+                    super();
+                    asked = config.iceServers.flatMap((s) => [].concat(s.urls));
+                }
+            },
+        );
+        await expect(probeUdp(1500)).resolves.toBe(true);
+        expect(asked.length).toBeGreaterThan(0);
+        expect(asked.join(' ')).not.toMatch(/moonlightweb\.top/);
+    });
 });

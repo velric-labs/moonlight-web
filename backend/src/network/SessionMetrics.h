@@ -53,9 +53,10 @@ class QNetworkAccessManager;
  * -------------------
  * Reporting stops the moment the machine opts out (settings key
  * "session_metrics_enabled", the switch on the Settings page, or
- * MW_NO_TELEMETRY in the environment), and it never starts at all unless the
- * build carries MW_DOMAIN + MW_PDNS_TOKEN — so a self-built binary never phones
- * our infrastructure whatever its settings say.
+ * MW_NO_TELEMETRY in the environment), and it never starts at all unless both
+ * MW_DOMAIN and MW_PDNS_TOKEN are set — which since v0.4.1 no build does on its
+ * own, official ones included: without an operator's token nothing phones our
+ * infrastructure, whatever its settings say.
  *
  * No consent is asked for it, because there is none to ask for: nothing above
  * identifies a person, so what is owed is the disclosure on the Settings page

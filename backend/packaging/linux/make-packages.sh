@@ -144,17 +144,20 @@ bash "$(dirname "$0")/make-metainfo.sh" "$APP" "$NAME" "$VERSION" \
     "$PKG/usr/share/metainfo/$APPID.metainfo.xml"
 
 # In-app updates without a password (SelfUpdater's "repo" path): a root helper
-# that upgrades the package from its signed repository, the polkit action that
-# lets the active session run it without one, and the repository's public key
-# for the postinst to configure that repository. Production only — the DEV
-# edition is not in the repository and never updates itself.
+# that upgrades the package from its signed repository, and the polkit action
+# that lets the active session run it without one. Since 0.4.1 the postinst
+# adds no repository and takes away one on the old domain (see there), so the
+# two only serve a repository of an operator's own (install.sh's MW_PACKAGES).
+# The old repository's key no longer ships, so an upgrade deletes the copy an
+# older package left in share/keys: the project cannot vouch for that key any
+# more, and moonlightweb-repo.{gpg,asc} stay here only as the record of it. A
+# new repository comes with a new key. Production only — the DEV edition is
+# not in a repository and never updates itself.
 if [ "$EDITION" = prod ]; then
     install -m 0755 "$(dirname "$0")/moonlightweb-update" "$PKG$PREFIX/bin/moonlightweb-update"
-    mkdir -p "$PKG/usr/share/polkit-1/actions" "$PKG$PREFIX/share/keys"
+    mkdir -p "$PKG/usr/share/polkit-1/actions"
     install -m 0644 "$(dirname "$0")/top.moonlightweb.update.policy" \
         "$PKG/usr/share/polkit-1/actions/top.moonlightweb.update.policy"
-    install -m 0644 "$(dirname "$0")/moonlightweb-repo.gpg" "$PKG$PREFIX/share/keys/moonlightweb.gpg"
-    install -m 0644 "$(dirname "$0")/moonlightweb-repo.asc" "$PKG$PREFIX/share/keys/moonlightweb.asc"
 fi
 
 # Post-install / pre-remove hooks shared by both package formats.
@@ -240,16 +243,48 @@ if [ -n "$MEDIA_RANGE" ]; then
     fi
 fi
 
-# The package's own signed repository, added when none is configured — the way
-# Chrome's package adds Google's. A .deb or .rpm installed by hand then gets its
-# updates the same way as one installed from the repository: through the
-# system's updater, and through the app itself without a password (the update
-# helper only upgrades from here). Written exactly as install.sh writes it, so
-# either one finds the other's files in place. The key comes from the package,
-# not the network. Empty in the DEV edition, which is not in the repository.
+# The package's own signed repository. Up to 0.4.0 it was added when none was
+# configured — the way Chrome's package adds Google's — so a .deb or .rpm
+# installed by hand got its updates through the system's updater and through
+# the app without a password. Its host is the project's old domain
+# (packages.moonlightweb.top), which the project no longer controls, so since
+# 0.4.1 a fresh install adds none, and every install and upgrade takes away one
+# that names that host, with the key file beside it, whichever of this postinst,
+# install.sh or the old site's instructions wrote it. The app then updates
+# itself from GitHub (SelfUpdater's pkexec or root path). A repository on any
+# other host is an operator's own (install.sh's MW_PACKAGES) and stays. So does
+# the copy of the key that dnf or zypper imported into the RPM database: a
+# scriptlet cannot run rpm while rpm holds its lock, so the command is printed
+# instead. Before the headless upgrade's early exit below, so that path cleans
+# up too. OLD_REPO_HOST is empty in the DEV edition, which never had one.
+OLD_REPO_HOST=packages.moonlightweb.top
+if [ -n "$OLD_REPO_HOST" ]; then
+    if grep -qsiF "$OLD_REPO_HOST" /etc/apt/sources.list.d/moonlightweb.sources; then
+        rm -f /etc/apt/sources.list.d/moonlightweb.sources /etc/apt/keyrings/moonlightweb.gpg
+        echo "MoonlightWeb: removed the old package repository ($OLD_REPO_HOST) and its key."
+    fi
+    old_rpm_repo=""
+    for f in /etc/yum.repos.d/moonlightweb.repo /etc/zypp/repos.d/moonlightweb.repo; do
+        if grep -qsiF "$OLD_REPO_HOST" "$f"; then
+            rm -f "$f"
+            old_rpm_repo=1
+        fi
+    done
+    if [ -n "$old_rpm_repo" ]; then
+        rm -f /etc/pki/rpm-gpg/RPM-GPG-KEY-moonlightweb
+        echo "MoonlightWeb: removed the old package repository ($OLD_REPO_HOST) and its key file."
+        echo "MoonlightWeb: if dnf or zypper imported that key, remove it too:"
+        echo "    sudo rpm -e gpg-pubkey-8d42deef-6a6c41e6"
+    fi
+fi
+
+# Set REPO_URL again, with a new key shipped in REPO_KEYS, once the repository
+# has a new home. Written exactly as install.sh writes it, so either one finds
+# the other's files in place. The key comes from the package, not the network.
+# REPO_KEYS is empty in the DEV edition, which is not in the repository.
 REPO_KEYS=/opt/moonlightweb/share/keys
-REPO_URL=https://packages.moonlightweb.top
-if [ -n "$REPO_KEYS" ] && [ -d "$REPO_KEYS" ]; then
+REPO_URL=
+if [ -n "$REPO_KEYS" ] && [ -n "$REPO_URL" ] && [ -d "$REPO_KEYS" ]; then
     if command -v apt-get >/dev/null 2>&1 && [ -d /etc/apt/sources.list.d ]; then
         if [ ! -s /etc/apt/sources.list.d/moonlightweb.sources ]; then
             install -d -m 0755 /etc/apt/keyrings
@@ -436,8 +471,9 @@ if [ "${1:-}" != "upgrade" ] && [ "${1:-0}" != "1" ]; then
         done
     fi
 
-    # The repository postinst added (production only; see there). Left on an
-    # upgrade, which needs it; taken away with the package.
+    # A repository the postinst or install.sh added (production only; see the
+    # postinst, which also takes away one on the old domain). Left on an
+    # upgrade; taken away with the package.
     REPO_KEYS=/opt/moonlightweb/share/keys
     if [ -n "$REPO_KEYS" ]; then
         rm -f /etc/apt/sources.list.d/moonlightweb.sources /etc/apt/keyrings/moonlightweb.gpg \
@@ -467,6 +503,7 @@ if [ "$EDITION" = dev ]; then
            -e "s|443/tcp 80/tcp 48550:48573/udp|$PORTS|g" \
            -e "s|^\( *\)MEDIA_RANGE=.*|\1MEDIA_RANGE=|" \
            -e "s|^\( *\)REPO_KEYS=.*|\1REPO_KEYS=|" \
+           -e "s|^\( *\)OLD_REPO_HOST=.*|\1OLD_REPO_HOST=|" \
            -e "s|moonlightweb --|$NAME --|g" \
            -e "s|enable --now moonlightweb\$|enable --now $NAME|" \
            -e "s|the moonlightweb service|the $NAME service|" \
@@ -552,7 +589,7 @@ rpm_depends=(
 common=(
     -s dir -n "$NAME" -v "$VERSION"
     --license GPL-3.0 --vendor MoonlightWeb
-    --url "https://moonlightweb.top/"
+    --url "https://github.com/velric-labs/moonlight-web"
     --description "Stream your gaming PC to any device with a browser (self-contained, bundled Qt runtime)"
     --maintainer "MoonlightWeb"
     --after-install "$ROOT/postinst.sh"

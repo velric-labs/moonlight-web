@@ -11,7 +11,7 @@
   "need.3": "任何带现代浏览器的设备都可作客户端：Chrome、Edge、Safari 或 Firefox。无需应用、无需下载、无需账户。",
   "steps.h": "逐步安装",
   "step1.h": "下载安装程序",
-  "step1.p": "从<a href=\"https://github.com/linckosz/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">发布页面</a>获取 Windows 安装程序——大多数 PC 用 <code>x64 .exe</code>，Windows-on-ARM 机器用 <code>arm64 .exe</code>。",
+  "step1.p": "从<a href=\"https://github.com/velric-labs/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">发布页面</a>获取 Windows 安装程序——大多数 PC 用 <code>x64 .exe</code>，Windows-on-ARM 机器用 <code>arm64 .exe</code>。",
   "step2.h": "运行向导式安装程序——在游戏 PC 上",
   "step2.p1": "向导会带你走完全部流程：静默安装手柄和方向盘驱动，询问是否允许互联网连接（远程串流会话，默认关闭），并提供 MoonlightWeb Virtual Display——一块供这台电脑串流的专属屏幕。别的都不用——无需配置第二个串流服务器。",
   "step2.p2": "完成后，托盘中会出现一个图标——服务器已在运行。安装到此为止。",

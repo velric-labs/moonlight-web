@@ -2,6 +2,7 @@
  * MoonlightWeb — TNR suite. Copyright (C) 2026 Bruno Martin. GPLv3.
  */
 #include "test_framework.h"
+#include "common/Edition.h"
 #include "server/AppSettings.h"
 
 #include "mw/native/VideoPipeline.h"
@@ -68,12 +69,18 @@ void run_app_settings_tests()
     s.setAutoIpDetection(false);
     CHECK_EQ(s.autoIpDetection(), false);
     s.setInternetAccessEnabled(true);
+    // Switched off in this release: read as off whatever the file says, while
+    // the stored value stays for a release that can offer it again.
+    CHECK_EQ(s.internetAccessEnabled(), false);
+    mw::edition::setInternetAccessOffForTests(false);
     CHECK_EQ(s.internetAccessEnabled(), true);
     // A LAN-only instance reads it as off, whatever the file says.
     qputenv("MW_LAN_ONLY", "1");
     CHECK_EQ(s.internetAccessEnabled(), false);
     qunsetenv("MW_LAN_ONLY");
     CHECK_EQ(s.internetAccessEnabled(), true);
+    mw::edition::setInternetAccessOffForTests(true);
+    CHECK_EQ(s.internetAccessEnabled(), false);
     s.setCertAuthEnabled(true);
     CHECK_EQ(s.certAuthEnabled(), true);
 
@@ -86,6 +93,50 @@ void run_app_settings_tests()
     CHECK_EQ(s.videoEnhancementAlgo(), QString("fsr1"));
     s.setStunServer("stun:example.org:3478");
     CHECK_EQ(s.stunServer(), QString("stun:example.org:3478"));
+
+    // The default when none is stored: an operator's own server when MW_DOMAIN
+    // names one, a public server otherwise — never the project's old domain,
+    // whose control is no longer certain (common/ProjectDomain.h).
+    {
+        AppSettings fresh;
+        fresh.m_FilePath = tmp.path() + "/stun-default.json";
+        const bool hadDomain = qEnvironmentVariableIsSet("MW_DOMAIN");
+        const QByteArray savedDomain = qgetenv("MW_DOMAIN");
+        qunsetenv("MW_DOMAIN");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        qputenv("MW_DOMAIN", "moonlightweb.top");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        qputenv("MW_DOMAIN", "dev.MoonlightWeb.top");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        // The trailing dot of a fully qualified name changes nothing.
+        qputenv("MW_DOMAIN", "moonlightweb.top.");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        qputenv("MW_DOMAIN", "example.org");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stream.example.org:3478"));
+        // A name that merely ends like the old domain is somebody else's.
+        qputenv("MW_DOMAIN", "notmoonlightweb.top");
+        CHECK_EQ(fresh.stunServer(), QString("stun:stream.notmoonlightweb.top:3478"));
+        // A server stored by hand under the old domain is ignored too, in any
+        // spelling; any other stored server is used as it stands.
+        qunsetenv("MW_DOMAIN");
+        for (const char* old :
+             {"stun:stream.moonlightweb.top:3478", "STUN:Stream.MoonlightWeb.TOP.:3478",
+              "stream.dev.moonlightweb.top:3478", "turn:moonlightweb.top:3478?transport=udp",
+              "stun://stream.moonlightweb.top"}) {
+            fresh.setStunServer(QString::fromLatin1(old));
+            CHECK_EQ(fresh.stunServer(), QString("stun:stun.cloudflare.com:3478"));
+        }
+        for (const char* kept :
+             {"stun:stun.example.org:3478", "stun:stream.notmoonlightweb.top:3478",
+              "stun:[2001:db8::1]:3478", "198.51.100.7:3478"}) {
+            fresh.setStunServer(QString::fromLatin1(kept));
+            CHECK_EQ(fresh.stunServer(), QString::fromLatin1(kept));
+        }
+        if (hadDomain)
+            qputenv("MW_DOMAIN", savedDomain);
+        else
+            qunsetenv("MW_DOMAIN");
+    }
     s.setTransportMode("webrtc-dc-udp");
     CHECK_EQ(s.transportMode(), QString("webrtc-dc-udp"));
 

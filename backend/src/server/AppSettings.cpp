@@ -19,6 +19,7 @@
 #include "common/Edition.h"
 #include "common/Logger.h"
 #include "common/PairingCrypto.h"
+#include "common/ProjectDomain.h"
 
 #include <QDateTime>
 #include <QDir>
@@ -870,16 +871,20 @@ QString AppSettings::stunServer() const
 {
     QJsonObject obj = readAll();
     const QString configured = obj.value("stun_server").toString();
-    if (!configured.isEmpty()) return configured;
+    // A server under the project's old domain is never used, not even one
+    // named here by hand: the default below takes its place.
+    if (!configured.isEmpty() &&
+        !mw::projectdomain::isOld(mw::projectdomain::stunUrlHost(configured)))
+        return configured;
 
-    // The introduction server answers STUN on 3478 as well, so the browser is
-    // told about the same operator the consent text already names instead of
-    // Google. StunClient::defaultServers() keeps the public servers behind it
-    // for the backend's own detection; a browser gets one server and a direct
-    // connection it can fall back to.
-    QString domain = QString::fromUtf8(qgetenv("MW_DOMAIN"));
-    if (domain.isEmpty()) domain = QStringLiteral("moonlightweb.top");
-    return QStringLiteral("stun:stream.") + domain + QStringLiteral(":3478");
+    // An operator's own introduction server answers STUN on 3478 as well, so
+    // the browser is told about the operator the consent text already names.
+    // The project's old server under moonlightweb.top is no longer one of them
+    // (common/ProjectDomain.h): without an operator of their own, sessions use
+    // a public server. StunClient::defaultServers() keeps the public servers
+    // behind it for the backend's own detection; a browser gets one server and
+    // a direct connection it can fall back to.
+    return mw::projectdomain::defaultStunUrl();
 }
 
 void AppSettings::setStunServer(const QString& url)
@@ -926,9 +931,11 @@ void AppSettings::setUpnpEnabled(bool enabled)
 
 bool AppSettings::internetAccessEnabled() const
 {
-    // Off on a LAN-only instance whatever the file says: a settings.json
-    // carried over from an install that had it on must open nothing here.
-    if (mw::edition::lanOnly()) return false;
+    // Off whatever the file says while Internet Access is switched off (this
+    // release, or a LAN-only instance): a settings.json carried over from an
+    // install that had it on must open nothing here. The stored value stays,
+    // for a release that has trusted servers to offer it again.
+    if (mw::edition::internetAccessOff()) return false;
     QJsonObject obj = readAll();
     return obj.value("internet_access_enabled").toBool(false);
 }

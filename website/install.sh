@@ -14,10 +14,12 @@
 #  (backend/packaging/homebrew/moonlightweb.rb), which reaches the same
 #  installer(8) the same way.
 #
-#  Linux: registers the signed APT or DNF repository and installs from it, so
-#  the system updater keeps MoonlightWeb up to date afterwards and the app
-#  appears in GNOME Software / KDE Discover / App Center. Distros without one
-#  of those package managers fall back to the AppImage.
+#  Linux: installs the release's .deb or .rpm with the system's package
+#  manager. Since 0.4.1 the official build registers no package repository —
+#  its host was the project's old domain — so MoonlightWeb updates itself from
+#  GitHub afterwards, through its own update button. MW_PACKAGES still names a
+#  repository to register and install from. Distros without one of those
+#  package managers fall back to the AppImage.
 #
 #  The packages themselves are unchanged — same postinstall (service
 #  registration, LaunchAgent, provisioning.json), only the clicking is skipped.
@@ -25,42 +27,43 @@
 #  encodes this machine itself. On macOS the installer's GUI pane is bypassed,
 #  so the postinstall uses its documented CLI default (Internet Access off) and
 #  the in-app wizard finishes the configuration. Internet Access is the one
-#  question this script asks for itself — see ask_internet below.
+#  question this script asks for itself — see ask_internet below — and it is
+#  switched off in this release, so the question is not asked.
 #
 #  Environment overrides:
-#    MW_VERSION=0.2.4   pin a version (macOS and the AppImage fallback only;
-#                       apt/dnf always resolve the newest in the repository)
+#    MW_VERSION=0.2.4   pin a version (apt/dnf resolve the newest in the
+#                       repository instead when MW_PACKAGES names one)
 #    MW_REPO=owner/name install from a fork
-#    MW_PACKAGES=<url>  take the apt/dnf repository from somewhere other than
-#                       packages.moonlightweb.top — how a repository built from
-#                       an unpublished CI run is tried out, see
+#    MW_PACKAGES=<url>  register the apt/dnf repository served at <url> and
+#                       install from it — how a repository built from an
+#                       unpublished CI run is tried out, see
 #                       backend/packaging/linux/try-install.sh. MW_PAGES is
 #                       still read, under its old name.
 #    MW_INTERNET=1|0    answer the Internet Access question up front (default:
-#                       0 — LAN only — whenever there is no terminal to ask on)
+#                       0 — LAN only — whenever there is no terminal to ask on).
+#                       Ignored while Internet Access is switched off.
 #
 #  Served from website/install.sh; the canonical copy lives in the repo.
 # ===========================================================================
 set -eu
 
-REPO="${MW_REPO:-linckosz/moonlight-web}"
-# Where the signed apt/dnf repositories built by the `linux-repo` job are
-# served from. Not a Pages site any more: Pages is one site per repository and
-# the bootstrap already owns it — the package tree raced it after every tag
-# and won (2026-09-14) — so release.yml only attaches the tree to the release
-# and deploy/powerdns/deploy-packages.sh ships it to this host by hand.
+REPO="${MW_REPO:-velric-labs/moonlight-web}"
+# Where a signed apt/dnf repository built by the `linux-repo` job is
+# registered from, when one is. Not a Pages site: Pages is one site per
+# repository and the bootstrap already owns it — the package tree raced it
+# after every tag and won (2026-09-14) — so release.yml only attaches the tree
+# to the release. The official tree was then shipped by hand to
+# packages.moonlightweb.top, the project's old domain; since 0.4.1 the official
+# build registers no repository unless MW_PACKAGES names one, and installs the
+# package from the GitHub release instead (install_release_package).
 #
 # A fork has no such host, so MW_REPO keeps the old Pages convention unless it
 # says otherwise: Pages host names are lower-case, the path keeps the
 # repository's own spelling.
 _owner="$(printf '%s' "${REPO%%/*}" | tr '[:upper:]' '[:lower:]')"
 PACKAGES="${MW_PACKAGES:-${MW_PAGES:-}}"
-if [ -z "$PACKAGES" ]; then
-    if [ "$REPO" = "linckosz/moonlight-web" ]; then
-        PACKAGES="https://packages.moonlightweb.top"
-    else
-        PACKAGES="https://$_owner.github.io/${REPO#*/}"
-    fi
+if [ -z "$PACKAGES" ] && [ "$REPO" != "velric-labs/moonlight-web" ]; then
+    PACKAGES="https://$_owner.github.io/${REPO#*/}"
 fi
 
 bold=""; dim=""; red=""; reset=""
@@ -115,7 +118,7 @@ cli_hint() {
         "${dim}let one more device in${reset}"
     printf '    %-34s %s\n' "$MW_CLI --set-admin-password" \
         "${dim}open the admin page to your LAN${reset}"
-    printf '    %-34s %s\n' "$MW_CLI --enable-internet" \
+    [ "$INTERNET_ACCESS_OFF" = 1 ] || printf '    %-34s %s\n' "$MW_CLI --enable-internet" \
         "${dim}allow the internet link${reset}"
     printf '    %-34s %s\n' "$MW_CLI --help" \
         "${dim}every command${reset}"
@@ -142,8 +145,13 @@ done_banner() {
 # With no terminal to draw on (CI, image builds, `sh install.sh < /dev/null`)
 # the answer is No — the private default — and MW_INTERNET answers it up front.
 WANT_INTERNET=no
+# Switched off in this release, as it is in the server, which refuses it
+# whatever it is sent (backend/src/common/Edition.h): nothing to ask, and
+# MW_INTERNET answers nothing. Back to 0 once a release has trusted servers.
+INTERNET_ACCESS_OFF=1
 
 ask_internet() {
+    [ "$INTERNET_ACCESS_OFF" = 1 ] && return 0
     case "${MW_INTERNET:-}" in
         1|yes|true) WANT_INTERNET=yes; return 0 ;;
         0|no|false) WANT_INTERNET=no; return 0 ;;
@@ -166,10 +174,10 @@ ask_internet() {
     say "  A rendezvous server introduces the two sides, so nothing about this"
     say "  machine is published. No public DNS record is created, no certificate"
     say "  is issued, and ports 80/443 stay closed. Your public IP address is"
-    say "  listed nowhere: only that server and whoever holds the link you sent"
-    say "  ever see it. To learn its own public address, this machine asks a"
-    say "  MoonlightWeb STUN server, or a public one (Google, Cloudflare) if"
-    say "  that one cannot be reached."
+    say "  listed nowhere: only that server, the public STUN servers this machine"
+    say "  asks, and whoever holds the link you sent ever see it. To learn its"
+    say "  own public address, this machine asks public STUN servers (Google,"
+    say "  Cloudflare, Nextcloud, Metered) in turn."
     say ""
     say "  ${dim}Skip decides nothing for good: Internet Access can be turned on,"
     say "  and off again, at any time from the admin page.${reset}"
@@ -480,6 +488,16 @@ repo_missing_note() {
     say ""
 }
 
+# No repository to register at all (see PACKAGES above): the release's package,
+# and nothing under /etc read or touched before it.
+no_repo_note() {
+    say ""
+    say "  ${dim}Installing the package from the GitHub release. No package${reset}"
+    say "  ${dim}repository is registered: MoonlightWeb updates itself from GitHub,${reset}"
+    say "  ${dim}through the update button on its page.${reset}"
+    say ""
+}
+
 # The same .deb/.rpm the repository would have served, taken straight from the
 # GitHub release. The package manager still installs it — dependencies and
 # postinstall included — only the automatic updates are lost.
@@ -539,6 +557,11 @@ install_release_package() { # deb|rpm [manager]
 
 # ── Linux: APT (Debian, Ubuntu, Mint, Pop!_OS) ─────────────────────────────
 install_apt() {
+    if [ -z "$PACKAGES" ]; then
+        no_repo_note
+        install_release_package deb
+        return 0
+    fi
     say "${bold}Adding the MoonlightWeb APT repository${reset}"
     need_root
     clean_empty /etc/apt/keyrings/moonlightweb.gpg \
@@ -583,6 +606,11 @@ install_apt() {
 # ── Linux: DNF / YUM (Fedora, RHEL, Nobara) and zypper (openSUSE) ──────────
 install_rpm() {
     _mgr=$1 _dir=$2
+    if [ -z "$PACKAGES" ]; then
+        no_repo_note
+        install_release_package rpm "$_mgr"
+        return 0
+    fi
     say "${bold}Adding the MoonlightWeb repository${reset}"
     need_root
     clean_empty "$_dir/moonlightweb.repo"
@@ -840,5 +868,5 @@ install_linux() {
 case "$(uname -s)" in
     Darwin) install_macos ;;
     Linux)  install_linux ;;
-    *) die "unsupported system: $(uname -s). See https://moonlightweb.top/#download" ;;
+    *) die "unsupported system: $(uname -s). See https://github.com/$REPO/releases/latest" ;;
 esac

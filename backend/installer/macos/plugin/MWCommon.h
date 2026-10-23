@@ -29,7 +29,7 @@ static NSString *const kMWHandoffPath = @"/tmp/moonlightweb-provisioning.plist";
 // the whole point of having one source of truth here.
 //
 // It must name every party that learns something — the router, the peer, the
-// introduction server, the STUN server — because what is recorded has to be
+// introduction server, the STUN servers — because what is recorded has to be
 // what was read.
 static inline NSString *MWInternetConsentLead(void)
 {
@@ -41,9 +41,10 @@ static inline NSString *MWInternetConsentBody(void)
     return @"The router is asked (UPnP) to open one "
            @"UDP port per session; it carries nothing but the encrypted stream, and every "
            @"connection on it authenticates first. A rendezvous server introduces the two "
-           @"sides, so this Mac's public IP is seen only by that server and by whoever holds "
-           @"the link; a MoonlightWeb STUN server is asked what that address is. No DNS "
-           @"record, no certificate, ports 80/443 stay closed.";
+           @"sides, so this Mac's public IP is seen only by that server, by whoever holds the "
+           @"link, and by the public STUN servers (Google, Cloudflare, Nextcloud, Metered) "
+           @"asked in turn what that address is. No DNS record, no certificate, ports 80/443 "
+           @"stay closed.";
 }
 
 static inline NSString *MWInternetConsentText(void)

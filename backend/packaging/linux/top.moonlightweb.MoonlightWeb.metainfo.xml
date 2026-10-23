@@ -45,11 +45,10 @@
 
   <launchable type="desktop-id">top.moonlightweb.MoonlightWeb.desktop</launchable>
 
-  <url type="homepage">https://moonlightweb.top/</url>
-  <url type="bugtracker">https://github.com/linckosz/moonlight-web/issues</url>
-  <url type="help">https://moonlightweb.top/guides/linux.html</url>
-  <url type="faq">https://moonlightweb.top/faq.html</url>
-  <url type="vcs-browser">https://github.com/linckosz/moonlight-web</url>
+  <url type="homepage">https://github.com/velric-labs/moonlight-web</url>
+  <url type="bugtracker">https://github.com/velric-labs/moonlight-web/issues</url>
+  <url type="help">https://github.com/velric-labs/moonlight-web#linux-x64</url>
+  <url type="vcs-browser">https://github.com/velric-labs/moonlight-web</url>
   <url type="donation">https://buymeacoffee.com/brunoocto</url>
 
   <developer id="top.moonlightweb">
@@ -71,23 +70,25 @@
   </keywords>
 
   <!-- Absolute URLs: a software centre fetches these over the network, so they
-       must resolve without the package being installed. Served by website/. -->
+       must resolve without the package being installed. They are the copies in
+       website/assets, read from this repository at a fixed tag rather than from
+       a website, so a published package's screenshots cannot change under it. -->
   <screenshots>
     <screenshot type="default">
       <caption>Your hosts and games, ready to launch from the browser</caption>
-      <image type="source">https://moonlightweb.top/assets/home.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/home.jpg</image>
     </screenshot>
     <screenshot>
       <caption>Streaming to a phone with the virtual keyboard</caption>
-      <image type="source">https://moonlightweb.top/assets/mobile.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/mobile.jpg</image>
     </screenshot>
     <screenshot>
       <caption>Stream quality and codec settings</caption>
-      <image type="source">https://moonlightweb.top/assets/settings.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/settings.jpg</image>
     </screenshot>
     <screenshot>
       <caption>The admin page: sessions, pairing and Internet access</caption>
-      <image type="source">https://moonlightweb.top/assets/admin.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/admin.jpg</image>
     </screenshot>
   </screenshots>
 
@@ -113,7 +114,7 @@
 
   <releases>
     <release version="@MW_VERSION@" date="@MW_DATE@">
-      <url type="details">https://github.com/linckosz/moonlight-web/releases</url>
+      <url type="details">https://github.com/velric-labs/moonlight-web/releases</url>
     </release>
   </releases>
 </component>

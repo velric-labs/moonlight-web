@@ -51,6 +51,11 @@
 #ifndef VigemBusUrl
   #define VigemBusUrl "https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe"
 #endif
+; Internet Access is switched off in this release, as it is in the server
+; (backend/src/common/Edition.h), which refuses it whatever it is sent: the
+; installer neither asks for it nor waits for its link. Set back to 0 once a
+; release has trusted servers to offer it again.
+#define InternetAccessOff 1
 
 ; Edition. /DDevEdition builds the DEV installer (release.yml, every run that
 ; is not a v* tag): MoonlightWebDev, a pre-release that installs BESIDE the
@@ -84,7 +89,7 @@ AppId={#StringChange(MyAppId, "{", "{{")}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher=MoonlightWeb
-AppPublisherURL=https://github.com/linckosz/moonlight-web
+AppPublisherURL=https://github.com/velric-labs/moonlight-web
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
@@ -150,7 +155,7 @@ Name: "zh"; MessagesFile: "ChineseSimplified.isl"
 en.AutoStartTask=Start {#MyAppName} at logon
 en.InternetPageCaption=Internet Link
 en.InternetPageDesc=Allow access from the Internet?
-en.InternetPageBody=MoonlightWeb can allow streaming from outside your local network, in a highly secure way.%n%nStreaming is direct, from this PC to the browser you invited. While a session runs, your router is asked (UPnP) to open a single port, closed again when the session ends. It carries nothing but the encrypted stream, and every connection on it has to authenticate first.%n%nA rendezvous server introduces the two sides, so nothing about this PC is published. No public DNS record, no certificate for this machine, and ports 80/443 stay closed. Your public IP address is listed nowhere: only that server and whoever holds the link you sent ever see it. To learn its own public address, this PC asks a MoonlightWeb STUN server, or a public one (Google, Cloudflare) as a fallback.%n%nYou can turn this off at any time from the Admin page.
+en.InternetPageBody=MoonlightWeb can allow streaming from outside your local network, in a highly secure way.%n%nStreaming is direct, from this PC to the browser you invited. While a session runs, your router is asked (UPnP) to open a single port, closed again when the session ends. It carries nothing but the encrypted stream, and every connection on it has to authenticate first.%n%nA rendezvous server introduces the two sides, so nothing about this PC is published. No public DNS record, no certificate for this machine, and ports 80/443 stay closed. Your public IP address is listed nowhere: only that server, the public STUN servers this PC asks, and whoever holds the link you sent ever see it. To learn its own public address, this PC asks public STUN servers (Google, Cloudflare, Nextcloud, Metered) in turn.%n%nYou can turn this off at any time from the Admin page.
 en.InternetPageOption=Allow the Internet link (recommended)
 en.InternetBtnSkip=&Skip
 en.InternetBtnAccept=&Accept
@@ -178,7 +183,7 @@ en.UninstConfigDetail=Settings, accounts, certificates and host pairings are era
 fr.AutoStartTask=Démarrer {#MyAppName} à l'ouverture de session
 fr.InternetPageCaption=Lien Internet
 fr.InternetPageDesc=Autoriser l'accès depuis Internet ?
-fr.InternetPageBody=MoonlightWeb peut autoriser le streaming depuis l'extérieur de votre réseau local, de façon hautement sécurisée.%n%nLe streaming est direct, de ce PC vers le navigateur que vous avez invité. Pendant une session, votre box se voit demander (UPnP) l'ouverture d'un seul port, refermé à la fin de la session. Il ne transporte rien d'autre que le flux chiffré, et toute connexion dessus doit d'abord s'authentifier.%n%nUn serveur de rendez-vous met les deux côtés en relation : rien de ce PC n'est publié. Aucun enregistrement DNS public, aucun certificat pour cette machine, et les ports 80/443 restent fermés. Votre adresse IP publique n'est listée nulle part : seuls ce serveur et la personne à qui vous avez donné le lien la voient. Pour connaître sa propre adresse publique, ce PC interroge un serveur STUN MoonlightWeb, ou un serveur public (Google, Cloudflare) en secours.%n%nDésactivable à tout moment depuis la page admin.
+fr.InternetPageBody=MoonlightWeb peut autoriser le streaming depuis l'extérieur de votre réseau local, de façon hautement sécurisée.%n%nLe streaming est direct, de ce PC vers le navigateur que vous avez invité. Pendant une session, votre box se voit demander (UPnP) l'ouverture d'un seul port, refermé à la fin de la session. Il ne transporte rien d'autre que le flux chiffré, et toute connexion dessus doit d'abord s'authentifier.%n%nUn serveur de rendez-vous met les deux côtés en relation : rien de ce PC n'est publié. Aucun enregistrement DNS public, aucun certificat pour cette machine, et les ports 80/443 restent fermés. Votre adresse IP publique n'est listée nulle part : seuls ce serveur, les serveurs STUN publics que ce PC interroge et la personne à qui vous avez donné le lien la voient. Pour connaître sa propre adresse publique, ce PC interroge tour à tour des serveurs STUN publics (Google, Cloudflare, Nextcloud, Metered).%n%nDésactivable à tout moment depuis la page admin.
 fr.InternetPageOption=Autoriser le lien Internet (recommandé)
 fr.InternetBtnSkip=&Passer
 fr.InternetBtnAccept=&Accepter
@@ -206,7 +211,7 @@ fr.UninstConfigDetail=Les réglages, comptes, certificats et appairages d'hôtes
 zh.AutoStartTask=登录时启动 {#MyAppName}
 zh.InternetPageCaption=互联网链接
 zh.InternetPageDesc=是否允许从互联网访问？
-zh.InternetPageBody=MoonlightWeb 可以以高度安全的方式，允许从本地网络之外进行串流。%n%n串流是点对点直连的，从这台电脑直接到您邀请的浏览器。会话进行期间，会通过 UPnP 请求路由器只开放一个端口，会话结束后即被关闭。该端口只承载加密后的串流，任何连接都必须先通过身份验证。%n%n由一台会合服务器为双方牵线，这台电脑无需公开任何信息。不会创建公开 DNS 记录，不会为这台机器签发证书，端口 80/443 保持关闭。您的公网 IP 地址不会被列在任何地方：只有该服务器以及持有您所发送链接的人才能看到。为了得知自己的公网地址，这台电脑会向 MoonlightWeb STUN 服务器查询，无法连接时改用公共服务器（Google、Cloudflare）。%n%n可随时在管理页面关闭。
+zh.InternetPageBody=MoonlightWeb 可以以高度安全的方式，允许从本地网络之外进行串流。%n%n串流是点对点直连的，从这台电脑直接到您邀请的浏览器。会话进行期间，会通过 UPnP 请求路由器只开放一个端口，会话结束后即被关闭。该端口只承载加密后的串流，任何连接都必须先通过身份验证。%n%n由一台会合服务器为双方牵线，这台电脑无需公开任何信息。不会创建公开 DNS 记录，不会为这台机器签发证书，端口 80/443 保持关闭。您的公网 IP 地址不会被列在任何地方：只有该服务器、这台电脑所查询的公共 STUN 服务器，以及持有您所发送链接的人才能看到。为了得知自己的公网地址，这台电脑会依次向公共 STUN 服务器（Google、Cloudflare、Nextcloud、Metered）查询。%n%n可随时在管理页面关闭。
 zh.InternetPageOption=允许互联网链接（推荐）
 zh.InternetBtnSkip=跳过(&S)
 zh.InternetBtnAccept=接受(&A)
@@ -655,6 +660,14 @@ end;
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   Result := False;
+#if InternetAccessOff
+  // Switched off in this release (see InternetAccessOff): the Internet page has
+  // nothing to offer, on a fresh install as on an update.
+  if (InternetPage <> nil) and (PageID = InternetPage.ID) then begin
+    Result := True;
+    Exit;
+  end;
+#endif
   if not UpdateMode then Exit;
   if (PageID = wpSelectDir) or (PageID = wpSelectProgramGroup) or (PageID = wpSelectTasks) then
     Result := True
@@ -1413,6 +1426,11 @@ var
   started, elapsed: Cardinal;
 begin
   ResolvedAdminUrl := LoopbackAdminUrl();
+#if InternetAccessOff
+  // No Internet link to wait for while Internet Access is switched off, whatever
+  // an earlier install stored.
+  Exit;
+#endif
   // Nothing to prefer, or nobody to show it to.
   if WizardSilent then Exit;
   if not (InternetAuthorized or SettingsBoolEnabled('internet_access_enabled')) then Exit;

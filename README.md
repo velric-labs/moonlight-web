@@ -9,7 +9,7 @@ Install it on the gaming PC — it captures and encodes that machine **itself**,
 Nothing to install on the client either: just a URL, from your LAN or from anywhere.\
 Under **20 ms** glass‑to‑glass over Wi‑Fi on a LAN, ~**25 ms** over the Internet.
 
-**🌐 Website: [moonlightweb.top](https://moonlightweb.top/)** — screenshots, [install guides](https://moonlightweb.top/guides/windows.html) & [FAQ](https://moonlightweb.top/faq.html)\
+**📦 Download: [latest release on GitHub](https://github.com/velric-labs/moonlight-web/releases/latest)** — the one place to get it, with the [install steps](#install) below\
 **💬 Community: [Discord](https://discord.gg/wfbesPx4UB)** — questions, help and new‑release announcements
 
 [![Discord](https://img.shields.io/badge/Discord-join%20the%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/wfbesPx4UB)
@@ -27,7 +27,7 @@ Under **20 ms** glass‑to‑glass over Wi‑Fi on a LAN, ~**25 ms** over the In
 
 Moonlight‑Web turns your gaming PC into a stream, and **any device with a modern browser** (PC, Mac, tablet, phone, TV) into the client. Only the server gets installed.
 
-*Moonlight‑Web ([moonlightweb.top](https://moonlightweb.top/)) and [moonlight-web-stream](https://github.com/MrCreativ3001/moonlight-web-stream) are two separate projects with close names: moonlight-web-stream is a web client for a Sunshine host; Moonlight‑Web streams the PC it is installed on by itself, and pairs with Sunshine too.*
+*Moonlight‑Web ([velric-labs/moonlight-web](https://github.com/velric-labs/moonlight-web)) and [moonlight-web-stream](https://github.com/MrCreativ3001/moonlight-web-stream) are two separate projects with close names: moonlight-web-stream is a web client for a Sunshine host; Moonlight‑Web streams the PC it is installed on by itself, and pairs with Sunshine too.*
 
 - 🖥️ **Its own capture & encode engine** — the machine it runs on is a host straight away: no Sunshine, no pairing, no PIN. One card per display. Windows, Linux and macOS.
 - 🎮 **Low‑latency streaming** up to 4K HDR, 240 FPS, **H.264 / HEVC / AV1**, on **NVENC · AMF · Quick Sync · VA‑API · VideoToolbox** (software fallback).
@@ -35,7 +35,7 @@ Moonlight‑Web turns your gaming PC into a stream, and **any device with a mode
 - 🔊 **Opus audio**, adaptive jitter buffer, stereo.
 - ⌨️🖱️🎮 **Full input**: keyboard, mouse (pointer‑lock), touch trackpad, **Xbox/PS gamepads** with rumble. On Windows it reaches the lock screen and UAC prompts too, and **Ctrl+Alt+Del** works from the touch keyboard bar (Ctrl, Alt, then Del). A Windows PC with no mouse plugged in shows its pointer in the stream too. **Racing wheels, flight sticks and RC radios** too, as an Xbox pad or sent to the game as themselves, force feedback included ([see below](#controllers)).
 - 🤝 **Pairs with other hosts too** — Sunshine/Apollo, Wolf, MultiSeat: [see below](#other-hosts-it-can-pair-with). mDNS discovery, PIN pairing, multi‑host.
-- 🌍 **Internet access** opt‑in, at a `stream.moonlightweb.top/「id」` address, with nothing published in your name.
+- 🌍 **Internet access**: switched off in v0.4.1 while its servers are replaced ([why](#internet-access)); streaming on your local network is unaffected.
 - 🪄 **Video Enhancement** (bonus): GPU upscaling & sharpening in the browser.
 - 👥 **Session sharing**: invite up to 3 people as viewer, gamepad player or full control.
 
@@ -194,7 +194,7 @@ Each player row gives **a link and a 6‑digit PIN**. Send them separately: the 
 
 ## Install
 
-Grab the installer from the **[latest release](https://github.com/linckosz/moonlight-web/releases/latest)** or **[moonlightweb.top](https://moonlightweb.top/#download)**, which picks the right file. Guides with screenshots: [Windows](https://moonlightweb.top/guides/windows.html) · [macOS](https://moonlightweb.top/guides/macos.html) · [Linux](https://moonlightweb.top/guides/linux.html).
+Grab the installer from the **[latest release](https://github.com/velric-labs/moonlight-web/releases/latest)** on GitHub, and only from there.
 
 > ✅ **Nothing else to install.** Install it **on the gaming PC** — that is the whole setup.
 
@@ -220,11 +220,18 @@ Sunshine is no longer installed (since September 2026); an existing Sunshine is 
 
 **`moonlightweb-<version>-macos-arm64.pkg`** — installs to `/Applications` with an optional **start at login**.
 
-The `.pkg` is not notarized, so a downloaded copy is blocked by Gatekeeper. Either command installs it without the prompt:
+The `.pkg` is not notarized, so a downloaded copy is blocked by Gatekeeper. Either way below installs it from GitHub without the prompt — with Homebrew:
 
 ```sh
-brew install --cask linckosz/tap/moonlightweb
-curl -fsSL https://moonlightweb.top/install.sh | bash
+brew install --cask velric-labs/tap/moonlightweb
+```
+
+or from Terminal, the latest release:
+
+```sh
+v=$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/velric-labs/moonlight-web/releases/latest | sed 's|.*/v||')
+curl -fLO "https://github.com/velric-labs/moonlight-web/releases/download/v$v/moonlightweb-$v-macos-arm64.pkg"
+sudo installer -pkg "moonlightweb-$v-macos-arm64.pkg" -target /
 ```
 
 For a downloaded file on macOS 15+: *System Settings → Privacy & Security → **Open Anyway***, or `xattr -dr com.apple.quarantine ~/Downloads/moonlightweb-*.pkg`.
@@ -234,15 +241,9 @@ For a downloaded file on macOS 15+: *System Settings → Privacy & Security → 
 
 ### Linux (x64)
 
-**One command, updates included:**
+Download the package for your distribution from the **[latest release](https://github.com/velric-labs/moonlight-web/releases/latest)** and install it. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
 
-```sh
-curl -fsSL https://moonlightweb.top/install.sh | bash
-```
-
-It adds the signed **APT** or **DNF** repository, so MoonlightWeb updates with the system and appears in GNOME Software, KDE Discover and App Center. Arch uses [`moonlightweb-bin`](https://aur.archlinux.org/packages/moonlightweb-bin) from the AUR. Manual setup: [Linux guide](https://moonlightweb.top/guides/linux.html#one-line-install).
-
-Or install a package directly. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
+**Updates:** since 0.4.1 a fresh install adds no package repository. MoonlightWeb updates itself from GitHub through its update button, which asks for the host's password (a headless service updates without asking). Installing 0.4.1 also removes the project's old **APT** or **DNF** repository (packages.moonlightweb.top) and its key file, where an earlier version added them; on Fedora and openSUSE it prints the command that drops the key from the RPM database too. The AUR package `moonlightweb-bin` is no longer the project's: do not install or update it.
 
 | Distro family | Package | Command |
 |---|---|---|
@@ -254,8 +255,9 @@ Or install a package directly. All are **self‑contained** (Qt + OpenSSL bundle
 > 💡 **On Debian/Ubuntu, prefer the `.deb`.** The AppImage needs `chmod +x` and **FUSE 2**
 > (`sudo apt install libfuse2t64`, or `libfuse2` before 24.04).
 
-> ⚠️ **To stream *this* machine, use the `.deb`, `.rpm` or AUR package.** Screen capture needs a file
-> capability that an AppImage cannot keep; the AppImage only streams paired hosts.
+> ⚠️ **To stream *this* machine, use the `.deb` or `.rpm` package.** Screen capture needs a file
+> capability that an AppImage cannot keep; the AppImage only streams paired hosts. Arch has no
+> package from the project for now: `moonlightweb-bin` on the AUR is no longer the project's.
 
 **Nothing else to install.** Capture uses **KMS** (zero‑copy DMA‑BUF → VA‑API or Vulkan Video), or the **ScreenCast portal** where the compositor requires it. Audio comes from PipeWire and input goes through `uinput`. The first launch opens `https://localhost/setup`.
 
@@ -272,7 +274,7 @@ docker run -d --name moonlightweb \
   --cap-drop ALL --cap-add NET_BIND_SERVICE \
   -v mw-data:/data \
   --restart unless-stopped \
-  ghcr.io/linckosz/moonlight-web:latest
+  ghcr.io/velric-labs/moonlight-web:latest
 ```
 
 ```sh
@@ -343,18 +345,20 @@ It controls: admin **PIN**, active **sessions**, HTTP/HTTPS **ports**, **transpo
 
 ### Internet access
 
+**Switched off in v0.4.1.** Internet access needs an introduction server and an entry page, and the only ones it has ever had run under moonlightweb.top, which the project no longer controls. Until servers it trusts replace them, this version keeps it off for everyone: the PC opens no line to the introduction server, asks the router for no port and hands out no Internet link, whatever an earlier version saved. The admin page and the setup wizard say so, and the installers no longer ask. Settings and pairings are kept, and streaming on your local network works as before. The rest of this section describes the feature as it works when it is available.
+
 **Internet Access is opt‑in, off by default.** While it is on, the server:
 
-1. **Detects your public IP** over STUN (ours first, `stream.moonlightweb.top:3478`, then Google/Cloudflare) and reports CGNAT or double NAT. A LAN stream uses no STUN at all.
+1. **Detects your public IP** over STUN (public servers: Google, Cloudflare, Nextcloud, Metered; a self‑hosted operator's own server first when `MW_DOMAIN` names one) and reports CGNAT or double NAT. A LAN stream uses no STUN at all.
 2. **Opens ports on the router via UPnP**: one per stream slot, kept from one stream to the next (an invited player's closes when they leave), and up to four for the entry link's tunnel. The two peers see each other's public IP.
 
 Nothing is published: **no DNS record, no certificate, ports 80/443 stay closed**. Turning it off closes the entry link at once, and the next streams announce no public address; the router ports already opened stay mapped until MoonlightWeb quits.
 
 **Remote access.** Your PC keeps one outgoing connection to an introduction server and is reached at `https://stream.moonlightweb.top/「id」` (shown on the admin page and in the tray). Visitors still need the access PIN.
 
-The browser loads a few kilobytes of entry page, opens WebRTC straight to your machine, checks its identity key, then loads the interface and API over that connection. Video never touches the server. The entry page is [published byte for byte](https://app.moonlightweb.top) and [checked on a schedule](.github/workflows/bootstrap-watch.yml).
+The browser loads a few kilobytes of entry page, opens WebRTC straight to your machine, checks its identity key, then loads the interface and API over that connection. Video never touches the server. The entry page's source is [`bootstrap/`](bootstrap/) in this repository, and the live copy is [checked on a schedule](.github/workflows/bootstrap-watch.yml).
 
-**Installs from v0.2.4 or earlier** keep their `「id」.moonlightweb.top` sub‑domain and forwards **until February 2027**, as the admin page notes.
+**Installs from v0.2.4 or earlier** still forward router ports 80, 443 and 47999 for their `「id」.moonlightweb.top` sub‑domain, a name the project can no longer guarantee: **update them by hand**, and delete any old `「id」` bookmark. Since v0.3 the sub‑domain is ignored and no web port is opened.
 
 <div align="center">
 
@@ -427,15 +431,15 @@ Restart the server after a manual edit. Every key is described in the [settings 
 
 `native_host_enabled` (default `true`) shows this machine as a host. Set it to `false` to use MoonlightWeb only as a front end for Sunshine, Wolf or your own rig; the engine stays installed.
 
-#### Update check & version counts
+#### Update check
 
-Every few hours, official builds check for updates through `https://updates.{MW_DOMAIN}`, a mirror of the GitHub release that counts **version, OS and architecture** only.
+Every few hours, MoonlightWeb asks GitHub directly whether a newer release exists, and reports nothing to anyone. Since 0.4.1 no build uses the project's update relay, which used to count **version, OS and architecture**. `MW_NO_TELEMETRY=1` disables the check entirely.
 
-`"update_relay_enabled": false` asks GitHub directly and reports nothing. `MW_NO_TELEMETRY=1` disables the check entirely. Self‑compiled builds never use the relay.
+A relay is only used where an operator runs one and sets both `MW_DOMAIN` and `MW_PDNS_TOKEN`; `"update_relay_enabled": false` turns it off even then. Whatever the relay says, an update must come from this repository's own releases.
 
 #### Session counts
 
-At the start and end of a stream, official builds send its **shape** to `https://metrics.{MW_DOMAIN}`: resolution, frame rate, codec, HDR/4:4:4, bitrate band, backend, transport, LAN or Internet, device class, owner or guest, and duration.
+Since 0.4.1 no build sends session counts by default. Only where an operator runs the metrics service and sets `MW_DOMAIN` and `MW_PDNS_TOKEN` does the start and end of a stream send its **shape** to `https://metrics.{MW_DOMAIN}`: resolution, frame rate, codec, HDR/4:4:4, bitrate band, backend, transport, LAN or Internet, device class, owner or guest, and duration.
 
 Never sent: host name, account, pairing identity, **the application launched**, or any address (only a daily‑rotating hash is kept). Every value is a number or a fixed word.
 
@@ -474,7 +478,7 @@ Cross‑platform build via **CMake** — the single, canonical build system (qma
 CMake also generates `compile_commands.json` for clangd / IDEs.
 
 ```bash
-git clone https://github.com/linckosz/moonlight-web.git
+git clone https://github.com/velric-labs/moonlight-web.git
 cd moonlight-web
 git submodule update --init --recursive   # moonlight-common-c, qmdnsengine, libdatachannel...
 

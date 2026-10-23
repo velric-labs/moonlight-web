@@ -74,7 +74,7 @@
 <body>
 
 <!-- Header written by scripts/website/build-site.mjs -->
-<header id="site-header"><div class="wrap"><a class="brand" href="/de/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/de/" data-nav="home">Start</a><a href="/de/guides/" data-nav="guides" aria-current="page">Anleitungen</a><a href="/de/faq.html" data-nav="faq">FAQ</a><a href="/de/contact.html" data-nav="contact">Kontakt</a><a href="/de/server-access/" data-nav="connect">Verbinden</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/guides/linux.html">English</option><option value="fr" data-href="/fr/guides/linux.html">Français</option><option value="de" data-href="/de/guides/linux.html" selected>Deutsch</option><option value="zh" data-href="/zh/guides/linux.html" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
+<header id="site-header"><div class="wrap"><a class="brand" href="/de/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/de/" data-nav="home">Start</a><a href="/de/guides/" data-nav="guides" aria-current="page">Anleitungen</a><a href="/de/faq.html" data-nav="faq">FAQ</a><a href="/de/contact.html" data-nav="contact">Kontakt</a><a href="/de/server-access/" data-nav="connect">Verbinden</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/guides/linux.html">English</option><option value="fr" data-href="/fr/guides/linux.html">Français</option><option value="de" data-href="/de/guides/linux.html" selected>Deutsch</option><option value="zh" data-href="/zh/guides/linux.html" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
 
 <main>
 <div class="wrap">
@@ -117,16 +117,16 @@ paru -S moonlightweb-bin</code></pre>
   <p data-i18n-html="docker.p">Offizielle Multi-Arch-Images (<code>amd64</code> + <code>arm64</code>) werden in der GitHub Container Registry veröffentlicht. Ein Befehl auf jedem Linux-Host mit Docker — <code>--network host</code> setzt den Container direkt in dein LAN, damit er die Hosts darin findet. Ein Container hat keinen Desktop zum Erfassen, daher streamt er die Rechner, mit denen du koppelst, nicht sich selbst:</p>
   <pre><code>docker run -d --name moonlightweb --network host \
   -v mw-data:/data --restart unless-stopped \
-  ghcr.io/linckosz/moonlight-web:latest</code></pre>
+  ghcr.io/velric-labs/moonlight-web:latest</code></pre>
   <p data-i18n-html="docker.p2">Ein Container hat keinen vertrauenswürdigen lokalen Browser, also leg einmalig eine Zugangs-PIN fest, öffne dann <code>https://&lt;server-ip&gt;</code> und gib sie ein:</p>
   <pre><code>docker exec moonlightweb moonlightweb --new-pin</code></pre>
-  <p data-i18n-html="docker.rest">Aktualisiere mit <code>docker pull</code> und erstelle den Container neu — das Volume behält deine Kopplungen und dein Zertifikat. Compose-Datei, Port-Tabelle, macvlan und Internetzugriff per Klick stehen alle in der <a href="https://github.com/linckosz/moonlight-web/blob/main/docker/README.md" target="_blank" rel="noopener">Docker-Anleitung</a>.</p>
+  <p data-i18n-html="docker.rest">Aktualisiere mit <code>docker pull</code> und erstelle den Container neu — das Volume behält deine Kopplungen und dein Zertifikat. Compose-Datei, Port-Tabelle, macvlan und Internetzugriff per Klick stehen alle in der <a href="https://github.com/velric-labs/moonlight-web/blob/main/docker/README.md" target="_blank" rel="noopener">Docker-Anleitung</a>.</p>
 
   <h2 data-i18n="steps.h">Installation Schritt für Schritt</h2>
   <div class="gsteps">
     <div class="gstep cyb" id="step-download">
       <h3 data-i18n="step1.h">Lade ein Paket herunter</h3>
-      <p data-i18n-html="step1.p">Wähle auf der <a href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener">Releases-Seite</a> das Paket für deine Distro-Familie: <code>.deb</code> für <strong>Debian, Ubuntu, Mint, Pop!_OS, elementary, Zorin</strong>; <code>.rpm</code> für <strong>Fedora, RHEL, CentOS Stream, Rocky, Alma, Nobara, openSUSE</strong>; ein portables <code>.AppImage</code> für <strong>SteamOS, Bazzite</strong> und alles andere (unter <strong>Arch und Manjaro</strong> das AUR-Paket <code>moonlightweb-bin</code>). Jedes Paket ist eigenständig (Qt und OpenSSL mitgeliefert — keine Abhängigkeiten zu installieren).</p>
+      <p data-i18n-html="step1.p">Wähle auf der <a href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener">Releases-Seite</a> das Paket für deine Distro-Familie: <code>.deb</code> für <strong>Debian, Ubuntu, Mint, Pop!_OS, elementary, Zorin</strong>; <code>.rpm</code> für <strong>Fedora, RHEL, CentOS Stream, Rocky, Alma, Nobara, openSUSE</strong>; ein portables <code>.AppImage</code> für <strong>SteamOS, Bazzite</strong> und alles andere (unter <strong>Arch und Manjaro</strong> das AUR-Paket <code>moonlightweb-bin</code>). Jedes Paket ist eigenständig (Qt und OpenSSL mitgeliefert — keine Abhängigkeiten zu installieren).</p>
     </div>
     <div class="gstep cyb" id="step-install">
       <h3 data-i18n="step2.h">Installieren und starten — auf dem Gaming-PC</h3>
@@ -163,7 +163,7 @@ chmod +x moonlightweb-*.AppImage
     </div>
   </div>
 
-  <p style="text-align:center"><a class="btn btn-primary" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="guide-linux" data-i18n="dl.btn">⬇ Für Linux herunterladen</a></p>
+  <p style="text-align:center"><a class="btn btn-primary" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="guide-linux" data-i18n="dl.btn">⬇ Für Linux herunterladen</a></p>
 
   <h2 data-i18n="tr.h">Fehlerbehebung</h2>
   <h3 data-i18n="trOld.h">Die Installation klappt, aber ein Klick auf die App bewirkt rein gar nichts</h3>
@@ -189,7 +189,7 @@ chmod +x moonlightweb-*.AppImage
 </main>
 
 <!-- Footer written by scripts/website/build-site.mjs -->
-<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/de/">Start</a> · <a href="/de/guides/">Anleitungen</a> · <a href="/de/faq.html">FAQ</a> · <a href="/de/contact.html">Kontakt</a> · <a href="/de/server-access/">Verbinden</a> · <a href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Kaffee</span></a></span><span class="foot-play">Spielen auf: <a href="/de/play/chromebook.html">Chromebook</a> · <a href="/de/play/iphone-ipad.html">iPhone und iPad</a> · <a href="/de/play/tv.html">TV</a> · <a href="/de/sunshine-web-client.html">Web-Client für Sunshine</a> · <a href="/de/browser-game-streaming.html">Warum ein Browser-Client</a></span></div></footer>
+<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/de/">Start</a> · <a href="/de/guides/">Anleitungen</a> · <a href="/de/faq.html">FAQ</a> · <a href="/de/contact.html">Kontakt</a> · <a href="/de/server-access/">Verbinden</a> · <a href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Kaffee</span></a></span><span class="foot-play">Spielen auf: <a href="/de/play/chromebook.html">Chromebook</a> · <a href="/de/play/iphone-ipad.html">iPhone und iPad</a> · <a href="/de/play/tv.html">TV</a> · <a href="/de/sunshine-web-client.html">Web-Client für Sunshine</a> · <a href="/de/browser-game-streaming.html">Warum ein Browser-Client</a></span></div></footer>
 
 <script src="/assets/chrome.js?v={{(fileStat `/assets/chrome.js`).ModTime.Unix}}"></script>
 </body>
