@@ -702,7 +702,7 @@ jobs:
           # when empty. It writes the .zsync next to the AppImage, and the
           # release publishes both. The AppImage catalog warns without it.
           if [ "$GITHUB_REF" != "${GITHUB_REF#refs/tags/}" ]; then
-            export LDAI_UPDATE_INFORMATION="gh-releases-zsync|linckosz|moonlight-web|latest|$PKG-*-x86_64.AppImage.zsync"
+            export LDAI_UPDATE_INFORMATION="gh-releases-zsync|velric-labs|moonlight-web|latest|$PKG-*-x86_64.AppImage.zsync"
           fi
           # The same excludes as the first pass: this one deploys dependencies
           # again, and without them it bundled libva (v0.3.1).
