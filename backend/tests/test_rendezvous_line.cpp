@@ -232,7 +232,6 @@ void run_rendezvous_line_tests()
         client.stop();
         waitFor([&]() { return dropped == 2; }, 1000);
     }
-    mw::edition::setInternetAccessOffForTests(true);
 
     SECTION("RendezvousClient — only a Qt with the fix for QTBUG-141396 opens the line on an "
             "address");
@@ -539,4 +538,5 @@ void run_rendezvous_line_tests()
     else
         qputenv("MW_RENDEZVOUS_URL", savedUrl);
     AppSettings::setFileOverride(QString());
+    mw::edition::setInternetAccessOffForTests(true);
 }
