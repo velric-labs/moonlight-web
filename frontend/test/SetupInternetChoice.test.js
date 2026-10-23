@@ -144,4 +144,32 @@ describe('SetupView — the Internet question', () => {
         // …and an instance with nothing to ask must not be stuck on Start.
         expect(startBtn().disabled).toBe(false);
     });
+
+    // Switched off in this release (backend Edition.h): there is nothing to
+    // consent to, so nothing is asked, nothing can be changed back to a yes,
+    // and nothing is sent as authorized — not even a stale answer.
+    it('asks nothing and authorizes nothing while Internet Access is switched off', async () => {
+        view = new SetupView(container, () => {});
+        view._step = 'config';
+        view._internetOff = true;
+        view._internetAuth = true;
+        view._sunshineInstalled = true;
+        view._sunshinePaired = true;
+        view._autostartInstalled = true;
+        view.render();
+        view.bindEvents();
+
+        expect(skipBtn()).toBeNull();
+        expect(acceptBtn()).toBeNull();
+        expect(container.querySelector('#btn-internet-back')).toBeNull();
+        expect(container.querySelector('#setup-internet-off').textContent).toContain(
+            'text:setup.internetOff',
+        );
+        expect(startBtn().disabled).toBe(false);
+
+        await view._apply();
+        const sent = BackendClient.applySetup.mock.calls[0][0];
+        expect(sent.internet_access_authorized).toBe(false);
+        expect(sent.consent_message).toBe('');
+    });
 });

@@ -27,7 +27,8 @@
 #  encodes this machine itself. On macOS the installer's GUI pane is bypassed,
 #  so the postinstall uses its documented CLI default (Internet Access off) and
 #  the in-app wizard finishes the configuration. Internet Access is the one
-#  question this script asks for itself — see ask_internet below.
+#  question this script asks for itself — see ask_internet below — and it is
+#  switched off in this release, so the question is not asked.
 #
 #  Environment overrides:
 #    MW_VERSION=0.2.4   pin a version (apt/dnf resolve the newest in the
@@ -39,7 +40,8 @@
 #                       backend/packaging/linux/try-install.sh. MW_PAGES is
 #                       still read, under its old name.
 #    MW_INTERNET=1|0    answer the Internet Access question up front (default:
-#                       0 — LAN only — whenever there is no terminal to ask on)
+#                       0 — LAN only — whenever there is no terminal to ask on).
+#                       Ignored while Internet Access is switched off.
 #
 #  Served from website/install.sh; the canonical copy lives in the repo.
 # ===========================================================================
@@ -116,7 +118,7 @@ cli_hint() {
         "${dim}let one more device in${reset}"
     printf '    %-34s %s\n' "$MW_CLI --set-admin-password" \
         "${dim}open the admin page to your LAN${reset}"
-    printf '    %-34s %s\n' "$MW_CLI --enable-internet" \
+    [ "$INTERNET_ACCESS_OFF" = 1 ] || printf '    %-34s %s\n' "$MW_CLI --enable-internet" \
         "${dim}allow the internet link${reset}"
     printf '    %-34s %s\n' "$MW_CLI --help" \
         "${dim}every command${reset}"
@@ -143,8 +145,13 @@ done_banner() {
 # With no terminal to draw on (CI, image builds, `sh install.sh < /dev/null`)
 # the answer is No — the private default — and MW_INTERNET answers it up front.
 WANT_INTERNET=no
+# Switched off in this release, as it is in the server, which refuses it
+# whatever it is sent (backend/src/common/Edition.h): nothing to ask, and
+# MW_INTERNET answers nothing. Back to 0 once a release has trusted servers.
+INTERNET_ACCESS_OFF=1
 
 ask_internet() {
+    [ "$INTERNET_ACCESS_OFF" = 1 ] && return 0
     case "${MW_INTERNET:-}" in
         1|yes|true) WANT_INTERNET=yes; return 0 ;;
         0|no|false) WANT_INTERNET=no; return 0 ;;

@@ -145,4 +145,27 @@ QString lanOnlyRefusal()
                           "cannot be enabled. Open it at its LAN address instead.");
 }
 
+namespace {
+// A flag rather than a constant only so the tests can still reach the code it
+// keeps shut (Edition.h). Nothing in the server writes it.
+bool g_internetAccessOff = true;
+} // namespace
+
+bool internetAccessOff()
+{
+    return g_internetAccessOff || lanOnly();
+}
+
+QString internetAccessOffRefusal()
+{
+    if (lanOnly()) return lanOnlyRefusal();
+    return QStringLiteral("Internet Access is switched off in this version while its servers are "
+                          "replaced. Open this PC at its LAN address instead.");
+}
+
+void setInternetAccessOffForTests(bool off)
+{
+    g_internetAccessOff = off;
+}
+
 } // namespace mw::edition

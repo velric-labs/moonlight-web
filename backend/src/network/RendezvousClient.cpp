@@ -143,8 +143,10 @@ QString RendezvousClient::entryUrl() const
     // Deliberately empty until the server has accepted the claim. An identifier
     // we drew but nobody acknowledged is an address that answers to nobody, and
     // handing it to the tray menu or a desktop shortcut would look like success.
-    // A LAN-only instance has no address outside its LAN, whatever it once claimed.
-    if (mw::edition::lanOnly() || !m_Settings->rendezvousClaimed()) return {};
+    // With Internet Access switched off there is no address outside the LAN,
+    // whatever was once claimed: the old one leads to a server this release no
+    // longer trusts.
+    if (mw::edition::internetAccessOff() || !m_Settings->rendezvousClaimed()) return {};
     const QString id = m_Settings->rendezvousId();
     if (id.isEmpty()) return {};
     return baseUrl() + QLatin1Char('/') + id;
@@ -152,9 +154,9 @@ QString RendezvousClient::entryUrl() const
 
 void RendezvousClient::start()
 {
-    // Every caller is already gated on Internet Access, which a LAN-only
-    // instance never has; this keeps the line shut if one ever is not.
-    if (m_Running || mw::edition::lanOnly()) return;
+    // Every caller is already gated on Internet Access, which is never on while
+    // it is switched off (Edition.h); this keeps the line shut if one ever is not.
+    if (m_Running || mw::edition::internetAccessOff()) return;
     m_Running = true;
     m_RetryCount = 0;
     // A halt belongs to the previous run. Nothing about this build changed, so

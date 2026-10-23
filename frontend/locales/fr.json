@@ -41,6 +41,7 @@
         "internetActiveLan": "Le lien Internet est actif.",
         "internetChosenYes": "Le lien Internet sera activé.",
         "internetChosenNo": "Le lien Internet reste désactivé — cet ordinateur ne sera joignable que sur votre réseau local.",
+        "internetOff": "Le lien Internet est désactivé dans cette version, le temps de remplacer ses serveurs. Cet ordinateur reste joignable sur votre réseau local.",
         "internetChange": "Modifier cette réponse",
         "stepCount": "Étape {{current}} sur {{total}}",
         "hostTitle": "Diffuser cet ordinateur",
@@ -720,6 +721,8 @@
         "logsReady": "Logs téléchargés ({{size}})",
         "logsFailed": "Impossible de télécharger les logs : {{message}}",
         "internetNotActive": "L'accès Internet est activé mais inactif : l'enregistrement DNS n'a pas abouti. Vérifiez le token PowerDNS et votre réseau, puis réactivez l'accès Internet.",
+        "internetOff": "L'accès Internet est désactivé dans cette version, le temps de remplacer ses serveurs. En attendant, ouvrez ce PC à son adresse sur votre réseau local.",
+        "internetOffLanOnly": "Cette instance est limitée au réseau local : l'accès Internet ne peut pas être activé. Ouvrez-la à son adresse sur votre réseau local.",
         "changesDiscarded": "Modifications des paramètres abandonnées",
         "confirmRevoke": "Révoquer la session de « {{name}} » ? Cet appareil devra saisir un PIN à nouveau."
     },

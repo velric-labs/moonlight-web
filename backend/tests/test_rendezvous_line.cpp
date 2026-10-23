@@ -15,6 +15,7 @@
  */
 #include "test_framework.h"
 
+#include "../src/common/Edition.h"
 #include "../src/common/RendezvousId.h"
 #include "../src/network/RendezvousClient.h"
 #include "../src/server/AppSettings.h"
@@ -73,6 +74,18 @@ void run_rendezvous_line_tests()
         settings.setRendezvousToken(QString(64, QLatin1Char('a')));
         settings.setRendezvousClaimed(true);
 
+        // Internet Access is switched off in this release (Edition.h): the
+        // client opens no line and hands out no address, claimed or not.
+        {
+            RendezvousClient off(&settings);
+            off.start();
+            CHECK(off.entryUrl().isEmpty());
+            CHECK(!waitFor([&]() { return lines > 0; }, 300));
+        }
+
+        // The rest drives the line itself, kept working for a release that has
+        // trusted servers to offer Internet Access again.
+        mw::edition::setInternetAccessOffForTests(false);
         RendezvousClient client(&settings);
         client.start();
         CHECK(waitFor([&]() { return client.isOnline() && lines == 1; }, 3000));
@@ -94,6 +107,7 @@ void run_rendezvous_line_tests()
         client.stop();
         waitFor([&]() { return dropped == 2; }, 1000);
     }
+    mw::edition::setInternetAccessOffForTests(true);
 
     if (savedUrl.isEmpty())
         qunsetenv("MW_RENDEZVOUS_URL");

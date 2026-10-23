@@ -871,9 +871,11 @@ void AppSettings::setUpnpEnabled(bool enabled)
 
 bool AppSettings::internetAccessEnabled() const
 {
-    // Off on a LAN-only instance whatever the file says: a settings.json
-    // carried over from an install that had it on must open nothing here.
-    if (mw::edition::lanOnly()) return false;
+    // Off whatever the file says while Internet Access is switched off (this
+    // release, or a LAN-only instance): a settings.json carried over from an
+    // install that had it on must open nothing here. The stored value stays,
+    // for a release that has trusted servers to offer it again.
+    if (mw::edition::internetAccessOff()) return false;
     QJsonObject obj = readAll();
     return obj.value("internet_access_enabled").toBool(false);
 }

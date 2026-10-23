@@ -822,7 +822,7 @@ export const MoonlightApp = {
      * instead of re-deriving "is this just the LAN IP" from the parts.
      *
      * Returns { url, remote, rendezvousUrl, rendezvousOnline, domain, localIp,
-     * httpsPort, extPort, upnpAvailable, internetActive } or null on failure
+     * httpsPort, extPort, upnpAvailable, internetActive, internetOff } or null on failure
      * (url may be '' when nothing is known).
      * Callable from any machine: a LAN browser gets the rendezvous address and
      * nothing else, a remote one gets neither and lands on `url === ''`.
@@ -834,6 +834,7 @@ export const MoonlightApp = {
         let localIp = '';
         let upnpAvailable = false;
         let internetActive = false;
+        let internetOff = false;
         let rendezvousUrl = '';
         let rendezvousOnline = false;
         try {
@@ -854,6 +855,7 @@ export const MoonlightApp = {
             extPort = status.external_https_port || httpsPort;
             upnpAvailable = !!status.upnp_available;
             internetActive = !!status.active && !!status.internet_access_enabled;
+            internetOff = status.internet_access_off === true;
             // Redacted for anything but a loopback caller or a browser sitting
             // on this LAN (it carries this instance's permanent identifier) —
             // see the route. A remote session falls through to the LAN IP below,
@@ -890,6 +892,7 @@ export const MoonlightApp = {
             extPort,
             upnpAvailable,
             internetActive,
+            internetOff,
         };
     },
 
@@ -989,6 +992,10 @@ export const MoonlightApp = {
      */
     _buildAddressHintBanner(info, shownUrl) {
         const hostname = window.location.hostname;
+
+        // Switched off by the server (this release, or a LAN-only instance):
+        // the admin page has no switch for this hint to point at.
+        if (info.internetOff) return null;
 
         if (!info.internetActive) {
             // The action is a clause of the sentence, not a second copy of it

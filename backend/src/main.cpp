@@ -943,8 +943,8 @@ static int runEnableInternetCommand(quint16 persistedHttpsPort, bool assumeYes)
 {
     QTextStream out(stdout);
     // Before the agreement is shown: there is nothing here to agree to.
-    if (mw::edition::lanOnly()) {
-        out << mw::edition::lanOnlyRefusal() << "\n";
+    if (mw::edition::internetAccessOff()) {
+        out << mw::edition::internetAccessOffRefusal() << "\n";
         out.flush();
         return 1;
     }
@@ -1697,6 +1697,9 @@ int main(int argc, char* argv[])
     if (mw::edition::lanOnly())
         Logger::info("[LAN-only] MW_LAN_ONLY is set: no rendezvous line, no STUN, no UPnP, no "
                      "update check — Internet Access requests are refused");
+    else if (mw::edition::internetAccessOff())
+        Logger::info("[Internet Access] switched off in this release: no rendezvous line, no "
+                     "UPnP — Internet Access requests are refused; the update check stays on");
 
     // Parse command line
     QCommandLineParser parser;

@@ -116,4 +116,26 @@ bool lanOnly();
 /// The error every refused Internet Access request answers with.
 QString lanOnlyRefusal();
 
+// ── Internet Access, switched off (v0.4.1) ──────────────────────────────────
+//
+// Internet Access reaches this PC through an introduction server and an entry
+// page, and the only ones it has ever had run under moonlightweb.top, which the
+// project no longer controls. Until servers it trusts replace them, it is off
+// for everyone: no rendezvous line, no router mapping, no Internet link handed
+// out, and every request to turn it on is answered with
+// internetAccessOffRefusal(). No setting, environment variable or build option
+// turns it back on. Unlike LAN-only, the update check and LAN streaming are
+// untouched.
+
+/// True in this release whatever else is set, as on any LAN-only instance.
+bool internetAccessOff();
+
+/// The error a refused Internet Access request answers with: lanOnlyRefusal()
+/// on a LAN-only instance, otherwise why this release keeps it off.
+QString internetAccessOffRefusal();
+
+/// Lets the tests reach the Internet Access code this release keeps shut.
+/// Nothing outside the tests calls it.
+void setInternetAccessOffForTests(bool off);
+
 } // namespace mw::edition

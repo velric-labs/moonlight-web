@@ -86,4 +86,31 @@ void run_edition_tests()
     CHECK(!lanOnly());
     qunsetenv("MW_LAN_ONLY");
     CHECK(!lanOnly());
+
+    // Internet Access is switched off in this release for everyone: no
+    // environment variable turns it back on, an operator's own domain
+    // included, and the refusal says why in this release's own words.
+    CHECK(internetAccessOff());
+    CHECK(internetAccessOffRefusal().contains(QStringLiteral("switched off")));
+    CHECK(!internetAccessOffRefusal().contains(QStringLiteral("MW_LAN_ONLY")));
+    const QByteArray savedDomain = qgetenv("MW_DOMAIN");
+    qputenv("MW_DOMAIN", "example.org");
+    qputenv("MW_LAN_ONLY", "0");
+    CHECK(internetAccessOff());
+    qunsetenv("MW_LAN_ONLY");
+    if (savedDomain.isEmpty())
+        qunsetenv("MW_DOMAIN");
+    else
+        qputenv("MW_DOMAIN", savedDomain);
+
+    // With the switch lifted through the tests' hook, LAN-only still keeps it
+    // off, with its own reason.
+    setInternetAccessOffForTests(false);
+    CHECK(!internetAccessOff());
+    qputenv("MW_LAN_ONLY", "1");
+    CHECK(internetAccessOff());
+    CHECK(internetAccessOffRefusal().contains(QStringLiteral("MW_LAN_ONLY")));
+    qunsetenv("MW_LAN_ONLY");
+    setInternetAccessOffForTests(true);
+    CHECK(internetAccessOff());
 }

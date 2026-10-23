@@ -41,6 +41,7 @@
         "internetActiveLan": "互联网连接已启用。",
         "internetChosenYes": "互联网连接将被启用。",
         "internetChosenNo": "互联网连接保持关闭——这台电脑只能在本地网络中访问。",
+        "internetOff": "此版本已关闭互联网连接，以便更换其服务器。这台电脑仍可在本地网络中访问。",
         "internetChange": "更改此选择",
         "stepCount": "第 {{current}} 步，共 {{total}} 步",
         "hostTitle": "串流这台电脑",
@@ -720,6 +721,8 @@
         "logsReady": "日志已下载（{{size}}）",
         "logsFailed": "无法下载日志：{{message}}",
         "internetNotActive": "互联网访问已启用但未生效：DNS 注册未完成。请检查 PowerDNS 令牌和你的网络，然后重新启用互联网访问。",
+        "internetOff": "此版本已关闭互联网访问，以便更换其服务器。在此期间，请通过本地网络地址打开这台电脑。",
+        "internetOffLanOnly": "此实例仅限本地网络：无法开启互联网访问。请通过本地网络地址打开它。",
         "changesDiscarded": "设置更改已放弃",
         "confirmRevoke": "确定撤销「{{name}}」的会话吗？该设备需要重新输入 PIN 码。"
     },

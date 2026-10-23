@@ -2,6 +2,7 @@
  * MoonlightWeb — TNR suite. Copyright (C) 2026 Bruno Martin. GPLv3.
  */
 #include "test_framework.h"
+#include "common/Edition.h"
 #include "server/AppSettings.h"
 
 #include "mw/native/VideoPipeline.h"
@@ -68,12 +69,18 @@ void run_app_settings_tests()
     s.setAutoIpDetection(false);
     CHECK_EQ(s.autoIpDetection(), false);
     s.setInternetAccessEnabled(true);
+    // Switched off in this release: read as off whatever the file says, while
+    // the stored value stays for a release that can offer it again.
+    CHECK_EQ(s.internetAccessEnabled(), false);
+    mw::edition::setInternetAccessOffForTests(false);
     CHECK_EQ(s.internetAccessEnabled(), true);
     // A LAN-only instance reads it as off, whatever the file says.
     qputenv("MW_LAN_ONLY", "1");
     CHECK_EQ(s.internetAccessEnabled(), false);
     qunsetenv("MW_LAN_ONLY");
     CHECK_EQ(s.internetAccessEnabled(), true);
+    mw::edition::setInternetAccessOffForTests(true);
+    CHECK_EQ(s.internetAccessEnabled(), false);
     s.setCertAuthEnabled(true);
     CHECK_EQ(s.certAuthEnabled(), true);
 

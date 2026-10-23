@@ -21,6 +21,7 @@
 #include "../backend/ComputerManager.h"
 #include "../backend/NvComputer.h"
 #include "../backend/SunshineRestClient.h"
+#include "../common/Edition.h"
 #include "../common/Logger.h"
 
 #include <QDateTime>
@@ -230,7 +231,14 @@ bool applyOnce(const QString& exeDir, AppSettings& settings, ComputerManager& co
 
     Logger::info(QStringLiteral("Provisioning: applying %1").arg(path));
 
-    const bool internet = obj.value(QStringLiteral("internet_access_authorized")).toBool();
+    // An installer from before the switch-off may still pass the Internet
+    // choice; while Internet Access is switched off it records no consent and
+    // turns nothing on (Edition.h).
+    const bool internetAsked = obj.value(QStringLiteral("internet_access_authorized")).toBool();
+    const bool internet = internetAsked && !mw::edition::internetAccessOff();
+    if (internetAsked && !internet)
+        Logger::info(QStringLiteral("Provisioning: Internet Access not authorized: %1")
+                         .arg(mw::edition::internetAccessOffRefusal()));
     const QJsonObject sun = obj.value(QStringLiteral("sunshine")).toObject();
     const bool autoPair = sun.value(QStringLiteral("auto_pair")).toBool();
 

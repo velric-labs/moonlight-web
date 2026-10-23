@@ -84,6 +84,11 @@ export class AdminView {
 
         // Internet Access state
         this._internetEnabled = false;
+        // Switched off by the server (this release, or a LAN-only instance):
+        // the section explains why instead of offering a switch that can only
+        // fail. Older servers do not say, and keep the switch.
+        this._internetOff = false;
+        this._lanOnly = false;
         // A domain the user configured themselves, or empty — the normal case,
         // since enabling only authorizes the per-session router mapping and the
         // rendezvous line.
@@ -293,6 +298,8 @@ export class AdminView {
         try {
             const status = await BackendClient.getInternetStatus();
             this._internetEnabled = status.internet_access_enabled || false;
+            this._internetOff = status.internet_access_off === true;
+            this._lanOnly = status.lan_only === true;
             this._domain = status.domain || '';
             this._externalHttpsPort = status.external_https_port || this._httpsPort;
             this._publicIp = status.public_ip || '';
@@ -742,7 +749,9 @@ export class AdminView {
         // a fresh install's Internet link opens no web port and names nothing.
         // A fresh install is reached through the rendezvous server, and that
         // address is published nowhere — this row is where its owner learns it.
-        const showRendezvous = !!this._rendezvousUrl;
+        // Neither address is shown while Internet Access is switched off: both
+        // lead to servers this release no longer uses.
+        const showRendezvous = !this._internetOff && !!this._rendezvousUrl;
         // The sub-domain is shown only while there is nothing better.
         //
         // It used to appear alongside the rendezvous link on a legacy instance,
@@ -753,7 +762,7 @@ export class AdminView {
         // existence in Certificate Transparency. Once the replacement is here,
         // it IS the address; the notice below explains what happened to the old
         // one, which keeps working meanwhile for anyone who bookmarked it.
-        const showDomain = !!this._domain && !showRendezvous;
+        const showDomain = !this._internetOff && !!this._domain && !showRendezvous;
 
         this.container.innerHTML = `
             <div class="admin-view" id="view-admin">
@@ -854,6 +863,10 @@ export class AdminView {
                             : ''
                     }</h3>
 
+                    ${
+                        this._internetOff
+                            ? ''
+                            : `
                     <div class="settings-field">
                         <label class="settings-checkbox-label">
                             <input type="checkbox" id="chk-internet-enable"
@@ -861,6 +874,8 @@ export class AdminView {
                             <span class="settings-checkbox-text consent-highlight">${t('admin.enableInternet')}</span>
                         </label>
                     </div>
+                    `
+                    }
 
                     ${
                         this._activating
@@ -904,8 +919,20 @@ export class AdminView {
                             : ''
                     }
 
-                    <!-- Info frame (always visible): the exact consent wording. -->
-                    <div class="internet-info-box">
+                    <!-- Switched off: why, instead of the consent wording and
+                         router details, which describe nothing this release does. -->
+                    ${
+                        this._internetOff
+                            ? `
+                    <div class="internet-info-box" id="internet-off-note">
+                        <p>${t(this._lanOnly ? 'admin.internetOffLanOnly' : 'admin.internetOff')}</p>
+                    </div>
+                    `
+                            : ''
+                    }
+
+                    <!-- Info frame (shown unless switched off): the exact consent wording. -->
+                    <div class="internet-info-box"${this._internetOff ? ' hidden' : ''}>
                         <p><strong class="internet-important-label">${t('admin.importantLabel')}</strong><br>
                         ${this._internetConsentText()}</p>
                         <p>${
@@ -941,7 +968,7 @@ export class AdminView {
                          retired DNS mechanism, so nothing opens until the user
                          re-ticks the box under the current wording. -->
                     ${
-                        this._phase === 'consent_required'
+                        this._phase === 'consent_required' && !this._internetOff
                             ? `
                         <div class="internet-info-box">
                             <p>${t('admin.consentRequired')}</p>
@@ -972,7 +999,7 @@ export class AdminView {
                          introduces the browser. A user-owned domain is the one
                          case that does need its HTTPS port forwarded. -->
                     ${
-                        !this._upnpAvailable
+                        !this._internetOff && !this._upnpAvailable
                             ? `
                         <div class="settings-field u-pt-3">
                             <label class="settings-label">${t('admin.portMapping')}</label>

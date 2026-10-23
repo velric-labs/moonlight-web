@@ -51,6 +51,11 @@
 #ifndef VigemBusUrl
   #define VigemBusUrl "https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe"
 #endif
+; Internet Access is switched off in this release, as it is in the server
+; (backend/src/common/Edition.h), which refuses it whatever it is sent: the
+; installer neither asks for it nor waits for its link. Set back to 0 once a
+; release has trusted servers to offer it again.
+#define InternetAccessOff 1
 
 ; Edition. /DDevEdition builds the DEV installer (release.yml, every run that
 ; is not a v* tag): MoonlightWebDev, a pre-release that installs BESIDE the
@@ -655,6 +660,14 @@ end;
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   Result := False;
+#if InternetAccessOff
+  // Switched off in this release (see InternetAccessOff): the Internet page has
+  // nothing to offer, on a fresh install as on an update.
+  if (InternetPage <> nil) and (PageID = InternetPage.ID) then begin
+    Result := True;
+    Exit;
+  end;
+#endif
   if not UpdateMode then Exit;
   if (PageID = wpSelectDir) or (PageID = wpSelectProgramGroup) or (PageID = wpSelectTasks) then
     Result := True
@@ -1410,6 +1423,11 @@ var
   started, elapsed: Cardinal;
 begin
   ResolvedAdminUrl := LoopbackAdminUrl();
+#if InternetAccessOff
+  // No Internet link to wait for while Internet Access is switched off, whatever
+  // an earlier install stored.
+  Exit;
+#endif
   // Nothing to prefer, or nobody to show it to.
   if WizardSilent then Exit;
   if not (InternetAuthorized or SettingsBoolEnabled('internet_access_enabled')) then Exit;

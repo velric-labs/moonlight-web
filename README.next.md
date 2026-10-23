@@ -40,7 +40,7 @@ Moonlight‑Web turns your gaming PC into a stream, and **any device with a mode
 - 🔊 **Opus audio**, adaptive jitter buffer, stereo.
 - ⌨️🖱️🎮 **Full input**: keyboard, mouse (pointer‑lock), touch trackpad, **Xbox/PS gamepads** with rumble. On Windows it reaches the lock screen and UAC prompts too, and **Ctrl+Alt+Del** works from the touch keyboard bar (Ctrl, Alt, then Del). A Windows PC with no mouse plugged in shows its pointer in the stream too. **Racing wheels, flight sticks and RC radios** too, as an Xbox pad or sent to the game as themselves, force feedback included ([see below](#controllers)).
 - 🤝 **Pairs with other hosts too** — Sunshine/Apollo, Wolf, MultiSeat: [see below](#other-hosts-it-can-pair-with). mDNS discovery, PIN pairing, multi‑host.
-- 🌍 **Internet access** opt‑in, at a `stream.moonlightweb.top/「id」` address, with nothing published in your name.
+- 🌍 **Internet access**: switched off in v0.4.1 while its servers are replaced ([why](#internet-access)); streaming on your local network is unaffected.
 - 🪄 **Video Enhancement** (bonus): GPU upscaling & sharpening in the browser.
 - 👥 **Session sharing**: invite up to 3 people as viewer, gamepad player or full control.
 
@@ -348,6 +348,8 @@ It controls: admin **PIN**, active **sessions**, HTTP/HTTPS **ports**, **transpo
 </div>
 
 ### Internet access
+
+**Switched off in v0.4.1.** Internet access needs an introduction server and an entry page, and the only ones it has ever had run under moonlightweb.top, which the project no longer controls. Until servers it trusts replace them, this version keeps it off for everyone: the PC opens no line to the introduction server, asks the router for no port and hands out no Internet link, whatever an earlier version saved. The admin page and the setup wizard say so, and the installers no longer ask. Settings and pairings are kept, and streaming on your local network works as before. The rest of this section describes the feature as it works when it is available.
 
 **Internet Access is opt‑in, off by default.** While it is on, the server:
 

@@ -41,6 +41,7 @@
         "internetActiveLan": "The Internet link is active.",
         "internetChosenYes": "The Internet link will be enabled.",
         "internetChosenNo": "The Internet link stays off — this computer will only be reachable on your local network.",
+        "internetOff": "The Internet link is switched off in this version while its servers are replaced. This computer stays reachable on your local network.",
         "internetChange": "Change this answer",
         "stepCount": "Step {{current}} of {{total}}",
         "hostTitle": "Streaming this computer",
@@ -720,6 +721,8 @@
         "logsReady": "Logs downloaded ({{size}})",
         "logsFailed": "Could not download the logs: {{message}}",
         "internetNotActive": "Internet access is enabled but not active: DNS registration did not complete. Check the PowerDNS token and your network, then re-enable Internet access.",
+        "internetOff": "Internet access is switched off in this version while its servers are replaced. In the meantime, open this PC at its address on your local network.",
+        "internetOffLanOnly": "This instance is LAN-only: Internet access cannot be switched on. Open it at its address on your local network.",
         "changesDiscarded": "Settings changes discarded",
         "confirmRevoke": "Revoke the session of \"{{name}}\"? That device will have to enter a PIN again."
     },

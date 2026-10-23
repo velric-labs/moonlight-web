@@ -117,6 +117,9 @@ InternetAccessManager::~InternetAccessManager()
 
 void InternetAccessManager::start()
 {
+    // Every caller is already gated on Internet Access, which is never on while
+    // it is switched off (Edition.h); this keeps it shut if one ever is not.
+    if (mw::edition::internetAccessOff()) return;
     if (m_Active) {
         qInfo() << "[InternetAccess] Already active";
         return;
