@@ -2,7 +2,11 @@
 
 ## Reporting a vulnerability
 
-Email **brunoocto@gmail.com** with `[MoonlightWeb security]` in the subject.
+Report it privately through GitHub:
+**[Report a vulnerability](https://github.com/velric-labs/moonlight-web/security/advisories/new)**,
+also under the repository's **Security** tab (a GitHub account is needed). The
+report opens a draft advisory that only you and the maintainers can see; please
+do not open a public issue.
 
 Please include what you need to reproduce it: version (`MoonlightWeb --version`),
 platform, transport mode if relevant, and the steps. A proof of concept helps but
@@ -31,7 +35,10 @@ it. Anyone who gets past authentication controls that machine — not just the
 application. Treat a MoonlightWeb host the way you would treat any remote-desktop
 host.
 
-**Internet access is opt-in and off by default.** While it is enabled, the
+**Internet access is switched off in v0.4.1.** Its introduction server and
+entry page have only ever run under moonlightweb.top, which the project no
+longer controls, so this version keeps it off for everyone (see the README).
+Where it is available, it is opt-in and off by default. While it is enabled, the
 router is asked (UPnP) to open one port per stream slot, kept from one stream
 to the next, and up to four for the entry link's tunnel; the peers of a WebRTC
 connection see each other's public IP address. Nothing is published: no DNS
@@ -46,10 +53,10 @@ Certificates issued by a publicly trusted CA are recorded in public Certificate
 Transparency logs, so **the existence of those instances and their hostnames
 are public information, permanently** — CT logs are immutable, and retiring the
 mechanism stops new entries but cannot remove past ones. That is inherent to
-publicly trusted TLS, not specific to this project. Those installs keep their
-subdomain, certificate renewals and 80/443 forwards unchanged until the shared
-DNS service **shuts down in February 2027**; disabling internet access from the
-admin page ends all of it at any time.
+publicly trusted TLS, not specific to this project. Those installs still
+forward router ports 80, 443 and 47999 for a name the project can no longer
+guarantee: **update them by hand**, and delete any old `{id}` bookmark. Since
+v0.3 the subdomain is ignored and no web port is opened.
 
 ## In scope
 
