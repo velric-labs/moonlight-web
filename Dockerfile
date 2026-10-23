@@ -14,7 +14,7 @@
 #      docker run -d --network host -v mw-data:/data moonlightweb
 #
 #  Published by .github/workflows/docker.yml to
-#  ghcr.io/linckosz/moonlight-web for linux/amd64 and linux/arm64.
+#  ghcr.io/velric-labs/moonlight-web for linux/amd64 and linux/arm64.
 #
 #  Two stages, both on the same official Debian release:
 #

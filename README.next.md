@@ -14,7 +14,7 @@ Install it on the gaming PC — it captures and encodes that machine **itself**,
 Nothing to install on the client either: just a URL, from your LAN or from anywhere.\
 Under **20 ms** glass‑to‑glass over Wi‑Fi on a LAN, ~**25 ms** over the Internet.
 
-**📦 Download: [latest release on GitHub](https://github.com/linckosz/moonlight-web/releases/latest)** — the one place to get it, with the [install steps](#install) below\
+**📦 Download: [latest release on GitHub](https://github.com/velric-labs/moonlight-web/releases/latest)** — the one place to get it, with the [install steps](#install) below\
 **💬 Community: [Discord](https://discord.gg/wfbesPx4UB)** — questions, help and new‑release announcements
 
 [![Discord](https://img.shields.io/badge/Discord-join%20the%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/wfbesPx4UB)
@@ -32,7 +32,7 @@ Under **20 ms** glass‑to‑glass over Wi‑Fi on a LAN, ~**25 ms** over the In
 
 Moonlight‑Web turns your gaming PC into a stream, and **any device with a modern browser** (PC, Mac, tablet, phone, TV) into the client. Only the server gets installed.
 
-*Moonlight‑Web ([linckosz/moonlight-web](https://github.com/linckosz/moonlight-web)) and [moonlight-web-stream](https://github.com/MrCreativ3001/moonlight-web-stream) are two separate projects with close names: moonlight-web-stream is a web client for a Sunshine host; Moonlight‑Web streams the PC it is installed on by itself, and pairs with Sunshine too.*
+*Moonlight‑Web ([velric-labs/moonlight-web](https://github.com/velric-labs/moonlight-web)) and [moonlight-web-stream](https://github.com/MrCreativ3001/moonlight-web-stream) are two separate projects with close names: moonlight-web-stream is a web client for a Sunshine host; Moonlight‑Web streams the PC it is installed on by itself, and pairs with Sunshine too.*
 
 - 🖥️ **Its own capture & encode engine** — the machine it runs on is a host straight away: no Sunshine, no pairing, no PIN. One card per display. Windows, Linux and macOS.
 - 🎮 **Low‑latency streaming** up to 4K HDR, 240 FPS, **H.264 / HEVC / AV1**, on **NVENC · AMF · Quick Sync · VA‑API · VideoToolbox** (software fallback).
@@ -199,7 +199,7 @@ Each player row gives **a link and a 6‑digit PIN**. Send them separately: the 
 
 ## Install
 
-Grab the installer from the **[latest release](https://github.com/linckosz/moonlight-web/releases/latest)** on GitHub, and only from there.
+Grab the installer from the **[latest release](https://github.com/velric-labs/moonlight-web/releases/latest)** on GitHub, and only from there.
 
 > ✅ **Nothing else to install.** Install it **on the gaming PC** — that is the whole setup.
 
@@ -228,14 +228,14 @@ Sunshine is no longer installed (since September 2026); an existing Sunshine is 
 The `.pkg` is not notarized, so a downloaded copy is blocked by Gatekeeper. Either way below installs it from GitHub without the prompt — with Homebrew:
 
 ```sh
-brew install --cask linckosz/tap/moonlightweb
+brew install --cask velric-labs/tap/moonlightweb
 ```
 
 or from Terminal, the latest release:
 
 ```sh
-v=$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/linckosz/moonlight-web/releases/latest | sed 's|.*/v||')
-curl -fLO "https://github.com/linckosz/moonlight-web/releases/download/v$v/moonlightweb-$v-macos-arm64.pkg"
+v=$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/velric-labs/moonlight-web/releases/latest | sed 's|.*/v||')
+curl -fLO "https://github.com/velric-labs/moonlight-web/releases/download/v$v/moonlightweb-$v-macos-arm64.pkg"
 sudo installer -pkg "moonlightweb-$v-macos-arm64.pkg" -target /
 ```
 
@@ -246,7 +246,7 @@ For a downloaded file on macOS 15+: *System Settings → Privacy & Security → 
 
 ### Linux (x64)
 
-Download the package for your distribution from the **[latest release](https://github.com/linckosz/moonlight-web/releases/latest)** and install it. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
+Download the package for your distribution from the **[latest release](https://github.com/velric-labs/moonlight-web/releases/latest)** and install it. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
 
 **Updates:** since 0.4.1 a fresh install adds no package repository. MoonlightWeb updates itself from GitHub through its update button, which asks for the host's password (a headless service updates without asking). An install that already has the project's **APT** or **DNF** repository keeps it. Arch uses [`moonlightweb-bin`](https://aur.archlinux.org/packages/moonlightweb-bin) from the AUR.
 
@@ -278,7 +278,7 @@ docker run -d --name moonlightweb \
   --cap-drop ALL --cap-add NET_BIND_SERVICE \
   -v mw-data:/data \
   --restart unless-stopped \
-  ghcr.io/linckosz/moonlight-web:latest
+  ghcr.io/velric-labs/moonlight-web:latest
 ```
 
 ```sh
@@ -482,7 +482,7 @@ Cross‑platform build via **CMake** — the single, canonical build system (qma
 CMake also generates `compile_commands.json` for clangd / IDEs.
 
 ```bash
-git clone https://github.com/linckosz/moonlight-web.git
+git clone https://github.com/velric-labs/moonlight-web.git
 cd moonlight-web
 git submodule update --init --recursive   # moonlight-common-c, qmdnsengine, libdatachannel...
 

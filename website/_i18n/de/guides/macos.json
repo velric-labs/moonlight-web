@@ -11,7 +11,7 @@
   "need.3": "Als Client jedes Gerät mit einem modernen Browser: Safari, Chrome, Edge oder Firefox. Keine App, kein Konto.",
   "steps.h": "Installation Schritt für Schritt",
   "step1.h": "Lade den Installer herunter",
-  "step1.p": "Hol dir das <code>arm64 .pkg</code> von der <a href=\"https://github.com/linckosz/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">Releases-Seite</a>.",
+  "step1.p": "Hol dir das <code>arm64 .pkg</code> von der <a href=\"https://github.com/velric-labs/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">Releases-Seite</a>.",
   "step2.h": "Starte den geführten Installer — auf dem Mac, auf dem deine Spiele laufen",
   "step2.p": "Der Einrichtungsassistent führt dich durch die Konfiguration, inklusive der optionalen Internet-Verbindung (Remote-Streaming-Sessions, standardmäßig aus). Danach läuft der Server.",
   "step2.p2": "Anschließend bittet macOS dich, MoonlightWeb die <strong>Bildschirmaufnahme</strong> zu erlauben — ohne sie kann dieser Mac seinen eigenen Bildschirm nicht streamen. Das ist die erste von <a href=\"#permissions\">zwei Berechtigungen, die nur du erteilen kannst</a>; der Assistent öffnet dir den richtigen Einstellungsbereich.",

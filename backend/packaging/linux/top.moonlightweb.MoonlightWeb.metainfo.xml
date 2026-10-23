@@ -45,10 +45,10 @@
 
   <launchable type="desktop-id">top.moonlightweb.MoonlightWeb.desktop</launchable>
 
-  <url type="homepage">https://github.com/linckosz/moonlight-web</url>
-  <url type="bugtracker">https://github.com/linckosz/moonlight-web/issues</url>
-  <url type="help">https://github.com/linckosz/moonlight-web#linux-x64</url>
-  <url type="vcs-browser">https://github.com/linckosz/moonlight-web</url>
+  <url type="homepage">https://github.com/velric-labs/moonlight-web</url>
+  <url type="bugtracker">https://github.com/velric-labs/moonlight-web/issues</url>
+  <url type="help">https://github.com/velric-labs/moonlight-web#linux-x64</url>
+  <url type="vcs-browser">https://github.com/velric-labs/moonlight-web</url>
   <url type="donation">https://buymeacoffee.com/brunoocto</url>
 
   <developer id="top.moonlightweb">
@@ -76,19 +76,19 @@
   <screenshots>
     <screenshot type="default">
       <caption>Your hosts and games, ready to launch from the browser</caption>
-      <image type="source">https://raw.githubusercontent.com/linckosz/moonlight-web/v0.4.0/website/assets/home.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/home.jpg</image>
     </screenshot>
     <screenshot>
       <caption>Streaming to a phone with the virtual keyboard</caption>
-      <image type="source">https://raw.githubusercontent.com/linckosz/moonlight-web/v0.4.0/website/assets/mobile.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/mobile.jpg</image>
     </screenshot>
     <screenshot>
       <caption>Stream quality and codec settings</caption>
-      <image type="source">https://raw.githubusercontent.com/linckosz/moonlight-web/v0.4.0/website/assets/settings.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/settings.jpg</image>
     </screenshot>
     <screenshot>
       <caption>The admin page: sessions, pairing and Internet access</caption>
-      <image type="source">https://raw.githubusercontent.com/linckosz/moonlight-web/v0.4.0/website/assets/admin.jpg</image>
+      <image type="source">https://raw.githubusercontent.com/velric-labs/moonlight-web/v0.4.0/website/assets/admin.jpg</image>
     </screenshot>
   </screenshots>
 
@@ -114,7 +114,7 @@
 
   <releases>
     <release version="@MW_VERSION@" date="@MW_DATE@">
-      <url type="details">https://github.com/linckosz/moonlight-web/releases</url>
+      <url type="details">https://github.com/velric-labs/moonlight-web/releases</url>
     </release>
   </releases>
 </component>

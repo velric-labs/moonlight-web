@@ -9,7 +9,7 @@
 CMake is the **single canonical build system** (qmake was removed 2026-06-28). Prerequisites and Qt-Creator setup are in `CONTRIBUTING.md`; the short version:
 
 ```bash
-git clone https://github.com/linckosz/moonlight-web.git && cd moonlight-web
+git clone https://github.com/velric-labs/moonlight-web.git && cd moonlight-web
 git submodule update --init --recursive     # moonlight-common-c, qmdnsengine, libdatachannel, miniupnp, opus, openh264
 
 # Windows (MSVC): detects VS 2022 + Qt, configures Ninja, builds Release
@@ -86,7 +86,7 @@ Three jobs run **after** the packaging matrix and only on a `refs/tags/` ref —
 
 | Job | Needs | What it publishes |
 |---|---|---|
-| `homebrew` | `macos` | Renders `backend/packaging/homebrew/moonlightweb.rb` (version + sha256 of the built pkg) and pushes it to `linckosz/homebrew-tap` as `Casks/moonlightweb.rb`. |
+| `homebrew` | `macos` | Renders `backend/packaging/homebrew/moonlightweb.rb` (version + sha256 of the built pkg) and pushes it to `velric-labs/homebrew-tap` as `Casks/moonlightweb.rb`. |
 | `linux-repo` | `linux` | Imports the GPG key, runs `make-repo.sh`, and attaches the signed APT+DNF tree to the release as `moonlightweb-repo-<version>.tar.gz`, which `deploy-packages.sh` ships to `packages.{domain}` by hand. |
 | `aur` | `linux` | Renders `PKGBUILD` + `.SRCINFO` from one substitution pass and pushes to `ssh://aur@aur.archlinux.org/moonlightweb-bin.git`; the commit is skipped when nothing changed, so re-running a tag build is idempotent. |
 

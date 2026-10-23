@@ -47,7 +47,7 @@
 # ===========================================================================
 set -eu
 
-REPO="${MW_REPO:-linckosz/moonlight-web}"
+REPO="${MW_REPO:-velric-labs/moonlight-web}"
 # Where a signed apt/dnf repository built by the `linux-repo` job is
 # registered from, when one is. Not a Pages site: Pages is one site per
 # repository and the bootstrap already owns it — the package tree raced it
@@ -62,7 +62,7 @@ REPO="${MW_REPO:-linckosz/moonlight-web}"
 # repository's own spelling.
 _owner="$(printf '%s' "${REPO%%/*}" | tr '[:upper:]' '[:lower:]')"
 PACKAGES="${MW_PACKAGES:-${MW_PAGES:-}}"
-if [ -z "$PACKAGES" ] && [ "$REPO" != "linckosz/moonlight-web" ]; then
+if [ -z "$PACKAGES" ] && [ "$REPO" != "velric-labs/moonlight-web" ]; then
     PACKAGES="https://$_owner.github.io/${REPO#*/}"
 fi
 

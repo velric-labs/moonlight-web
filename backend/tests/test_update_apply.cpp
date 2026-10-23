@@ -182,42 +182,42 @@ void run_update_apply_tests()
 
     SECTION("UpdateCheck — a relay may only point at this repository's releases");
     const QString api =
-        QStringLiteral("https://api.github.com/repos/linckosz/moonlight-web/releases/latest");
-    const QString base = QStringLiteral("https://github.com/linckosz/moonlight-web/releases/");
+        QStringLiteral("https://api.github.com/repos/velric-labs/moonlight-web/releases/latest");
+    const QString base = QStringLiteral("https://github.com/velric-labs/moonlight-web/releases/");
     CHECK(isReleaseUrl(base + QStringLiteral("download/v0.4.1/") + name, api));
     CHECK(isReleaseUrl(base + QStringLiteral("tag/v0.4.1"), api)); // no asset: the release page
     // GitHub matches owner and repository names case-insensitively.
     CHECK(isReleaseUrl(
-        QStringLiteral("https://GitHub.com/LinckOsz/Moonlight-Web/releases/tag/v0.4.1"), api));
+        QStringLiteral("https://GitHub.com/Velric-Labs/Moonlight-Web/releases/tag/v0.4.1"), api));
     // Somebody else's repository, or one whose name merely starts like ours.
     CHECK(!isReleaseUrl(
         QStringLiteral("https://github.com/someone/moonlight-web/releases/download/v9/") + name,
         api));
     CHECK(!isReleaseUrl(
-        QStringLiteral("https://github.com/linckosz/moonlight-web-fork/releases/download/v9/") +
+        QStringLiteral("https://github.com/velric-labs/moonlight-web-fork/releases/download/v9/") +
             name,
         api));
     // Other GitHub hosts, other schemes, look-alike hosts, credentials, ports.
     CHECK(!isReleaseUrl(
         QStringLiteral("https://objects.githubusercontent.com/github-production-release-asset/1"),
         api));
-    CHECK(!isReleaseUrl(QStringLiteral("http://github.com/linckosz/moonlight-web/releases/tag/v1"),
-                        api));
     CHECK(!isReleaseUrl(
-        QStringLiteral("https://github.com.example.net/linckosz/moonlight-web/releases/tag/v1"),
+        QStringLiteral("http://github.com/velric-labs/moonlight-web/releases/tag/v1"), api));
+    CHECK(!isReleaseUrl(
+        QStringLiteral("https://github.com.example.net/velric-labs/moonlight-web/releases/tag/v1"),
         api));
     CHECK(!isReleaseUrl(
-        QStringLiteral("https://x@github.com/linckosz/moonlight-web/releases/tag/v1"), api));
+        QStringLiteral("https://x@github.com/velric-labs/moonlight-web/releases/tag/v1"), api));
     CHECK(!isReleaseUrl(
-        QStringLiteral("https://github.com:8443/linckosz/moonlight-web/releases/tag/v1"), api));
+        QStringLiteral("https://github.com:8443/velric-labs/moonlight-web/releases/tag/v1"), api));
     // A path that GitHub would resolve into another repository, plain or encoded.
     CHECK(!isReleaseUrl(base + QStringLiteral("../../evil/repo/releases/download/v1/x.exe"), api));
     CHECK(!isReleaseUrl(base + QStringLiteral("%2e%2e/%2E%2E/evil/repo/releases/download/v1/x.exe"),
                         api));
     // This repository, but not its releases; and nothing at all.
-    CHECK(!isReleaseUrl(QStringLiteral("https://github.com/linckosz/moonlight-web/blob/main/x"),
+    CHECK(!isReleaseUrl(QStringLiteral("https://github.com/velric-labs/moonlight-web/blob/main/x"),
                         api));
-    CHECK(!isReleaseUrl(QStringLiteral("https://github.com/linckosz/moonlight-web"), api));
+    CHECK(!isReleaseUrl(QStringLiteral("https://github.com/velric-labs/moonlight-web"), api));
     CHECK(!isReleaseUrl(QString(), api));
     // An API URL that names no repository pins nothing open.
     CHECK(!isReleaseUrl(base + QStringLiteral("tag/v0.4.1"),

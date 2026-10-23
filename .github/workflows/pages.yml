@@ -1,5 +1,11 @@
 # Publishes ./bootstrap to GitHub Pages, served at the domain in bootstrap/CNAME.
 #
+# Manual only, and bootstrap/ carries no CNAME, while Internet Access is
+# switched off (backend/src/common/Edition.h): the reference copy at
+# app.moonlightweb.top belongs to the project's old repository and old domain,
+# and this repository must never claim either. A release with trusted servers
+# brings back the tag triggers below, with a CNAME naming the new domain.
+#
 # Only the bootstrap goes here. The marketing site stays behind Caddy, which can
 # set real headers — Pages cannot, and losing X-Frame-Options on a page whose
 # main element is a download button is not a trade worth making. The bootstrap
@@ -17,10 +23,6 @@
 name: bootstrap-pages
 
 on:
-  push:
-    tags:
-      - "v*"
-      - "srv-*"
   workflow_dispatch:
 
 permissions:

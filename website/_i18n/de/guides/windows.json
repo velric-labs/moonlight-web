@@ -11,7 +11,7 @@
   "need.3": "Als Client jedes Gerät mit einem modernen Browser: Chrome, Edge, Safari oder Firefox. Keine App, kein Download, kein Konto.",
   "steps.h": "Installation Schritt für Schritt",
   "step1.h": "Lade den Installer herunter",
-  "step1.p": "Hol dir den Windows-Installer von der <a href=\"https://github.com/linckosz/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">Releases-Seite</a> — <code>x64 .exe</code> für die meisten PCs, <code>arm64 .exe</code> für Windows-on-ARM-Rechner.",
+  "step1.p": "Hol dir den Windows-Installer von der <a href=\"https://github.com/velric-labs/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">Releases-Seite</a> — <code>x64 .exe</code> für die meisten PCs, <code>arm64 .exe</code> für Windows-on-ARM-Rechner.",
   "step2.h": "Starte den geführten Installer — auf dem Gaming-PC",
   "step2.p1": "Der Assistent führt dich durch alles: Er installiert still die Treiber für Gamepad und Lenkrad, fragt, ob die Internet-Verbindung erlaubt werden soll (Remote-Streaming-Sessions, standardmäßig aus), und bietet MoonlightWeb Virtual Display an, einen eigenen Bildschirm, den dieser PC streamen kann. Sonst nichts — kein zweiter Streaming-Server einzurichten.",
   "step2.p2": "Danach erscheint ein Symbol im Infobereich der Taskleiste — der Server läuft. Das ist die ganze Installation.",

@@ -1,7 +1,7 @@
 # LAN-only development environment — setup plan for Claude Code
 
 > **Who reads this:** Claude Code running **Claude Opus**, started at the root of a **fork** of
-> [`linckosz/moonlight-web`](https://github.com/linckosz/moonlight-web). A human can follow it too.
+> [`velric-labs/moonlight-web`](https://github.com/velric-labs/moonlight-web). A human can follow it too.
 >
 > **How it is triggered:** the user types
 > *“Read CLAUDE-LAN-DEV-SETUP.md and set up my LAN-only dev environment.”*
@@ -116,14 +116,14 @@ fork**. If there is no clone yet:
 ```powershell
 # With the GitHub CLI (winget install --id GitHub.cli -e, then: gh auth login).
 # It forks, clones, and adds the original repository as the `upstream` remote.
-gh repo fork linckosz/moonlight-web --clone
+gh repo fork velric-labs/moonlight-web --clone
 # …or fork on github.com, then: git clone https://github.com/<user>/moonlight-web.git
 ```
 
 Then, inside the clone:
 
 ```powershell
-git remote add upstream https://github.com/linckosz/moonlight-web.git   # skip if it exists
+git remote add upstream https://github.com/velric-labs/moonlight-web.git   # skip if it exists
 git config core.longpaths true
 git submodule update --init --recursive
 ```
@@ -427,11 +427,11 @@ it may re-wrap an untouched line that CI (Linux) accepts: restore such a line by
    Nothing from `.env`, `build*/`, logs or `node_modules/`, and no submodule line.
 5. **Rebase** if upstream moved: `git fetch upstream; git rebase upstream/main`, run the gates
    again, then `git push --force-with-lease origin HEAD` — on your own branch only.
-6. **Open the PR** against `linckosz/moonlight-web`, branch `main`:
+6. **Open the PR** against `velric-labs/moonlight-web`, branch `main`:
 
    ```powershell
    git push -u origin HEAD
-   gh pr create --repo linckosz/moonlight-web --base main --title "feat(scope): …" --body "<what, why, how it was tested>"
+   gh pr create --repo velric-labs/moonlight-web --base main --title "feat(scope): …" --body "<what, why, how it was tested>"
    ```
 
    The body says how it was tested — the LAN-only instance, which devices and browsers — with a

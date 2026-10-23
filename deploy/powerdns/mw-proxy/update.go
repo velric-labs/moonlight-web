@@ -48,7 +48,7 @@ type updateConfig struct {
 	hostname     string        // "updates.{domain}" — the hostname Umami records
 }
 
-const defaultReleaseURL = "https://api.github.com/repos/linckosz/moonlight-web/releases/latest"
+const defaultReleaseURL = "https://api.github.com/repos/velric-labs/moonlight-web/releases/latest"
 
 // ── Client-supplied field validation ────────────────────────────────────────
 //

@@ -986,7 +986,7 @@ jobs:
           files: ${{ needs.setup.outputs.pkg }}-${{ needs.setup.outputs.version }}-macos-arm64.pkg
 
   # ── Homebrew tap ─────────────────────────────────────────────────────────
-  # Publishes the cask that makes `brew install --cask linckosz/tap/moonlightweb`
+  # Publishes the cask that makes `brew install --cask velric-labs/tap/moonlightweb`
   # work. This is the only macOS install path with no Gatekeeper warning at all:
   # the .pkg is not notarized (Apple has no free tier and no OSS programme), so
   # a double-clicked download is refused as "unidentified developer" — but
@@ -1039,7 +1039,7 @@ jobs:
             backend/packaging/homebrew/moonlightweb.rb > moonlightweb.rb
           echo "cask: moonlightweb ${VERSION} sha256 ${SHA}" >> "$GITHUB_STEP_SUMMARY"
 
-      # A PAT (or fine-grained token with Contents: write on linckosz/homebrew-tap)
+      # A PAT (or fine-grained token with Contents: write on velric-labs/homebrew-tap)
       # — GITHUB_TOKEN is scoped to this repo and cannot push to the tap. A
       # fine-grained token has to name that repository explicitly, so one minted
       # before the tap existed cannot reach it.
@@ -1057,7 +1057,7 @@ jobs:
         run: |
           set -euo pipefail
           git clone --depth 1 \
-            "https://x-access-token:${TAP_TOKEN}@github.com/linckosz/homebrew-tap.git" tap
+            "https://x-access-token:${TAP_TOKEN}@github.com/velric-labs/homebrew-tap.git" tap
           mkdir -p tap/Casks
           cp moonlightweb.rb tap/Casks/moonlightweb.rb
           git -C tap config user.name "github-actions[bot]"
@@ -1074,7 +1074,7 @@ jobs:
       - name: Report a failed tap push
         if: steps.tap-push.outcome == 'failure'
         run: |
-          echo "::warning title=Homebrew cask not updated::Pushing to linckosz/homebrew-tap failed - the cask still points at the previous version. Check that HOMEBREW_TAP_TOKEN grants Contents: write on that repository."
+          echo "::warning title=Homebrew cask not updated::Pushing to velric-labs/homebrew-tap failed - the cask still points at the previous version. Check that HOMEBREW_TAP_TOKEN grants Contents: write on that repository."
 
   # ── Linux package repositories ───────────────────────────────────────────
   # Builds the signed APT and DNF repositories served at

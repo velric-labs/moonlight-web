@@ -6,7 +6,7 @@
   "h1": "为你的 Sunshine 主机打造的网页客户端",
   "lead": "已经在用 Sunshine 串流？MoonlightWeb 像 Moonlight 一样与它配对——并在网页浏览器中游玩，<strong>适用于任何设备，客户端无需安装任何东西。</strong>",
   "how.h": "工作原理",
-  "how.p": "MoonlightWeb 服务器运行在你网络中的一台机器上：游戏 PC 本身、另一台 PC，或者装有 <a href=\"https://github.com/linckosz/moonlight-web/blob/main/docker/README.md\" target=\"_blank\" rel=\"noopener\">Docker</a> 的 Linux 服务器或 NAS。它内嵌 Moonlight 的核心库 <code>moonlight-common-c</code>，用 GameStream 协议与你的主机通信，并通过 WebRTC 把视频、音频和输入转发到浏览器。",
+  "how.p": "MoonlightWeb 服务器运行在你网络中的一台机器上：游戏 PC 本身、另一台 PC，或者装有 <a href=\"https://github.com/velric-labs/moonlight-web/blob/main/docker/README.md\" target=\"_blank\" rel=\"noopener\">Docker</a> 的 Linux 服务器或 NAS。它内嵌 Moonlight 的核心库 <code>moonlight-common-c</code>，用 GameStream 协议与你的主机通信，并通过 WebRTC 把视频、音频和输入转发到浏览器。",
   "hosts.h": "它可配对的主机",
   "hosts.1": "<strong>Sunshine 和 Apollo</strong> — 通过 mDNS 在你的网络中被发现，或通过 IP 添加；只需配对一次：MoonlightWeb 显示一个 PIN 码，你在主机的网页中输入即可。",
   "hosts.2": "<strong>Wolf</strong>（Games on Whales）— 自动配对：MoonlightWeb 通过 Wolf 的 API 把 PIN 码交给它。",

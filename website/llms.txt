@@ -43,7 +43,7 @@ client is 100% web: WebCodecs for decoding, WebGL2 or WebGPU for rendering, the 
 ## Platforms (server)
 
 - Windows x64 / arm64 (guided .exe installer)
-- macOS Apple Silicon (.pkg installer, or `brew install --cask linckosz/tap/moonlightweb`)
+- macOS Apple Silicon (.pkg installer, or `brew install --cask velric-labs/tap/moonlightweb`)
 - Linux x64 (.deb, .rpm, portable AppImage, or the signed apt/dnf repositories
   and the AUR package `moonlightweb-bin`)
 
@@ -68,8 +68,8 @@ The client requires no install: any modern browser (Chrome, Edge, Safari, Firefo
 - Using it as a Sunshine web client: https://moonlightweb.top/sunshine-web-client.html
 - Compared with Parsec and Steam Remote Play: https://moonlightweb.top/browser-game-streaming.html
 - Connect to a host by its code: https://moonlightweb.top/server-access/
-- Source code & downloads: https://github.com/linckosz/moonlight-web
-- Latest releases: https://github.com/linckosz/moonlight-web/releases
+- Source code & downloads: https://github.com/velric-labs/moonlight-web
+- Latest releases: https://github.com/velric-labs/moonlight-web/releases
 - Sunshine (one of the host types it can pair with): https://github.com/LizardByte/Sunshine
 - Wolf / Games-on-Whales (another): https://games-on-whales.github.io/wolf/
 - Author: Bruno Martin — tip the project: https://buymeacoffee.com/brunoocto

@@ -11,7 +11,7 @@
   "need.3": "任何带现代浏览器的设备都可作客户端：Safari、Chrome、Edge 或 Firefox。无需应用、无需账户。",
   "steps.h": "逐步安装",
   "step1.h": "下载安装程序",
-  "step1.p": "从<a href=\"https://github.com/linckosz/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">发布页面</a>获取 <code>arm64 .pkg</code>。",
+  "step1.p": "从<a href=\"https://github.com/velric-labs/moonlight-web/releases\" target=\"_blank\" rel=\"noopener\">发布页面</a>获取 <code>arm64 .pkg</code>。",
   "step2.h": "运行向导式安装程序——在运行游戏的那台 Mac 上",
   "step2.p": "安装向导会带你完成配置，包括可选的互联网连接（远程串流会话，默认关闭）。完成后，服务器即在运行。",
   "step2.p2": "随后 macOS 会请你为 MoonlightWeb 允许<strong>屏幕录制</strong>——没有它，这台 Mac 无法串流自己的屏幕。这是<a href=\"#permissions\">只有你才能授予的两项权限</a>中的第一项；向导会为你打开对应的设置面板。",

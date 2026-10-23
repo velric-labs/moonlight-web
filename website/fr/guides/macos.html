@@ -74,7 +74,7 @@
 <body>
 
 <!-- Header written by scripts/website/build-site.mjs -->
-<header id="site-header"><div class="wrap"><a class="brand" href="/fr/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/fr/" data-nav="home">Accueil</a><a href="/fr/guides/" data-nav="guides" aria-current="page">Guides</a><a href="/fr/faq.html" data-nav="faq">FAQ</a><a href="/fr/contact.html" data-nav="contact">Contact</a><a href="/fr/server-access/" data-nav="connect">Se connecter</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/guides/macos.html">English</option><option value="fr" data-href="/fr/guides/macos.html" selected>Français</option><option value="de" data-href="/de/guides/macos.html">Deutsch</option><option value="zh" data-href="/zh/guides/macos.html" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
+<header id="site-header"><div class="wrap"><a class="brand" href="/fr/"><img src="/assets/icon-192.png" alt="MoonlightWeb logo" width="28" height="28"> MOONLIGHTWEB</a><nav aria-label="Main navigation"><a href="/fr/" data-nav="home">Accueil</a><a href="/fr/guides/" data-nav="guides" aria-current="page">Guides</a><a href="/fr/faq.html" data-nav="faq">FAQ</a><a href="/fr/contact.html" data-nav="contact">Contact</a><a href="/fr/server-access/" data-nav="connect">Se connecter</a></nav><div class="hdr-actions"><span class="lang"><select id="lang-select" aria-label="Language" data-umami-event="lang"><option value="en" data-href="/guides/macos.html">English</option><option value="fr" data-href="/fr/guides/macos.html" selected>Français</option><option value="de" data-href="/de/guides/macos.html">Deutsch</option><option value="zh" data-href="/zh/guides/macos.html" lang="zh">中文</option></select></span><a class="btn btn-primary gh-btn" href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" aria-label="GitHub" data-umami-event="github" data-umami-event-loc="nav">★ <span class="gh-label">GitHub</span></a></div></div></header>
 
 <main>
 <div class="wrap">
@@ -94,7 +94,7 @@
   <div class="gsteps">
     <div class="gstep cyb" id="step-download">
       <h3 data-i18n="step1.h">Téléchargez l’installateur</h3>
-      <p data-i18n-html="step1.p">Récupérez le <code>arm64 .pkg</code> depuis la <a href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener">page des versions</a>.</p>
+      <p data-i18n-html="step1.p">Récupérez le <code>arm64 .pkg</code> depuis la <a href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener">page des versions</a>.</p>
     </div>
     <div class="gstep cyb" id="step-install">
       <h3 data-i18n="step2.h">Lancez l’installateur guidé — sur le Mac qui fait tourner vos jeux</h3>
@@ -115,7 +115,7 @@
     </div>
   </div>
 
-  <p style="text-align:center"><a class="btn btn-primary" href="https://github.com/linckosz/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="guide-macos" data-i18n="dl.btn">⬇ Télécharger pour macOS</a></p>
+  <p style="text-align:center"><a class="btn btn-primary" href="https://github.com/velric-labs/moonlight-web/releases" target="_blank" rel="noopener" data-umami-event="download" data-umami-event-loc="guide-macos" data-i18n="dl.btn">⬇ Télécharger pour macOS</a></p>
 
   <h2 id="permissions" data-i18n="perm.h">Ce que macOS vous demande d’autoriser</h2>
   <p data-i18n-html="perm.p">Apple n’autorise aucun installateur à les accorder à votre place — tous les serveurs de streaming sur macOS demandent les mêmes. Il y en a <strong>deux</strong>, et MoonlightWeb les demande toutes les deux à son premier lancement, juste après l’installation, pendant que vous êtes encore devant le Mac :</p>
@@ -128,7 +128,7 @@
 
   <h2 id="one-line-install" data-i18n="cli.h">Une seule commande — et plus d’avertissement</h2>
   <p data-i18n-html="cli.p">MoonlightWeb est gratuit et open source, ce qui veut aussi dire qu’il n’est pas signé avec un Apple Developer ID payant. macOS accueille donc un <code>.pkg</code> <em>téléchargé</em> par « <strong>impossible à ouvrir car il provient d’un développeur non identifié</strong> ». Ce contrôle ne s’applique qu’aux fichiers récupérés par un navigateur : chacune de ces deux commandes installe exactement le même paquet, sans rien à contourner :</p>
-  <pre><code>brew install --cask linckosz/tap/moonlightweb</code></pre>
+  <pre><code>brew install --cask velric-labs/tap/moonlightweb</code></pre>
   <pre><code>curl -fsSL https://moonlightweb.top/install.sh | bash</code></pre>
   <p data-i18n="cli.note">Les deux demandent votre mot de passe administrateur, installent dans /Applications et ouvrent l’assistant de configuration — même installateur, même résultat, une étape en moins.</p>
 
@@ -161,7 +161,7 @@ tccutil reset Accessibility com.moonlightweb.server</code></pre>
 </main>
 
 <!-- Footer written by scripts/website/build-site.mjs -->
-<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/fr/">Accueil</a> · <a href="/fr/guides/">Guides</a> · <a href="/fr/faq.html">FAQ</a> · <a href="/fr/contact.html">Contact</a> · <a href="/fr/server-access/">Se connecter</a> · <a href="https://github.com/linckosz/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Un café</span></a></span><span class="foot-play">Jouer depuis : <a href="/fr/play/chromebook.html">Chromebook</a> · <a href="/fr/play/iphone-ipad.html">iPhone et iPad</a> · <a href="/fr/play/tv.html">TV</a> · <a href="/fr/sunshine-web-client.html">Client web pour Sunshine</a> · <a href="/fr/browser-game-streaming.html">Pourquoi un client web</a></span></div></footer>
+<footer id="site-footer"><div class="wrap"><span><img src="/assets/icon-192.png" alt="" width="18" height="18" style="border-radius:4px;vertical-align:-3px;margin-right:6px"> MoonlightWeb · © 2026 Bruno Martin · GPL‑3.0</span><span><a href="/fr/">Accueil</a> · <a href="/fr/guides/">Guides</a> · <a href="/fr/faq.html">FAQ</a> · <a href="/fr/contact.html">Contact</a> · <a href="/fr/server-access/">Se connecter</a> · <a href="https://github.com/velric-labs/moonlight-web" target="_blank" rel="noopener" data-umami-event="github" data-umami-event-loc="footer">GitHub</a> · <a href="https://buymeacoffee.com/brunoocto" target="_blank" rel="noopener" data-umami-event="buy-me-a-coffee" data-umami-event-loc="footer" class="bmc-link"><span data-bmc-logo></span><span>Un café</span></a></span><span class="foot-play">Jouer depuis : <a href="/fr/play/chromebook.html">Chromebook</a> · <a href="/fr/play/iphone-ipad.html">iPhone et iPad</a> · <a href="/fr/play/tv.html">TV</a> · <a href="/fr/sunshine-web-client.html">Client web pour Sunshine</a> · <a href="/fr/browser-game-streaming.html">Pourquoi un client web</a></span></div></footer>
 
 <script src="/assets/chrome.js?v={{(fileStat `/assets/chrome.js`).ModTime.Unix}}"></script>
 </body>

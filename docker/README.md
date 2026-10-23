@@ -20,7 +20,7 @@ sudo docker run -d --name moonlightweb \
   --cap-drop ALL --cap-add NET_BIND_SERVICE \
   -v mw-data:/data \
   --restart unless-stopped \
-  ghcr.io/linckosz/moonlight-web:latest
+  ghcr.io/velric-labs/moonlight-web:latest
 ```
 
 `--network host` is what puts the container on your LAN — without it, it can
@@ -124,7 +124,7 @@ published only from a `v*` tag that already passed the quality and test gates,
 so `latest` can never hand you work in progress.
 
 Development builds exist, in a **separate and private** package —
-`ghcr.io/linckosz/moonlight-web-dev:dev`. It is produced only by running the
+`ghcr.io/velric-labs/moonlight-web-dev:dev`. It is produced only by running the
 Docker workflow by hand with `publish` ticked, and pulling it needs
 `docker login ghcr.io` with an account that has access: an anonymous request
 for its tag list is refused with 403, where the public package answers 200.
@@ -189,7 +189,7 @@ sudo docker network create -d macvlan \
 sudo docker run -d --name moonlightweb \
   --network mw-lan --ip 192.168.1.240 \
   -v mw-data:/data --restart unless-stopped \
-  ghcr.io/linckosz/moonlight-web:latest
+  ghcr.io/velric-labs/moonlight-web:latest
 ```
 
 One caveat worth knowing before you pick it: by design, a macvlan container and
@@ -311,7 +311,7 @@ Everything else is configured from the admin page, or by editing
 Anything after the image name is passed straight to the binary:
 
 ```sh
-docker run … ghcr.io/linckosz/moonlight-web:latest --port 8080
+docker run … ghcr.io/velric-labs/moonlight-web:latest --port 8080
 ```
 
 ---
@@ -336,7 +336,7 @@ actually connect.
 the pairings across, so nothing is re-entered:
 
 ```sh
-sudo docker pull ghcr.io/linckosz/moonlight-web:latest
+sudo docker pull ghcr.io/velric-labs/moonlight-web:latest
 sudo docker stop moonlightweb && sudo docker rm moonlightweb
 sudo docker run -d --name moonlightweb … # the same command as step 1
 ```
@@ -425,7 +425,7 @@ docker run -d --name moonlightweb --network host \
   --user 1000:1000 --cap-drop ALL \
   -e MW_HTTP_PORT=8080 -e MW_HTTPS_PORT=8443 \
   -v /srv/moonlightweb:/data \
-  ghcr.io/linckosz/moonlight-web:latest
+  ghcr.io/velric-labs/moonlight-web:latest
 ```
 
 The URL becomes `https://<server-ip>:8443`.
@@ -435,7 +435,7 @@ The URL becomes `https://<server-ip>:8443`.
 ## Building it yourself
 
 ```sh
-git clone --recurse-submodules https://github.com/linckosz/moonlight-web
+git clone --recurse-submodules https://github.com/velric-labs/moonlight-web
 cd moonlight-web
 docker build -t moonlightweb --build-arg MW_VERSION=0.0.0-dev .
 ```

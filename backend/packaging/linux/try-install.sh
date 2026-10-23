@@ -51,7 +51,7 @@ set -euo pipefail
 
 RUN_ID=${1:-latest}
 IMAGE=${2:-debian:12}
-REPO_SLUG=${MW_REPO:-linckosz/moonlight-web}
+REPO_SLUG=${MW_REPO:-velric-labs/moonlight-web}
 
 ROOT=$(cd "$(dirname "$0")/../../.." && pwd)
 WORK=${MW_TRY_DIR:-${TMPDIR:-/tmp}/moonlightweb-try}
