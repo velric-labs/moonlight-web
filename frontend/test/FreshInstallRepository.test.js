@@ -7,10 +7,11 @@
  * packages.moonlightweb.top, is the project's old domain. Two fresh-install
  * paths could register one — the .deb/.rpm postinst and website/install.sh —
  * and both are shell, so their switches are pinned here as text, the way
- * InternetConsentText.test.js pins the installers' agreement. Existing installs
- * are left alone by both: the postinst only ever added a repository when none
- * was configured, and install.sh reads nothing under /etc unless MW_PACKAGES
- * names a repository.
+ * InternetConsentText.test.js pins the installers' agreement. install.sh reads
+ * nothing under /etc unless MW_PACKAGES names a repository. The postinst goes
+ * further on every install and upgrade: it takes away a repository on the old
+ * host with the key file beside it, leaves one on any other host alone, and the
+ * package no longer carries the old key.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -23,6 +24,12 @@ const read = (path) => readFileSync(join(REPO, path), 'utf8').replace(/\r\n/g, '
 
 const MAKE_PACKAGES = read('backend/packaging/linux/make-packages.sh');
 const INSTALL_SH = read('website/install.sh');
+
+/** The postinst as make-packages.sh writes it: its heredoc, up to prerm's. */
+const POSTINST = MAKE_PACKAGES.slice(
+    MAKE_PACKAGES.indexOf(`cat > "$ROOT/postinst.sh" <<'EOF'`),
+    MAKE_PACKAGES.indexOf(`cat > "$ROOT/prerm.sh" <<'EOF'`),
+);
 
 /** A shell function's body, from its opening line to its closing brace. */
 function shellFunction(src, name) {
@@ -57,4 +64,42 @@ describe('fresh Linux installs register no package repository', () => {
             }
         },
     );
+});
+
+describe('installing 0.4.1 takes away a repository on packages.moonlightweb.top', () => {
+    const start = POSTINST.indexOf('\nOLD_REPO_HOST=packages.moonlightweb.top\n');
+    const cleanup = POSTINST.slice(start, POSTINST.indexOf('\nREPO_KEYS=', start));
+
+    it('runs on every install and upgrade, before the headless upgrade stops early', () => {
+        expect(start).toBeGreaterThan(-1);
+        expect(start).toBeLessThan(POSTINST.indexOf('systemctl restart moonlightweb.service'));
+        // Not behind the switch that adds a repository, which is off.
+        expect(start).toBeLessThan(POSTINST.indexOf('\nREPO_URL='));
+    });
+
+    it('removes a repository file only when it names the old host', () => {
+        expect(cleanup.split('\n').filter((line) => /\brm -f\b/.test(line))).toHaveLength(3);
+        expect(cleanup).toMatch(
+            /if grep -qsiF "\$OLD_REPO_HOST" \/etc\/apt\/sources\.list\.d\/moonlightweb\.sources; then\n\s+rm -f \/etc\/apt\/sources\.list\.d\/moonlightweb\.sources \/etc\/apt\/keyrings\/moonlightweb\.gpg\n/,
+        );
+        expect(cleanup).toMatch(
+            /for f in \/etc\/yum\.repos\.d\/moonlightweb\.repo \/etc\/zypp\/repos\.d\/moonlightweb\.repo; do\n\s+if grep -qsiF "\$OLD_REPO_HOST" "\$f"; then\n\s+rm -f "\$f"\n/,
+        );
+        // The RPM key file goes only with an old .repo; the imported copy is named.
+        expect(cleanup).toMatch(
+            /if \[ -n "\$old_rpm_repo" \]; then\n\s+rm -f \/etc\/pki\/rpm-gpg\/RPM-GPG-KEY-moonlightweb\n/,
+        );
+        expect(cleanup).toContain('rpm -e gpg-pubkey-8d42deef-6a6c41e6');
+    });
+
+    it('the DEV edition, which never had the repository, skips it', () => {
+        expect(MAKE_PACKAGES).toContain(
+            String.raw`-e "s|^\( *\)OLD_REPO_HOST=.*|\1OLD_REPO_HOST=|"`,
+        );
+    });
+
+    it('the package no longer carries the old repository key', () => {
+        expect(MAKE_PACKAGES).not.toMatch(/install\b[^\n]*moonlightweb-repo\.(gpg|asc)/);
+        expect(MAKE_PACKAGES).not.toMatch(/share\/keys\/moonlightweb\.(gpg|asc)/);
+    });
 });

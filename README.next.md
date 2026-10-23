@@ -248,7 +248,7 @@ For a downloaded file on macOS 15+: *System Settings → Privacy & Security → 
 
 Download the package for your distribution from the **[latest release](https://github.com/velric-labs/moonlight-web/releases/latest)** and install it. All are **self‑contained** (Qt + OpenSSL bundled), install to `/opt/moonlightweb`, open the firewall ports (80/tcp, 443/tcp, 48550‑48573/udp) and start the app.
 
-**Updates:** since 0.4.1 a fresh install adds no package repository. MoonlightWeb updates itself from GitHub through its update button, which asks for the host's password (a headless service updates without asking). An install that already has the project's **APT** or **DNF** repository keeps it. Arch uses [`moonlightweb-bin`](https://aur.archlinux.org/packages/moonlightweb-bin) from the AUR.
+**Updates:** since 0.4.1 a fresh install adds no package repository. MoonlightWeb updates itself from GitHub through its update button, which asks for the host's password (a headless service updates without asking). Installing 0.4.1 also removes the project's old **APT** or **DNF** repository (packages.moonlightweb.top) and its key file, where an earlier version added them; on Fedora and openSUSE it prints the command that drops the key from the RPM database too. The AUR package `moonlightweb-bin` is no longer the project's: do not install or update it.
 
 | Distro family | Package | Command |
 |---|---|---|
@@ -260,8 +260,9 @@ Download the package for your distribution from the **[latest release](https://g
 > 💡 **On Debian/Ubuntu, prefer the `.deb`.** The AppImage needs `chmod +x` and **FUSE 2**
 > (`sudo apt install libfuse2t64`, or `libfuse2` before 24.04).
 
-> ⚠️ **To stream *this* machine, use the `.deb`, `.rpm` or AUR package.** Screen capture needs a file
-> capability that an AppImage cannot keep; the AppImage only streams paired hosts.
+> ⚠️ **To stream *this* machine, use the `.deb` or `.rpm` package.** Screen capture needs a file
+> capability that an AppImage cannot keep; the AppImage only streams paired hosts. Arch has no
+> package from the project for now: `moonlightweb-bin` on the AUR is no longer the project's.
 
 **Nothing else to install.** Capture uses **KMS** (zero‑copy DMA‑BUF → VA‑API or Vulkan Video), or the **ScreenCast portal** where the compositor requires it. Audio comes from PipeWire and input goes through `uinput`. The first launch opens `https://localhost/setup`.
 
